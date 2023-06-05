@@ -4,6 +4,26 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
  const Formulario = () => {
     const [formularioenviado, cambiarformularioenviado] = useState(false);
+
+    const handleSubmit = (values) => {
+        // Enviar los datos a la ruta del servidor
+        fetch('http://localhost:3000/palabras', {
+          method: 'POST',
+          body: JSON.stringify(values),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Hacer algo con la respuesta del servidor
+            console.log(data);
+          })
+          .catch((error) => {
+            // Manejar el error
+            console.error(error);
+          });
+      };
     return (
         <>
             <Formik
@@ -11,11 +31,16 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                 initialValues={{
                     palabra: '',
                     significado: '',
-                    acepsion: '',
-                    sinonimo: '',
-                    comousar: '',
-                    ejemploneutro: '',
-                    ejemplochoco: ''
+                    acepciones: '',
+                    sinonimos: '',
+                    como_se_usa: '',
+                    ejemplo_neutro: '',
+                    ejemplo_choco: '',
+                    id_categoria: 2,
+                    id_tipo: 1,
+                    autorizado: true,
+                    colaborador: 'Mercado Fácil'
+                    
                 }}
            //validar que los valores escritos dentro del campo, correspondan a lo solicitado en cada tabla
                 validate={ (valores)=> {
@@ -73,17 +98,12 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                     return errores; 
                 }} 
                 //para enviar formulario
-                onSubmit={(valores, {resetForm})=>{
-                    resetForm();
-                    cambiarformularioenviado(true);
-                    setTimeout(() => cambiarformularioenviado(false), 3000);
-                    console.log('formulario enviado');
-                }}
+                onSubmit={handleSubmit}
             >  
                 {( {errors} ) => ( 
                     <Form className='formulario'>
                         <div>
-                            <label htmlFor='palabra'>Palabra</label>
+                            <label htmlFor='palabra' className=''>Palabra</label>
                             <Field 
                                 type='text' 
                                 id='palabra' 
@@ -91,7 +111,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                                 placeholder='palabras' 
                             />
                             <ErrorMessage name='palabra' component={() => (
-                                <div className='error'>{errors.palabra}</div>
+                                <div className='error text-red-700'>{errors.palabra}</div>
                             )} />
                         </div>
 

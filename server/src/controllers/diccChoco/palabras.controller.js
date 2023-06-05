@@ -20,28 +20,28 @@ export const getPalabras = async (req, res) => {
             'sinonimos',
             'como_se_usa'],
             include: [
-                {
+                /*{
                     model: Multimedia,
                     required: true, // Utilizar INNER JOIN
-                  },
+                  },*/
                   {
                     model: Ejemplos,
                     required: true, // Utilizar INNER JOIN
                   },
-                  {
+                  /*{
                     model: Colaborador,
                     required: true, // Utilizar INNER JOIN
-                  },
-                  {
+                  },*/
+                  /*{
                   model: Region,
                   required: true, // Utilizar INNER JOIN
-                },{
+                },*/{
                     model: Categoria,
                     required: true, // Utilizar INNER JOIN
-                  }, {
+                  }/*, {
                     model: Tipo,
                     required: true, // Utilizar INNER JOIN
-                  },
+                  },*/
               ],
         });
         res.json(arrPalabras);
