@@ -27,7 +27,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
     return (
         <>
             <Formik
-            //almacena los valores de cada campo
+            //almacena los valores de cada camp
                 initialValues={{
                     palabra: '',
                     significado: '',
