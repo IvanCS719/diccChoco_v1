@@ -103,7 +103,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                 {( {errors} ) => ( 
                     <Form className='formulario'>
                         <div>
-                            <label htmlFor='palabra' className=''>Palabra</label>
+                            <label htmlFor='palabra' className='text-black'>Palabra</label>
                             <Field 
                                 type='text' 
                                 id='palabra' 
