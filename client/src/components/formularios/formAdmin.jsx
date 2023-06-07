@@ -111,7 +111,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                                 placeholder='palabras' 
                             />
                             <ErrorMessage name='palabra' component={() => (
-                                <div className='error text-red-700'>{errors.palabra}</div>
+                                <div className='error text-orange-700'>{errors.palabra}</div>
                             )} />
                         </div>
 
