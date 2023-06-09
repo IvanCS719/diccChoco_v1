@@ -22,10 +22,13 @@ const Formulario = () => {
     const [formularioenviado, cambiarformularioenviado] = useState(false);
     const [dataCategoria, setDataCategoria] = useState([]);
     const [arrTama, setArrTama] = useState([]);
+    const [dataNeutro, setDataNeutro] = useState([]);
+    const [dataChoco, setDataChoco] = useState([]);
 
 
     let newDataNeutro = [];
     let newDataChoco = [];
+
 
     useEffect(() => {
         if (!dataCategoria.length) {
@@ -80,6 +83,7 @@ const Formulario = () => {
     };
 
     function addEjemplos() {
+        console.log(dataNeutro)
 
         arrTama.map((item, index) => {
             const inputNeutro = document.getElementById(`ejemplo_neutro${index}`).value;
@@ -95,12 +99,26 @@ const Formulario = () => {
     };
 
     function newEjemplos() {
+
         const newDataEjemplo = [...arrTama, 1];
         setArrTama(newDataEjemplo)
     };
 
-    function deleteEjemplo(i){
-        arrTama.splice(i, 1);
+    function arrEjemNeutro(v,i) {
+        const newDataNeutro = [...dataNeutro]
+
+        newDataNeutro[i] = v
+
+        setDataNeutro(newDataNeutro)
+
+        
+    }
+
+    function arrEjemChoco(v,i) {
+        const newDataChoco = [...dataChoco]
+        newDataChoco[i] = v
+        setDataChoco(newDataChoco)
+        
     }
     return (
         <div className='container px-4 lg:px-0 w-screen min-h-screen'>
@@ -171,14 +189,14 @@ const Formulario = () => {
                         }
 
                         arrTama.map((item, index) => {
-                            if (!valores[`ejemplo_neutro${index}`]) {
+                            if (!dataNeutro[index]) {
                                 errores[`ejemplo_neutro${index}`] = 'Ejemplo neutro necesario*'
                             } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores[`ejemplo_neutro${index}`])) {
                                 errores[`ejemplo_neutro${index}`] = 'solo puedes escribir palabras'
                             }
 
                             //valores de ejemplo choco
-                            if (!valores[`ejemplo_choco${index}`]) {
+                            if (!dataChoco[index]) {
                                 errores[`ejemplo_choco${index}`] = 'Ejemplo choco necesario*'
                             } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores[`ejemplo_choco${index}`])) {
                                 errores[`ejemplo_choco${index}`] = 'solo puedes escribir palabras'
@@ -284,9 +302,10 @@ const Formulario = () => {
                                                         type='text'
                                                         id={`ejemplo_neutro${index}`}
                                                         name={`ejemplo_neutro${index}`}
-                                                        value={values[`ejemplo_neutro${index}`] || ''}
+                                                        value={dataNeutro[index] || ''}
                                                         placeholder="Escribe un ejemplo neutro"
                                                         className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
+                                                        onChange={(event) => arrEjemNeutro(event.target.value, index)}
                                                     />
                                                     <ErrorMessage name={`ejemplo_neutro${index}`} component={() => (
                                                         <div className='error text-red-600 font-medium'>{errors[`ejemplo_neutro${index}`]}</div>
@@ -299,15 +318,25 @@ const Formulario = () => {
                                                         type='text'
                                                         id={`ejemplo_choco${index}`}
                                                         name={`ejemplo_choco${index}`}
-                                                        value={values[`ejemplo_choco${index}`] || ''}
+                                                        value={dataChoco[index] || ''}
                                                         placeholder="Escribe un ejemplo neutro"
                                                         className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
+                                                        onChange={(event) => arrEjemChoco(event.target.value, index)}
                                                     />
                                                     <ErrorMessage name={`ejemplo_choco${index}`} component={() => (
                                                         <div className='error text-red-600 font-medium'>{errors[`ejemplo_choco${index}`]}</div>
                                                     )} />
                                                 </div>
                                                 <button type="button" className='w-auto my-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={() => {
+
+                                                    const newDataNeutro = [...dataNeutro]; // Copia el arreglo original
+                                                    newDataNeutro.splice(index, 1); // Realiza la modificación en la copia
+                                                    setDataNeutro(newDataNeutro);
+
+                                                    const newDataChoco = [...dataChoco]; // Copia el arreglo original
+                                                    newDataChoco.splice(index, 1); // Realiza la modificación en la copia
+                                                    setDataChoco(newDataChoco);
+
                                                     const newArrTama = [...arrTama]; // Copia el arreglo original
                                                     newArrTama.splice(index, 1); // Realiza la modificación en la copia
                                                     setArrTama(newArrTama);
