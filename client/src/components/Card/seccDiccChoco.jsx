@@ -17,9 +17,9 @@ export default function Card() {
 
         } else {
             const result = datos.filter(element => {
-                const regex = /^(¡¿")?/i;
+                //const regex = /^(¡¿")?/i;
                 // console.log(element.palabra.startsWith(e.target.value.toUpperCase()) ? element.palabra.startsWith(e.target.value.toUpperCase()) : "No hay")    
-                return element.palabra.startsWith(e.target.value.toUpperCase()) || (regex.test(element.palabra) && element.palabra.startsWith(e.target.value.toUpperCase(), 1))
+                return element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase()) || ((element.palabra.startsWith('¡' || '¿' || '"') && element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase(), 1)))
                 //regets
 
             })
@@ -109,7 +109,7 @@ export default function Card() {
                         <p className='py-1 sm:text-lg font-medium text-gray-800'>Visualizar:</p>
                         <select
                             className="block w-auto rounded-md border-0 px-2 py-1 font-medium text-gray-800 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor text-center sm:max-w-xs sm:leading-6"
-                            onClick={filtroLetra}>
+                            onChange={filtroLetra}>
                             <option value='ALL'>Todos</option>
                             <option>A</option>
                             <option>B</option>

@@ -10,10 +10,10 @@ function App() {
        <Routes>
         <Route path='/formulario' element={<FormAdmin></FormAdmin>}>   
         </Route>
-        <Route path='/' element={<Card></Card>}>   
+        <Route path='/' element={<Card></Card>}>  
         </Route>
       </Routes>
-
+      
      
     </>
   )
