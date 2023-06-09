@@ -283,6 +283,16 @@ export const deletePalabra = async (req, res) =>{
     }
 }
 
+export const getCategoriagra = async (req, res) => {
+    
+    try {
+        const arrPalabras = await Categoria.findAll();
+        res.json(arrPalabras);
+    } catch (error) {
+        return res.status(500).json({message: error.message});
+    }
+}
+
 
 
 

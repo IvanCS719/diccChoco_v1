@@ -1,207 +1,337 @@
-import React, {useState} from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
- const Formulario = () => {
-    const [formularioenviado, cambiarformularioenviado] = useState(false);
+const FormField = ({ label, name, placeholder, errors, type = 'text' }) => (
+    <div className='text-left mb-3'>
+        <label htmlFor={name}>{label}</label>
+        <Field
+            type={type}
+            id={name}
+            name={name}
+            placeholder={placeholder}
+            className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
+        />
+        <ErrorMessage name={name} component={() => (
+            <div className='error text-red-600 font-medium'>{errors[name]}</div>
+        )} />
+    </div>
+);
 
-    const handleSubmit = (values) => {
+const Formulario = () => {
+    const [formularioenviado, cambiarformularioenviado] = useState(false);
+    const [dataCategoria, setDataCategoria] = useState([]);
+    const [arrTama, setArrTama] = useState([]);
+
+
+    let newDataNeutro = [];
+    let newDataChoco = [];
+
+    useEffect(() => {
+        if (!dataCategoria.length) {
+            fetch('http://localhost:3000/categoriagra')
+                .then(res => res.json())
+                .then((res) => { setDataCategoria(res) })
+        }
+    }, [dataCategoria])
+
+    const handleSubmit = (values, { resetForm }) => {
+
+        addEjemplos();
+
+        console.log('newDataNeutro:', newDataNeutro);
+        console.log('newDataChoco:', newDataChoco);
+
+        //Convertir los arreglos de ejemplos a una string
+
+        const dataNeutroString = newDataNeutro.join('|');
+        const dataChocoString = newDataChoco.join('|');
+
+
+
+        // Agregar las cadenas de texto al objeto values
+        values.ejemplo_neutro = dataNeutroString;
+        values.ejemplo_choco = dataChocoString;
+
         // Enviar los datos a la ruta del servidor
         fetch('http://localhost:3000/palabras', {
-          method: 'POST',
-          body: JSON.stringify(values),
-          headers: {
-            'Content-Type': 'application/json',
-          },
+            method: 'POST',
+            body: JSON.stringify(values),
+            headers: {
+                'Content-Type': 'application/json',
+            },
         })
-          .then((response) => response.json())
-          .then((data) => {
-            // Hacer algo con la respuesta del servidor
-            console.log(data);
-          })
-          .catch((error) => {
-            // Manejar el error
-            console.error(error);
-          });
-      };
+            .then((response) => response.json())
+            .then((data) => {
+                // Hacer algo con la respuesta del servidor
+                console.log(data);
+                setArrTama([]);
+                newDataNeutro = [];
+                newDataChoco = [];
+                resetForm();
+
+            })
+            .catch((error) => {
+                // Manejar el error
+                console.error(error);
+            });
+
+        cambiarformularioenviado(true)
+    };
+
+    function addEjemplos() {
+
+        arrTama.map((item, index) => {
+            const inputNeutro = document.getElementById(`ejemplo_neutro${index}`).value;
+            const inputChoco = document.getElementById(`ejemplo_choco${index}`).value;
+            newDataNeutro.push(inputNeutro);
+            newDataChoco.push(inputChoco);
+
+
+        })
+
+
+
+    };
+
+    function newEjemplos() {
+        const newDataEjemplo = [...arrTama, 1];
+        setArrTama(newDataEjemplo)
+    };
+
+    function deleteEjemplo(i){
+        arrTama.splice(i, 1);
+    }
     return (
-        <>
-            <Formik
-            //almacena los valores de cada campo
-                initialValues={{
-                    palabra: '',
-                    significado: '',
-                    acepciones: '',
-                    sinonimos: '',
-                    como_se_usa: '',
-                    ejemplo_neutro: '',
-                    ejemplo_choco: '',
-                    id_categoria: 2,
-                    id_tipo: 1,
-                    autorizado: true,
-                    colaborador: 'Mercado Fácil'
-                    
-                }}
-           //validar que los valores escritos dentro del campo, correspondan a lo solicitado en cada tabla
-                validate={ (valores)=> {
-                    let errores = {};
+        <div className='container px-4 lg:px-0 w-screen min-h-screen'>
 
-                    //valores de palabra
-                    if(!valores.palabra){
-                        errores.palabra = 'ingrese una palabra'
-                    } else if(!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.palabra)){
-                        errores.palabra = 'solo puedes escribir palabra y signos de puntuación'
-                    }
+            <>
+                <Formik
+                    //almacena los valores de cada campo
+                    initialValues={{
+                        palabra: '',
+                        significado: '',
+                        acepciones: '',
+                        sinonimos: '',
+                        como_se_usa: '',
+                        titleEjemplo: '',
+                        id_categoria: 0,
+                        id_tipo: 1,
+                        autorizado: true,
+                        colaborador: 'Mercado Fácil'
 
-                    //valores de significado
-                    if(!valores.significado){
-                        errores.significado = 'ingrese una significado'
-                    } else if(!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.significado)){
-                        errores.significado = 'solo puedes escribir palabras'
-                    }
+                    }}
+                    //validar que los valores escritos dentro del campo, correspondan a lo solicitado en cada tabla
+                    validate={(valores) => {
+                        let errores = {};
 
-                    //valores de acepsiones
-                    if(!valores.acepsion){
-                        errores.acepsion = 'ingrese una palabra'
-                    } else if(!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.acepsion)){
-                        errores.acepsion = 'solo puedes escribir palabras'
-                    }
+                        //valores de palabra
+                        if (!valores.palabra) {
+                            errores.palabra = 'Campo obligatorio*'
+                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.palabra)) {
+                            errores.palabra = 'solo puedes escribir palabra y signos de puntuación'
+                        }
 
-                    //valores de sinónimos
-                    if(!valores.sinonimo){
-                        errores.sinonimo = 'ingrese una palabra'
-                    } else if(!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.sinonimo)){
-                        errores.sinonimo = 'solo puedes escribir palabras'
-                    }
+                        //valores de significado
+                        if (!valores.significado) {
+                            errores.significado = 'Campo obligatorio*'
+                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.significado)) {
+                            errores.significado = 'solo puedes escribir palabras'
+                        }
 
-                    //valores de como se usa
-                    if(!valores.comousar){
-                        errores.comousar = 'ingrese una palabra'
-                    } else if(!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.comousar)){
-                        errores.comousar = 'solo puedes escribir palabras'
-                    }
+                        if (valores.id_categoria == 0) {
+                            errores.id_categoria = 'Debe seleccionar una categoría*'
+                        }
 
-                    //valores de ejemplo neutro
-                    if(!valores.ejemploneutro){
-                        errores.ejemploneutro = 'ingrese una palabra'
-                    } else if(!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.ejemploneutro)){
-                        errores.ejemploneutro = 'solo puedes escribir palabras'
-                    }
+                        //valores de acepsiones
+                        /*if (!valores.acepciones) {
+                            errores.acepciones = 'ingrese una palabra'
+                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.acepciones)) {
+                            errores.acepciones = 'solo puedes escribir palabras'
+                        }*/
 
-                    //valores de ejemplo choco
-                    if(!valores.ejemplochoco){
-                        errores.ejemplochoco = 'ingrese una palabra'
-                    } else if(!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.ejemplochoco)){
-                        errores.ejemplochoco = 'solo puedes escribir palabras'
-                    }
+                        //valores de sinónimos
+                        /*if (!valores.sinonimos) {
+                            errores.sinonimos = 'ingrese una palabra'
+                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.sinonimos)) {
+                            errores.sinonimos = 'solo puedes escribir palabras'
+                        }*/
 
-                    return errores; 
-                }} 
-                //para enviar formulario
-                onSubmit={handleSubmit}
-            >  
-                {( {errors} ) => ( 
-                    <Form className='formulario'>
-                        <div>
-                            <label htmlFor='palabra' className='text-black'>Palabra</label>
-                            <Field 
-                                type='text' 
-                                id='palabra' 
-                                name='palabra' 
-                                placeholder='palabras' 
-                            />
-                            <ErrorMessage name='palabra' component={() => (
-                                <div className='error text-red-700'>{errors.palabra}</div>
-                            )} />
-                        </div>
+                        //valores de como se usa
+                        /*if (!valores.como_se_usa) {
+                            errores.como_se_usa = 'Campo obligatorio'
+                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.como_se_usa)) {
+                            errores.como_se_usa = 'solo puedes escribir palabras'
+                        }*/
 
-                        <div>
-                            <label htmlFor='significado'>Significado</label>
-                            <Field 
-                                type='text' 
-                                id='significado' 
-                                name='significado' 
-                                placeholder='significado' 
-                            />
-                            <ErrorMessage name='significado' component={() => (
-                                <div className='error'>{errors.significado}</div>
-                            )} />
-                        </div>
+                        //valores de ejemplo neutro
 
-                        <div>
-                            <label htmlFor='acepsion'>Acepciones</label>
-                            <Field 
-                                type='text' 
-                                id='acepsion' 
-                                name='acepsion' 
-                                placeholder='acepsion' 
-                            />
-                            <ErrorMessage name='acepsion' component={() => (
-                                <div className='error'>{errors.acepsion}</div>
-                            )} />
-                        </div>
+                        if (arrTama.length == 0) {
+                            errores.titleEjemplo = 'Debes agregar un ejemplo*'
+                        }
 
-                        <div>
-                            <label htmlFor='sinonimo'>Sinónimos</label>
-                            <Field 
-                                type='text' 
-                                id='sinonimo' 
-                                name='sinonimo' 
-                                placeholder='sinonimo' 
-                            />
-                            <ErrorMessage name='sinonimo' component={() => (
-                                <div className='error'>{errors.sinonimo}</div>
-                            )} />
-                        </div>
+                        arrTama.map((item, index) => {
+                            if (!valores[`ejemplo_neutro${index}`]) {
+                                errores[`ejemplo_neutro${index}`] = 'Ejemplo neutro necesario*'
+                            } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores[`ejemplo_neutro${index}`])) {
+                                errores[`ejemplo_neutro${index}`] = 'solo puedes escribir palabras'
+                            }
 
-                        <div>
-                            <label htmlFor='comousar'>Como se usa</label>
-                            <Field 
-                                type='text' 
-                                id='comousar' 
-                                name='comousar' 
-                                placeholder='como usar' 
-                            />
-                            <ErrorMessage name='comousar' component={() => (
-                                <div className='error'>{errors.comousar}</div>
-                            )} />
-                        </div>
+                            //valores de ejemplo choco
+                            if (!valores[`ejemplo_choco${index}`]) {
+                                errores[`ejemplo_choco${index}`] = 'Ejemplo choco necesario*'
+                            } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores[`ejemplo_choco${index}`])) {
+                                errores[`ejemplo_choco${index}`] = 'solo puedes escribir palabras'
+                            }
+                        })
 
-                        <div>
-                            <label htmlFor="ejemploneutro">Ejemplo neutro</label>
-                           <Field
-                                as="textarea"
-                                cols="10" rows="3"
-                                id="ejemploneutro"
-                                name="ejemploneutro"
-                                placeholder="Escribe ejemplos separados por una coma"
-                            />
-                            <ErrorMessage name='ejemploneutro' component={() => (
-                                <div className='error'>{errors.ejemploneutro}</div>
-                            )} />
-                        </div>
 
-                        <div>
-                            <label htmlFor="ejemplochoco">Ejemplo choco</label>
-                           <Field
-                                as="textarea"
-                                cols="10" rows="3"
-                                id="ejemplochoco"
-                                name="ejemplochoco"
-                                placeholder="Escribe ejemplos separados por una coma"
-                            />
-                            <ErrorMessage name='ejemplochoco' component={() => (
-                                <div className='error'>{errors.ejemplochoco}</div>
-                            )} />
-                        </div>
-                 
-                        <button type='submit'>Enviar formulario</button>
-                        {formularioenviado && <p className='enviado'>Formulario enviado</p>}
-                    </Form>
-                )}
-            </Formik>
-        </>
+
+                        return errores;
+                    }}
+                    //para enviar formulario
+                    onSubmit={handleSubmit}
+                >
+                    {({ values, errors }) => (
+                        <Form className='w-full p-4 mt-3 rounded-lg shadow-lg'>
+                            <h1 className='mb-4 font-semibold text-3xl'>Agregar Nueva Palabra</h1>
+                            <div className='w-full flex'>
+                                <div className='w-full'>
+                                    <div className='w-full flex justify-around'>
+                                        <FormField
+                                            label="Palabra"
+                                            name="palabra"
+                                            placeholder="Ingrese la palabra"
+                                            errors={errors}
+                                        />
+
+                                        <div className='text-left'>
+                                            <label htmlFor="selectedOption">Categoría Gramatical:</label>
+                                            <Field as="select" name="id_categoria" id="id_categoria"
+                                                className="block w-64 rounded-md border-0 px-2 py-2 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor sm:max-w-xs sm:leading-6">
+                                                <option value="">Selecciona una categoría</option>
+                                                {dataCategoria.map((e) => (
+                                                    <option key={e.id} value={e.id}>
+                                                        {e.categoria}
+                                                    </option>
+                                                ))}
+                                            </Field>
+                                            <ErrorMessage name='id_categoria' component={() => (
+                                                <div className='error text-red-600 font-medium'>{errors.id_categoria}</div>
+                                            )} />
+                                        </div>
+                                    </div>
+                                    <div className='w-full flex justify-around'>
+                                        <FormField
+                                            label="Significado"
+                                            name="significado"
+                                            placeholder="Significado de la palabra"
+                                            errors={errors}
+                                        />
+
+                                        <FormField
+                                            label="Sinónimos"
+                                            name="sinonimos"
+                                            placeholder="Sinónimos de la palabra"
+                                        // errors={errors}
+                                        />
+
+
+                                    </div>
+
+
+                                    <div className='w-full flex justify-around'>
+                                        <FormField
+                                            label="Acepciones"
+                                            name="acepciones"
+                                            placeholder="Acepciones de la palabra"
+                                        // errors={errors}
+                                        />
+
+                                        <FormField
+                                            label="¿Cómo se usa?"
+                                            name="como_se_usa"
+                                            placeholder="¿Cómo se usa?"
+                                        // errors={errors}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className='w-full'>
+                                    <div className='w-full flex justify-around content-end'>
+                                        <div className='text-left'>
+                                            <label htmlFor='titleEjemplo'>Ejemplos {`${arrTama.length}`}</label>
+                                            <Field
+                                                type='text'
+                                                id='titleEjemplo'
+                                                name='titleEjemplo'
+                                                placeholder='acepsion'
+                                                hidden
+                                            />
+                                            <ErrorMessage name="titleEjemplo" component={() => (
+                                                <div className='error text-red-600 font-medium'>{errors.titleEjemplo}</div>
+                                            )} />
+                                        </div>
+                                        <button type="button" className='w-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={newEjemplos}>Nuevo Ejemplo</button>
+                                    </div>
+
+                                    <div className='w-full max-h-52 overflow-auto mb-2'>
+                                        {arrTama.map((item, index) => (
+                                            <div key={index} className='w-full flex justify-around content-end'>
+                                                <div className='text-left mb-3'>
+                                                    <label htmlFor={`ejemplo_neutro${index}`}>{`${index + 1}- Ejemplo Neutro`}</label>
+                                                    <Field
+                                                        type='text'
+                                                        id={`ejemplo_neutro${index}`}
+                                                        name={`ejemplo_neutro${index}`}
+                                                        value={values[`ejemplo_neutro${index}`] || ''}
+                                                        placeholder="Escribe un ejemplo neutro"
+                                                        className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
+                                                    />
+                                                    <ErrorMessage name={`ejemplo_neutro${index}`} component={() => (
+                                                        <div className='error text-red-600 font-medium'>{errors[`ejemplo_neutro${index}`]}</div>
+                                                    )} />
+                                                </div>
+
+                                                <div className='text-left mb-3'>
+                                                    <label htmlFor={`ejemplo_choco${index}`}>{`${index + 1}- Ejemplo Choco`}</label>
+                                                    <Field
+                                                        type='text'
+                                                        id={`ejemplo_choco${index}`}
+                                                        name={`ejemplo_choco${index}`}
+                                                        value={values[`ejemplo_choco${index}`] || ''}
+                                                        placeholder="Escribe un ejemplo neutro"
+                                                        className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
+                                                    />
+                                                    <ErrorMessage name={`ejemplo_choco${index}`} component={() => (
+                                                        <div className='error text-red-600 font-medium'>{errors[`ejemplo_choco${index}`]}</div>
+                                                    )} />
+                                                </div>
+                                                <button type="button" className='w-auto my-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={() => {
+                                                    const newArrTama = [...arrTama]; // Copia el arreglo original
+                                                    newArrTama.splice(index, 1); // Realiza la modificación en la copia
+                                                    setArrTama(newArrTama);
+                                                }}><i className="fa-solid fa-trash"></i></button>
+                                            </div>
+                                        ))}
+
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
+
+                            <button type='submit' className='w-auto rounded-md mt-2 bg-mfColor px-3 py-2 text-white shadow-md font-medium'>Agregar Palabra</button>
+                            {formularioenviado ? <p className='enviado'>Formulario enviado</p> : null}
+                        </Form>
+                    )}
+                </Formik>
+
+            </>
+        </div>
     );
 }
- 
+
 export default Formulario;
