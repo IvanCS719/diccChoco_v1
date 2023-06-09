@@ -194,7 +194,7 @@ const Formulario = () => {
                 >
                     {({ values, errors }) => (
                         <Form className='w-full p-4 mt-3 rounded-lg shadow-lg'>
-                            <h1 className='mb-4 font-semibold text-3xl'>Agregar Nueva Palabra</h1>
+                            <h1 className='mb-4 font-semibold text-zinc-800 text-3xl'>Agregar Nueva Palabra</h1>
                             <div className='w-full flex'>
                                 <div className='w-full'>
                                     <div className='w-full flex justify-around'>
