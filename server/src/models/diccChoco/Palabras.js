@@ -1,8 +1,9 @@
 import {DataTypes} from 'sequelize';
 import {sequelize} from '../../database/database.js';
-import { Multimedia } from '../../models/diccChoco/Multimedia.js';
+//import { Multimedia } from '../../models/diccChoco/Multimedia.js';
 import { Ejemplos } from '../../models/diccChoco/Ejemplos.js';
-import { Region } from '../../models/diccChoco/Region.js';
+import { Ingle } from '../../models/diccChoco/Ingle.js';
+//import { Region } from '../../models/diccChoco/Region.js';
 import { Tipo } from '../../models/diccChoco/Tipo.js';
 import { Categoria } from '../../models/diccChoco/Categoria.js';
 import { Colaborador } from '../../models/diccChoco/Colaborador.js';
@@ -50,7 +51,18 @@ Ejemplos.belongsTo(Palabras,{
     targetId: 'id'
 });
 
+//Relación con Ingles
+Palabras.hasOne(Ingle,{
+    foreignKey: 'id_palabrasIng',
+    sourceKey: 'id'
+});
 
+Ingle.belongsTo(Palabras,{
+    foreignKey: 'id_palabrasIng',
+    targetId: 'id'
+});
+
+/*
 //Relación con Region
 Region.hasMany(Palabras,{
     foreignKey: 'id_region',
@@ -60,7 +72,7 @@ Region.hasMany(Palabras,{
 Palabras.belongsTo(Region,{
     foreignKey: 'id_region',
     targetId: 'id'
-});
+});*/
 
 
 //Relación con Categoria
@@ -96,7 +108,7 @@ Colaborador.belongsTo(Palabras,{
     foreignKey: 'id_palabras',
     targetId: 'id'
 });
-
+/*
 //Relación con Multimedia
 Palabras.hasOne(Multimedia,{
     foreignKey: 'id_palabras',
@@ -106,4 +118,4 @@ Palabras.hasOne(Multimedia,{
 Multimedia.belongsTo(Palabras,{
     foreignKey: 'id_palabras',
     targetId: 'id'
-});
+});*/

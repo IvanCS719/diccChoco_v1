@@ -1,4 +1,4 @@
-import {DataTypes} from 'sequelize';
+/*import {DataTypes} from 'sequelize';
 import {sequelize} from '../../database/database.js';
 //import { Palabras } from './Palabras.js';
 
@@ -17,3 +17,4 @@ export const Multimedia = sequelize.define('Multimedia', {
         defaultValue: "palabraChoco.jpg"
     },
 }, { timestamps: false });
+*/

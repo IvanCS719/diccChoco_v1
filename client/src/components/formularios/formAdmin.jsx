@@ -26,8 +26,8 @@ const Formulario = () => {
     const [dataChoco, setDataChoco] = useState([]);
 
 
-    let newDataNeutro = [];
-    let newDataChoco = [];
+    //let newDataNeutro = [];
+    //let newDataChoco = [];
 
 
     useEffect(() => {
@@ -40,15 +40,15 @@ const Formulario = () => {
 
     const handleSubmit = (values, { resetForm }) => {
 
-        addEjemplos();
+        //addEjemplos();
 
-        console.log('newDataNeutro:', newDataNeutro);
-        console.log('newDataChoco:', newDataChoco);
+        console.log('newDataNeutro:', dataNeutro);
+        console.log('newDataChoco:', dataChoco);
 
         //Convertir los arreglos de ejemplos a una string
 
-        const dataNeutroString = newDataNeutro.join('|');
-        const dataChocoString = newDataChoco.join('|');
+        const dataNeutroString = dataNeutro.join('|');
+        const dataChocoString = dataChoco.join('|');
 
 
 
@@ -69,8 +69,8 @@ const Formulario = () => {
                 // Hacer algo con la respuesta del servidor
                 console.log(data);
                 setArrTama([]);
-                newDataNeutro = [];
-                newDataChoco = [];
+                setDataNeutro([]);
+                setDataChoco([]);
                 resetForm();
 
             })
@@ -82,7 +82,7 @@ const Formulario = () => {
         cambiarformularioenviado(true)
     };
 
-    function addEjemplos() {
+    /*function addEjemplos() {
         console.log(dataNeutro)
 
         arrTama.map((item, index) => {
@@ -96,7 +96,7 @@ const Formulario = () => {
 
 
 
-    };
+    };*/
 
     function newEjemplos() {
 

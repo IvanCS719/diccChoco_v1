@@ -1,22 +1,32 @@
 import { useState } from 'react'
-export default function Cards({ /*imagen, categoria*/ palabra, significado, sinonimos,categoria ,acepciones, comoSeUsa,
-    ejemploNeutro, ejemploChoco }) {
+export default function Cards({ /*imagen, categoria*/ palabra, significado, sinonimos, categoria, acepciones, comoSeUsa,
+    ejemploNeutro, ejemploChoco, ejemploneutroingles, ejemplochocoingles, significadoIng, acepcionesIng, sinonimosIng, como_se_usa_Ing}) {
     let [activeDiv, setActiveDiv] = useState(false)
 
     const arrNeutro = ejemploNeutro.split("|");
     const arrChoco = ejemploChoco.split("|");
+    const arrNeutroIng = ejemploneutroingles ? ejemploneutroingles.split("|"): "";
+    const arrChocoIng = ejemplochocoingles ? ejemplochocoingles.split("|") : "";
 
     const renderEjemplos = () => {
         const ejemplos = [];
-    
         for (let i = 0; i < arrNeutro.length; i++) {
           ejemplos.push(
             <p className="text-left mb-2" key={i}><span className='font-semibold'>{i+1}-</span> {arrNeutro[i]} / {arrChoco[i]}</p>
           );
         }
-    
         return ejemplos;
       };
+
+    const renderEjemplosIng = () => {
+        const ejemplos = [];
+        for (let i = 0; i < arrNeutroIng.length; i++) {
+          ejemplos.push(
+            <p className="text-left mb-2" key={i}><span className='font-semibold'>{i+1}-</span> {arrNeutroIng[i]} / {arrChocoIng[i]}</p>
+          );
+        }
+        return ejemplos;
+    };
 
     const handleButtonClick = (divId) => {
         setActiveDiv(divId);
@@ -49,7 +59,58 @@ export default function Cards({ /*imagen, categoria*/ palabra, significado, sino
                     <p className='font-bold text-white'>¿Comó se usa?</p>
                     <p className="">{comoSeUsa}</p>
                 </div>;
-            default:
+            case 4:
+                return <div>
+                    <div>
+                        <p className="text-3xl font-bold" style={{ color: "#ffffff" }}>{palabra}</p>
+                        <p className="cardPalabras-lugar"><span>(</span>{categoria}<span>)</span></p>
+                    </div>
+                        <p className='font-bold text-mfColor'style={{ color: "#ffffff" }}>Meaning</p>
+                        <div className='overflow-auto h-10 w-full'>
+                        <p className="">{significadoIng}</p>
+                        
+                    </div>
+                        <p className='font-bold text-mfColor'style={{ color: "#ffffff" }}>Synonym</p>
+                        <p className="overflow-auto h-8 w-full">{sinonimosIng}</p>
+                    
+                    <div className='container flex gap-3 justify-center'>
+                        <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='Meanings' onClick={() => handleButtonClick(5)}><i className="fa-solid fa-book-open"></i></button>
+                        <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='Examples' onClick={() => handleButtonClick(6)}><i className="fa-solid fa-lightbulb"></i></button>
+                        <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='How can I use It?' onClick={() => handleButtonClick(7)}><i className="fa-solid fa-circle-question"></i></button>
+                    </div>
+                </div>;
+
+                case 5:
+                    return <div>
+                        <p className="text-2xl font-bold text-white">{palabra}</p>
+                        <div className='my-3'>
+                        <p className='font-bold text-white'>Meanings</p>
+                        <p className="">{acepcionesIng}</p>
+                        </div>
+                        <button className="rounded-md w-auto shadow-sm px-3 py-2 text-white font-semibold" title='Regresar a la palabra en Inglés' onClick={() => handleButtonClick(4)}>Palabra traducida <i className="fa-solid fa-rotate-left"></i></button>
+                    </div>;
+                case 6:
+                    return <div>
+                        <p className="text-2xl font-bold text-white">{palabra}</p>
+                        <p className='font-bold text-white mb-1'>Neutral Example / Choco Example</p>
+                        <div className='my-3'>
+                        {renderEjemplosIng()} 
+                        </div>
+                        <button className="rounded-md w-auto shadow-sm px-3 py-2 text-white font-semibold" title='Regresar a la palabra en Inglés' onClick={() => handleButtonClick(4)}>Palabra traducida <i className="fa-solid fa-rotate-left"></i></button>
+                    </div>;
+
+                case 7:
+                    return <div>
+                        <p className="text-2xl font-bold text-white">{palabra}</p>
+                        <div className='my-3'>
+                        <p className='font-bold text-white'>How can I use It?</p>
+                        <p className="">{como_se_usa_Ing}</p>
+                        </div>
+                        <button className="rounded-md w-auto shadow-sm px-3 py-2 text-white font-semibold" title='Regresar a la palabra en Inglés' onClick={() => handleButtonClick(4)}>Palabra traducida <i className="fa-solid fa-rotate-left"></i></button>
+                    </div>;
+                
+
+                default:
                 return null;
         }
     };
@@ -82,7 +143,8 @@ export default function Cards({ /*imagen, categoria*/ palabra, significado, sino
                         <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='Ejemplos' onClick={() => handleButtonClick(2)}><i className="fa-solid fa-lightbulb"></i></button>
 
                         <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='¿Comó se usa?' onClick={() => handleButtonClick(3)}><i className="fa-solid fa-circle-question"></i></button>
-
+                        <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='Inglés' onClick={() => handleButtonClick(4)}><i className="fa-solid fa-flag-usa"></i></button>
+                    
                     </div>
                 </div>
 
