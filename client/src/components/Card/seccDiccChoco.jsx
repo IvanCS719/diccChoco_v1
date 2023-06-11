@@ -90,7 +90,7 @@ export default function Card() {
     const allWords = newFilter.length > 0 ? newFilter.length : datos.length
 
     return (
-        <div className='container px-4 lg:px-0 w-screen min-h-screen'>
+        <div className='container px-4 lg:px-0 min-h-screen'>
 
             <h2 id='sectionId' className='text-3xl font-bold text-mfColor mb-5'>Palabras del Choco</h2>
             <div className='xl:mx-4 mb-6 w-auto flex flex-col gap-2'>

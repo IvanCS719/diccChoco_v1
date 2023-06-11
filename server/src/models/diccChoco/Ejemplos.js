@@ -18,10 +18,12 @@ export const Ejemplos = sequelize.define('Ejemplos', {
     },
     ejemplo_neutro_ingles:{
         type: DataTypes.TEXT,
+        defaultValue: 'No translation yet',
         allowNull: true
     },
     ejemplo_choco_ingles:{
         type: DataTypes.TEXT,
+        defaultValue: 'No translation yet',
         allowNull: true
     },
 }, { timestamps: false });

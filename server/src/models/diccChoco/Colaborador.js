@@ -14,6 +14,7 @@ export const Colaborador = sequelize.define('Colaborador', {
     },
     correo_electronico:{
         type: DataTypes.STRING,
+        defaultValue: 'Anónimo',
         allowNull: true
     }
 }, { timestamps: false });

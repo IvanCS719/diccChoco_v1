@@ -19,7 +19,7 @@ const FormField = ({ label, name, placeholder, errors, type = 'text' }) => (
 );
 
 const Formulario = () => {
-    const [formularioenviado, cambiarformularioenviado] = useState(false);
+   // const [formularioenviado, cambiarformularioenviado] = useState(false);
     const [dataCategoria, setDataCategoria] = useState([]);
     const [arrTama, setArrTama] = useState([]);
     const [dataNeutro, setDataNeutro] = useState([]);
@@ -52,8 +52,8 @@ const Formulario = () => {
             const dataNeutroString = dataNeutro.join('|');
             const dataChocoString = dataChoco.join('|');
 
-            const dataNeutroIngString = dataNeutroIng ? dataNeutroIng.join('|') : "";
-            const dataChocoIngString = dataChocoIng ? dataChocoIng.join('|') : "";
+            const dataNeutroIngString = dataNeutroIng.length ? dataNeutroIng.join('|') : 'No translation yet';
+            const dataChocoIngString = dataChocoIng.length ? dataChocoIng.join('|') : 'No translation yet';
 
 
 
@@ -62,6 +62,13 @@ const Formulario = () => {
             values.ejemplo_choco = dataChocoString;
             values.ejemplo_neutro_ingles = dataNeutroIngString;
             values.ejemplo_choco_ingles = dataChocoIngString;
+            //values.significado = values.significado ? values.significado : 'No Aplica';
+            values.acepciones = values.acepciones ? values.acepciones: 'No Aplica';
+            values.sinonimos = values.sinonimos ? values.sinonimos : 'No Aplica';
+            values.significadoIng = values.significadoIng ? values.significadoIng : 'No translation yet';
+            values.acepcionesIng = values.acepcionesIng ? values.acepcionesIng : 'No translation yet';
+            values.sinonimosIng = values.sinonimosIng ? values.sinonimosIng : 'No translation yet';
+            values.como_se_usa_Ing = values.como_se_usa_Ing ? values.como_se_usa_Ing : 'No translation yet';
 
             // Enviar los datos a la ruta del servidor
             fetch('http://localhost:3000/palabras', {
@@ -159,8 +166,9 @@ const Formulario = () => {
     };
 
     return (
-        <div className='container px-4 lg:px-0 w-screen min-h-screen'>
+        <div className='container px-4 lg:px-0 min-h-screen'>
 
+            <p className='mb-4 mt-3 font-semibold text-mfColor text-3xl'>Administrador del Diccionario Choco</p>
             <>
                 <Formik
                     //almacena los valores de cada campo
@@ -180,7 +188,8 @@ const Formulario = () => {
                         id_categoria: 0,
                         id_tipo: 1,
                         autorizado: true,
-                        colaborador: 'Mercado Fácil'
+                        colaborador: 'Mercado Fácil',
+                        correo_electronico:''
 
                     }}
                     //validar que los valores escritos dentro del campo, correspondan a lo solicitado en cada tabla
@@ -216,11 +225,10 @@ const Formulario = () => {
                         }*/
 
                         //valores de como se usa
-                        /*if (!valores.como_se_usa) {
-                            errores.como_se_usa = 'Campo obligatorio'
-                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.como_se_usa)) {
-                            errores.como_se_usa = 'solo puedes escribir palabras'
-                        }*/
+                        if (!valores.como_se_usa) {
+                            errores.como_se_usa = 'Campo obligatorio*'
+                        } 
+                        
 
                         //valores de ejemplo neutro
 
@@ -246,7 +254,7 @@ const Formulario = () => {
                     onSubmit={handleSubmit}
                 >
                     {({ values, errors }) => (
-                        <Form className='w-full p-4 mt-3 rounded-lg shadow-lg'>
+                        <Form className='w-full p-4 mt-3 bg-white rounded-2xl shadow-mfBoxShadow'>
                             <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Agregar Nueva Palabra</h2>
                             <div className='w-full flex'>
                                 <div className='w-full'>
@@ -305,7 +313,7 @@ const Formulario = () => {
                                             label="¿Cómo se usa?:"
                                             name="como_se_usa"
                                             placeholder="¿Cómo se usa?"
-                                        // errors={errors}
+                                            errors={errors}
                                         />
                                     </div>
                                 </div>
@@ -532,13 +540,13 @@ const Formulario = () => {
 
                             <button type='submit' className='w-auto rounded-md mt-2 bg-mfColor px-3 py-2 text-white shadow-md font-medium'>Agregar Palabra</button>
                             <div
-                                className={`fixed inset-0 flex items-center justify-center transition-all duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                                className={`fixed inset-0 flex items-center justify-center transition-all duration-200 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
                                     }`}
                             >
-                                <div className="bg-white w-80 py-3 px-3 rounded-lg shadow-mfBoxShadow border-solid border-2 border-mfColor">
-                                    <p className="text-2xl text-gray-800 font-bold mb-3">Palabra Agregada</p>
-                                    <p className='text-7xl mb-2 text-green-600'><i className="fa-regular fa-circle-check"></i></p>
-                                    <p className="text-base text-gray-700 font-medium mb-4">La palabra se ha agregado exitosamente al diccionario.</p>
+                                <div className="bg-white w-80 lg:w-auto p-5 rounded-xl shadow-mfBoxShadow border">
+                                    <p className="text-2xl text-gray-800 font-bold mb-3">¡Palabra Agregada!</p>
+                                    <p className='text-8xl mb-2 text-green-600'><i className="fa-regular fa-circle-check"></i></p>
+                                    <p className="text-lg text-gray-700 font-medium mb-4">La palabra se ha agregado exitosamente al diccionario<br/>choco.</p>
                                     <button type="button" className='w-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={closeModal}>Aceptar</button>
                                 </div>
                             </div>
