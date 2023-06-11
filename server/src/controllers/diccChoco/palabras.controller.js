@@ -15,6 +15,9 @@ export const getPalabras = async (req, res) => {
     
     try {
         const arrPalabras = await Palabras.findAll({
+            where:{
+                autorizado: true,
+            },
             attributes: ['id','palabra',
             'significado',
             'acepciones',
@@ -317,6 +320,43 @@ export const getCategoriagra = async (req, res) => {
     
     try {
         const arrPalabras = await Categoria.findAll();
+        res.json(arrPalabras);
+    } catch (error) {
+        return res.status(500).json({message: error.message});
+    }
+}
+
+export const getAllPalabras = async (req, res) => {
+    
+    try {
+        const arrPalabras = await Palabras.findAll({ 
+            attributes: ['id','palabra',
+            'significado',
+            'acepciones',
+            'sinonimos',
+            'como_se_usa'],
+            include: [
+                  {
+                    model: Ejemplos,
+                    required: true, // Utilizar INNER JOIN
+                  },
+                  {
+                    model: Ingle,
+                    required: true, // Utilizar INNER JOIN
+                  },
+                  {
+                    model: Colaborador,
+                    required: true, // Utilizar INNER JOIN
+                  },
+                  {
+                    model: Categoria,
+                    required: true, // Utilizar INNER JOIN
+                  }, {
+                    model: Tipo,
+                    required: true, // Utilizar INNER JOIN
+                  },
+              ],
+        });
         res.json(arrPalabras);
     } catch (error) {
         return res.status(500).json({message: error.message});
