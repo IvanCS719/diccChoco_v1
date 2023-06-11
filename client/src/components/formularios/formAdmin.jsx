@@ -26,7 +26,7 @@ const Formulario = () => {
     const [dataNeutroIng, setDataNeutroIng] = useState([]);
     const [dataChocoIng, setDataChocoIng] = useState([]);
     const [dataChoco, setDataChoco] = useState([]);
-
+    const [isOpen, setIsOpen] = useState(false);
 
     //let newDataNeutro = [];
     //let newDataChoco = [];
@@ -52,8 +52,8 @@ const Formulario = () => {
         const dataNeutroString = dataNeutro.join('|');
         const dataChocoString = dataChoco.join('|');
 
-        const dataNeutroIngString = dataNeutroIng ? dataNeutroIng.join('|'): "";
-        const dataChocoIngString = dataChocoIng ? dataChocoIng.join('|'): "";
+        const dataNeutroIngString = dataNeutroIng ? dataNeutroIng.join('|') : "";
+        const dataChocoIngString = dataChocoIng ? dataChocoIng.join('|') : "";
 
 
 
@@ -86,7 +86,7 @@ const Formulario = () => {
                 console.error(error);
             });
 
-        cambiarformularioenviado(true)
+        setIsOpen(true);
     };
 
     /*function addEjemplos() {
@@ -111,42 +111,48 @@ const Formulario = () => {
         setArrTama(newDataEjemplo)
     };
 
-    function arrEjemNeutro(v,i) {
+    function arrEjemNeutro(v, i) {
         const newDataNeutro = [...dataNeutro]
 
         newDataNeutro[i] = v
 
         setDataNeutro(newDataNeutro)
 
-        
+
     }
 
-    function arrEjemNeutroIng(v,i) {
+    function arrEjemNeutroIng(v, i) {
         const newDataNeutroIng = [...dataNeutroIng]
 
         newDataNeutroIng[i] = v
 
         setDataNeutroIng(newDataNeutroIng)
 
-        
+
     }
 
-    function arrEjemChoco(v,i) {
+    function arrEjemChoco(v, i) {
         const newDataChoco = [...dataChoco]
         newDataChoco[i] = v
         setDataChoco(newDataChoco)
-        
+
     }
 
-    function arrEjemChocoIng(v,i) {
+    function arrEjemChocoIng(v, i) {
         const newDataChocoIng = [...dataChocoIng]
 
         newDataChocoIng[i] = v
 
         setDataChocoIng(newDataChocoIng)
 
-        
+
     }
+
+    const closeModal = () => {
+        setIsOpen(false);
+        //onClose();
+    };
+
     return (
         <div className='container px-4 lg:px-0 w-screen min-h-screen'>
 
@@ -156,14 +162,16 @@ const Formulario = () => {
                     initialValues={{
                         palabra: '',
                         significado: '',
-                        significadoIng:'',
+                        significadoIng: '',
                         acepciones: '',
-                        acepcionesIng:'',
+                        acepcionesIng: '',
                         sinonimos: '',
-                        sinonimosIng:'',
+                        sinonimosIng: '',
                         como_se_usa: '',
-                        como_se_usa_Ing:'',
+                        como_se_usa_Ing: '',
                         titleEjemplo: '',
+                        EjemploChoco: '',
+                        EjemploNeutror: '',
                         id_categoria: 0,
                         id_tipo: 1,
                         autorizado: true,
@@ -177,12 +185,12 @@ const Formulario = () => {
                         //valores de palabra
                         if (!valores.palabra) {
                             errores.palabra = 'Campo obligatorio*'
-                        } 
+                        }
 
                         //valores de significado
                         if (!valores.significado) {
                             errores.significado = 'Campo obligatorio*'
-                        } 
+                        }
 
                         if (valores.id_categoria == 0) {
                             errores.id_categoria = 'Debe seleccionar una categoría*'
@@ -212,17 +220,17 @@ const Formulario = () => {
                         //valores de ejemplo neutro
 
                         if (arrTama.length == 0) {
-                            errores.titleEjemplo = 'Debes agregar un ejemplo*'
+                            errores.titleEjemplo = 'Debe agregar almenos un ejemplo*'
                         }
 
                         arrTama.map((item, index) => {
                             if (!dataNeutro[index]) {
-                                errores[`ejemplo_neutro${index}`] = 'Ejemplo neutro necesario*'
-                            } 
+                                errores.titleEjemplo = 'Ejemplo neutro necesario*'
+                            }
                             //valores de ejemplo choco
                             if (!dataChoco[index]) {
-                                errores[`ejemplo_choco${index}`] = 'Ejemplo choco necesario*'
-                            } 
+                                errores.EjemploChoco = 'Ejemplo choco necesario*'
+                            }
                         })
 
 
@@ -298,19 +306,25 @@ const Formulario = () => {
                                 </div>
 
                                 <div className='w-full'>
-                                    <div className='w-full flex justify-around content-end'>
+                                    <div className='w-full flex justify-between px-2'>
                                         <div className='text-left'>
-                                            <label htmlFor='titleEjemplo'>Ejemplos {`${arrTama.length}`}</label>
+                                            <label htmlFor='titleEjemplo'>Ejemplos Agregados: <span className='font-bold'>{`${arrTama.length}`}</span></label>
                                             <Field
                                                 type='text'
                                                 id='titleEjemplo'
                                                 name='titleEjemplo'
                                                 placeholder='acepsion'
                                                 hidden
+                                                className='hidden'
                                             />
                                             <ErrorMessage name="titleEjemplo" component={() => (
                                                 <div className='error text-red-600 font-medium'>{errors.titleEjemplo}</div>
                                             )} />
+
+                                            <ErrorMessage name="EjemploChoco" component={() => (
+                                                <div className='error text-red-600 font-medium'>{errors.EjemploChoco}</div>
+                                            )} />
+
                                         </div>
                                         <button type="button" className='w-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={newEjemplos}>Nuevo Ejemplo</button>
                                     </div>
@@ -325,7 +339,7 @@ const Formulario = () => {
                                                         id={`ejemplo_neutro${index}`}
                                                         name={`ejemplo_neutro${index}`}
                                                         value={dataNeutro[index] || ''}
-                                                        placeholder="Escribe un ejemplo neutro"
+                                                        placeholder="Escribe el ejemplo neutro"
                                                         className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                         onChange={(event) => arrEjemNeutro(event.target.value, index)}
                                                     />
@@ -341,7 +355,7 @@ const Formulario = () => {
                                                         id={`ejemplo_choco${index}`}
                                                         name={`ejemplo_choco${index}`}
                                                         value={dataChoco[index] || ''}
-                                                        placeholder="Escribe un ejemplo neutro"
+                                                        placeholder="Escribe el ejemplo choco"
                                                         className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                         onChange={(event) => arrEjemChoco(event.target.value, index)}
                                                     />
@@ -381,7 +395,7 @@ const Formulario = () => {
 
                                 </div>
                             </div>
-                            <hr className='border-solid border-2 border-gray-200 my-2'/>
+                            <hr className='border-solid border-2 border-gray-200 my-2' />
 
                             <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Traducir A Inglés</h2>
                             <div className='w-full flex'>
@@ -415,7 +429,7 @@ const Formulario = () => {
                                             label="Significado"
                                             name="significadoIng"
                                             placeholder="Significado de la palabra"
-                                           //errors={errors}
+                                        //errors={errors}
                                         />
 
                                         <FormField
@@ -449,7 +463,7 @@ const Formulario = () => {
                                 <div className='w-full'>
                                     <div className='w-full flex justify-around content-end'>
                                         <div className='text-left'>
-                                            <label htmlFor='titleEjemplo'>Ejemplos {`${arrTama.length}`}</label>
+                                            <label htmlFor='titleEjemplo'>Ejemplos Agregados: <span className='font-bold'>{`${arrTama.length}`}</span></label>
                                             <Field
                                                 type='text'
                                                 id='titleEjemplo'
@@ -459,7 +473,7 @@ const Formulario = () => {
                                             />
 
                                         </div>
-                                    
+
                                     </div>
 
                                     <div className='w-full max-h-52 overflow-auto mb-2'>
@@ -472,7 +486,7 @@ const Formulario = () => {
                                                         id={`ejemplo_neutro${index}`}
                                                         name={`ejemplo_neutro${index}`}
                                                         value={dataNeutroIng[index] || ''}
-                                                        placeholder="Escribe un ejemplo neutro"
+                                                        placeholder="Traducir ejemplo neutro"
                                                         className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                         onChange={(event) => arrEjemNeutroIng(event.target.value, index)}
                                                     />
@@ -488,7 +502,7 @@ const Formulario = () => {
                                                         id={`ejemplo_choco${index}`}
                                                         name={`ejemplo_choco${index}`}
                                                         value={dataChocoIng[index] || ''}
-                                                        placeholder="Escribe un ejemplo neutro"
+                                                        placeholder="Traducir ejemplo choco"
                                                         className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                         onChange={(event) => arrEjemChocoIng(event.target.value, index)}
                                                     />
@@ -508,7 +522,17 @@ const Formulario = () => {
                             </div>
 
                             <button type='submit' className='w-auto rounded-md mt-2 bg-mfColor px-3 py-2 text-white shadow-md font-medium'>Agregar Palabra</button>
-                            {formularioenviado ? <p className='enviado'>Formulario enviado</p> : null}
+                            <div
+                                className={`fixed inset-0 flex items-center justify-center transition-all duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                                    }`}
+                            >
+                                <div className="bg-white w-80 py-3 px-3 rounded-lg shadow-mfBoxShadow border-solid border-2 border-mfColor">
+                                    <p className="text-2xl text-gray-800 font-bold mb-2">Palabra Agregada</p>
+                                    <p className='text-6xl mb-2 text-green-600'><i className="fa-regular fa-circle-check"></i></p>
+                                    <p className="text-base text-gray-700 font-medium mb-4">La palabra se ha agregado exitosamente al diccionario.</p>
+                                    <button type="button" className='w-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={closeModal}>Aceptar</button>
+                                </div>
+                            </div>
                         </Form>
                     )}
                 </Formik>
