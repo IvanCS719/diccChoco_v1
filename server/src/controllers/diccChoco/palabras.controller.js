@@ -1,9 +1,10 @@
 import { Categoria } from "../../models/diccChoco/Categoria.js";
 import { Colaborador } from "../../models/diccChoco/Colaborador.js";
 import { Palabras } from "../../models/diccChoco/Palabras.js";
-import { Region } from "../../models/diccChoco/Region.js";
+import { Ingle } from "../../models/diccChoco/Ingle.js";
+//import { Region } from "../../models/diccChoco/Region.js";
 import { Tipo } from "../../models/diccChoco/Tipo.js";
-import { Multimedia } from "../../models/diccChoco/Multimedia.js";
+//import { Multimedia } from "../../models/diccChoco/Multimedia.js";
 import { Ejemplos } from "../../models/diccChoco/Ejemplos.js";
 import { Op } from "sequelize";
 
@@ -20,28 +21,25 @@ export const getPalabras = async (req, res) => {
             'sinonimos',
             'como_se_usa'],
             include: [
-                /*{
-                    model: Multimedia,
-                    required: true, // Utilizar INNER JOIN
-                  },*/
                   {
                     model: Ejemplos,
                     required: true, // Utilizar INNER JOIN
                   },
-                  /*{
+                  {
+                    model: Ingle,
+                    required: true, // Utilizar INNER JOIN
+                  },
+                  {
                     model: Colaborador,
                     required: true, // Utilizar INNER JOIN
-                  },*/
-                  /*{
-                  model: Region,
-                  required: true, // Utilizar INNER JOIN
-                },*/{
+                  },
+                  {
                     model: Categoria,
                     required: true, // Utilizar INNER JOIN
-                  }/*, {
+                  }, {
                     model: Tipo,
                     required: true, // Utilizar INNER JOIN
-                  },*/
+                  },
               ],
         });
         res.json(arrPalabras);
@@ -58,7 +56,6 @@ export const getPalabra = async (req, res) => {
         const Palabra = await Palabras.findOne({
             where:{
                 id: id,
-
             },
 
             attributes: ['id','palabra',
@@ -67,12 +64,12 @@ export const getPalabra = async (req, res) => {
             'sinonimos',
             'como_se_usa'],
             include: [
-                {
-                    model: Multimedia,
+                  {
+                    model: Ejemplos,
                     required: true, // Utilizar INNER JOIN
                   },
                   {
-                    model: Ejemplos,
+                    model: Ingle,
                     required: true, // Utilizar INNER JOIN
                   },
                   {
@@ -80,9 +77,6 @@ export const getPalabra = async (req, res) => {
                     required: true, // Utilizar INNER JOIN
                   },
                   {
-                  model: Region,
-                  required: true, // Utilizar INNER JOIN
-                },{
                     model: Categoria,
                     required: true, // Utilizar INNER JOIN
                   }, {
@@ -103,19 +97,23 @@ export const createPalabra = async (req, res) => {
    try {
     const { palabra,
         significado,
+        significadoIng,
         acepciones,
+        acepcionesIng,
         sinonimos,
+        sinonimosIng,
         como_se_usa,
+        como_se_usa_Ing,
         autorizado,
-        url_sonido,
-        url_imagen,
         ejemplo_neutro,
         ejemplo_choco,
+        ejemplo_neutro_ingles,
+        ejemplo_choco_ingles,
         colaborador,
         correo_electronico,
         id_categoria,
-        id_tipo,
-        id_region } = req.body;
+        id_tipo
+        } = req.body;
 
     const newPalabra = await Palabras.create({
         palabra,
@@ -125,22 +123,32 @@ export const createPalabra = async (req, res) => {
         como_se_usa,
         autorizado,
         id_categoria,
-        id_tipo,
-        id_region
+        id_tipo
     });
 
-    const newMultimedia = await Multimedia.create({
+  /*  const newMultimedia = await Multimedia.create({
         id_palabras: newPalabra.id,
         url_sonido,
         url_imagen,
-    });
+    }); */
 
     const newEjemplos = await Ejemplos.create({
             id_palabras: newPalabra.id,
             ejemplo_neutro: ejemplo_neutro,
-            ejemplo_choco: ejemplo_choco      
+            ejemplo_choco: ejemplo_choco,    
+            ejemplo_neutro_ingles:ejemplo_neutro_ingles,
+            ejemplo_choco_ingles:ejemplo_choco_ingles,  
 
-    });
+});
+
+const newIngles = await Ingle.create({
+    id_palabrasIng: newPalabra.id,
+    significadoIng:significadoIng,
+    acepcionesIng:acepcionesIng,
+    sinonimosIng:sinonimosIng,
+    como_se_usa_Ing:como_se_usa_Ing,
+
+});
     
     const newColaborador = await Colaborador.create({
         id_palabras: newPalabra.id,
@@ -148,7 +156,7 @@ export const createPalabra = async (req, res) => {
         correo_electronico,
     });
 
-    const response = [newPalabra, newMultimedia, newEjemplos, newColaborador];
+    const response = [newPalabra, newEjemplos, newIngles, newColaborador];
 
     res.json(response);
    } catch (error) {
@@ -162,22 +170,25 @@ export const updatePalabra = async (req, res) => {
         const {id} = req.params;
         const { palabra,
             significado,
+            significadoIng,
             acepciones,
+            acepcionesIng,
             sinonimos,
+            sinonimosIng,
             como_se_usa,
+            como_se_usa_Ing,
             autorizado,
-            id_multimedia,
-            url_sonido,
-            url_imagen,
             id_ejemplos,
+            id_ingles,
             ejemplo_neutro,
             ejemplo_choco,
+            ejemplo_neutro_ingles,
+            ejemplo_choco_ingles,
             id_colaborador,
             colaborador,
             correo_electronico,
             id_categoria,
-            id_tipo,
-            id_region } = req.body;
+            id_tipo} = req.body;
 
             const updatePalabra = await Palabras.update({ 
                 palabra: palabra,
@@ -187,32 +198,44 @@ export const updatePalabra = async (req, res) => {
                 como_se_usa: como_se_usa,
                 autorizado: autorizado,
                 id_categoria: id_categoria,
-                id_tipo: id_tipo,
-                id_region: id_region
+                id_tipo: id_tipo
             }, {
                 where: {
                   id: id
                 }
               });
 
-            const updateMultimedia = await Multimedia.update({ 
+          /*  const updateMultimedia = await Multimedia.update({ 
                 url_sonido: url_sonido,
                 url_imagen: url_imagen,
             }, {
                 where: {
                   id: id_multimedia
                 }
-              });
+              });*/
 
             const updateEjemplo = await Ejemplos.update({ 
                 ejemplo_neutro: ejemplo_neutro,
                 ejemplo_choco: ejemplo_choco,
+                ejemplo_choco_ingles: ejemplo_choco_ingles,
+                ejemplo_neutro_ingles: ejemplo_neutro_ingles
             }, {
                 where: {
                   id: id_ejemplos
                 }
               });
 
+              const updateIngles = await Ingle.update({ 
+                significadoIng: significadoIng,
+                acepcionesIng: acepcionesIng,
+                sinonimosIng: sinonimosIng,
+                como_se_usa_Ing: como_se_usa_Ing,
+            }, {
+                where: {
+                  id: id_ingles
+                }
+              }); 
+              
             const updateColaborador = await Colaborador.update({ 
                 colaborador: colaborador,
                 correo_electronico: correo_electronico,
@@ -238,7 +261,7 @@ export const updatePalabra = async (req, res) => {
             updatePalabra.id_region = id_region;
             
             await updatePalabra.save();*/
-        const response = [updatePalabra, updateEjemplo,updateMultimedia, updateColaborador];
+        const response = [updatePalabra, updateEjemplo, updateIngles, updateColaborador];
         res.json(response);
     } catch (error) {
         return res.status(500).json({message: error.message});
@@ -253,15 +276,22 @@ export const deletePalabra = async (req, res) =>{
         const {id} = req.params;
     
     //Primero se elimnan los registros de las tablas relacionadas que tengan el id
-    await Multimedia.destroy({
+   
+    /* await Multimedia.destroy({
+        where:{
+            id_palabras: id
+        }
+    }); */
+
+    await Ejemplos.destroy({
         where:{
             id_palabras: id
         }
     });
 
-    await Ejemplos.destroy({
+    await Ingle.destroy({
         where:{
-            id_palabras: id
+            id_palabrasIng: id
         }
     });
 
@@ -283,6 +313,12 @@ export const deletePalabra = async (req, res) =>{
     }
 }
 
-
-
-
+export const getCategoriagra = async (req, res) => {
+    
+    try {
+        const arrPalabras = await Categoria.findAll();
+        res.json(arrPalabras);
+    } catch (error) {
+        return res.status(500).json({message: error.message});
+    }
+}

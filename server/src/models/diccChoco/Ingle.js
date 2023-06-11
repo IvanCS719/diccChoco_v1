@@ -1,26 +1,24 @@
 import {DataTypes} from 'sequelize';
 import {sequelize} from '../../database/database.js';
-//import { Palabras } from './Palabras.js';
 
-export const Ejemplos = sequelize.define('Ejemplos', {
+export const Ingle = sequelize.define('Ingle', {
     id:{
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    ejemplo_neutro:{
+    significadoIng: {
+        type: DataTypes.TEXT
+    },
+    acepcionesIng: {
         type: DataTypes.TEXT,
         allowNull: true
     },
-    ejemplo_choco:{
+    sinonimosIng: {
         type: DataTypes.TEXT,
         allowNull: true
     },
-    ejemplo_neutro_ingles:{
-        type: DataTypes.TEXT,
-        allowNull: true
-    },
-    ejemplo_choco_ingles:{
+    como_se_usa_Ing: {
         type: DataTypes.TEXT,
         allowNull: true
     },
