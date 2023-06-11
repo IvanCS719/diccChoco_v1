@@ -8,6 +8,14 @@ export default {
       },
       colors:{
         mfColor: '#F47101',
+
+        myColor: '#0A3161',
+
+        mtColor: '#111212',
+
+        mbColor: '#FFFFFF',
+
+        mrColor: '#B31942',
       }
     },
   },
