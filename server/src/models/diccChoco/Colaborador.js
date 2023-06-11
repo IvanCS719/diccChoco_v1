@@ -18,3 +18,4 @@ export const Colaborador = sequelize.define('Colaborador', {
     }
 }, { timestamps: false });
 
+

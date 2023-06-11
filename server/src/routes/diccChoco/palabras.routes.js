@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {getPalabras, createPalabra, updatePalabra, deletePalabra, getPalabra} from "../../controllers/diccChoco/palabras.controller.js";
+import {getPalabras, createPalabra, updatePalabra, deletePalabra, getPalabra, getCategoriagra} from "../../controllers/diccChoco/palabras.controller.js";
 
 const router = Router();
 
@@ -8,6 +8,8 @@ router.post('/palabras', createPalabra);
 router.put('/palabras/:id', updatePalabra);
 router.delete('/palabras/:id', deletePalabra);
 router.get('/palabra/:id', getPalabra);
+
+router.get('/categoriagra', getCategoriagra);
 
 
 export default router;

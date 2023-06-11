@@ -17,9 +17,9 @@ export default function Card() {
 
         } else {
             const result = datos.filter(element => {
-                const regex = /^(¡¿")?/i;
+                //const regex = /^(¡¿")?/i;
                 // console.log(element.palabra.startsWith(e.target.value.toUpperCase()) ? element.palabra.startsWith(e.target.value.toUpperCase()) : "No hay")    
-                return element.palabra.startsWith(e.target.value.toUpperCase()) || (regex.test(element.palabra) && element.palabra.startsWith(e.target.value.toUpperCase(), 1))
+                return element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase()) || ((element.palabra.startsWith('¡' || '¿' || '"') && element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase(), 1)))
                 //regets
 
             })
@@ -109,7 +109,7 @@ export default function Card() {
                         <p className='py-1 sm:text-lg font-medium text-gray-800'>Visualizar:</p>
                         <select
                             className="block w-auto rounded-md border-0 px-2 py-1 font-medium text-gray-800 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor text-center sm:max-w-xs sm:leading-6"
-                            onClick={filtroLetra}>
+                            onChange={filtroLetra}>
                             <option value='ALL'>Todos</option>
                             <option>A</option>
                             <option>B</option>
@@ -161,8 +161,10 @@ export default function Card() {
             {partirData.length > 0 ?
                 <div className='grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center md:px-8 lg:px-2 xl:px-9'>
                     {partirData.map(e =>
-                        <Cards key={e.id} /*imagen={e.Multimedium.url_imagen} region={e.Region.region}*/palabra={e.palabra} significado={e.significado} sinonimos={e.sinonimos}
-                            categoria={e.Categorium.categoria} acepciones={e.acepciones} comoSeUsa={e.como_se_usa} ejemploNeutro={e.Ejemplo.ejemplo_neutro} ejemploChoco={e.Ejemplo.ejemplo_choco} />
+                        <Cards key={e.id} /*imagen={e.Multimedium.url_imagen} region={e.Region.region}*/significadoIng={e.Ingle.significadoIng} sinonimosIng={e.Ingle.sinonimosIng} 
+                        acepcionesIng={e.Ingle.acepcionesIng} como_se_usa_Ing={e.Ingle.como_se_usa_Ing} categoriaIng={e.Categorium.categoriaIng} palabra={e.palabra} significado={e.significado} sinonimos={e.sinonimos}
+                            categoria={e.Categorium.categoria} acepciones={e.acepciones} comoSeUsa={e.como_se_usa} ejemploNeutro={e.Ejemplo.ejemplo_neutro} ejemploChoco={e.Ejemplo.ejemplo_choco}
+                            ejemploneutroingles={e.Ejemplo.ejemplo_neutro_ingles} ejemplochocoingles={e.Ejemplo.ejemplo_choco_ingles}  />
                     )}
                 </div> :
                 <div className='w-full h-full grid gap-1 grid-cols-1'>

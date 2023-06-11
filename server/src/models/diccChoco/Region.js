@@ -1,4 +1,4 @@
-import {DataTypes} from 'sequelize';
+/*import {DataTypes} from 'sequelize';
 import {sequelize} from '../../database/database.js';
 //import { Palabras } from './Palabras.js';
 
@@ -11,5 +11,5 @@ export const Region = sequelize.define('Region', {
     region:{
         type: DataTypes.STRING
     }
-},{ timestamps: false });
+},{ timestamps: false });*/
 

@@ -3,9 +3,10 @@ import { sequelize } from './database/database.js';
 
 /*import './models/diccChoco/Palabras.js';
 import './models/diccChoco/Ejemplos.js';
-import './models/diccChoco/Multimedia.js';
+//import './models/diccChoco/Multimedia.js';
 import './models/diccChoco/Categoria.js';
-import './models/diccChoco/Region.js';
+import './models/diccChoco/Ingle.js';
+//import './models/diccChoco/Region.js';
 import './models/diccChoco/Tipo.js';
 import './models/diccChoco/Colaborador.js';*/
 
