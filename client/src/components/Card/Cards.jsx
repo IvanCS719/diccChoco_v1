@@ -145,7 +145,7 @@ export default function Cards({ /*imagen, categoria*/ palabra, significado, sino
                         <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='Ejemplos' onClick={() => handleButtonClick(2)}><i className="fa-solid fa-lightbulb"></i></button>
 
                         <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='¿Comó se usa?' onClick={() => handleButtonClick(3)}><i className="fa-solid fa-circle-question"></i></button>
-                        <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='Inglés' onClick={() => handleButtonClick(4)}><i class="fa-solid fa-flag-usa"></i></button>
+                        <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='Inglés' onClick={() => handleButtonClick(4)}><i className="fa-solid fa-flag-usa"></i></button>
 
                     </div>
                 </div>
