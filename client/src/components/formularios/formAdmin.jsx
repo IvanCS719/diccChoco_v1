@@ -41,52 +41,57 @@ const Formulario = () => {
     }, [dataCategoria])
 
     const handleSubmit = (values, { resetForm }) => {
+        try {
+            //addEjemplos();
 
-        //addEjemplos();
+            console.log('newDataNeutro:', dataNeutro);
+            console.log('newDataChoco:', dataChoco);
 
-        console.log('newDataNeutro:', dataNeutro);
-        console.log('newDataChoco:', dataChoco);
+            //Convertir los arreglos de ejemplos a una string
 
-        //Convertir los arreglos de ejemplos a una string
+            const dataNeutroString = dataNeutro.join('|');
+            const dataChocoString = dataChoco.join('|');
 
-        const dataNeutroString = dataNeutro.join('|');
-        const dataChocoString = dataChoco.join('|');
-
-        const dataNeutroIngString = dataNeutroIng ? dataNeutroIng.join('|') : "";
-        const dataChocoIngString = dataChocoIng ? dataChocoIng.join('|') : "";
+            const dataNeutroIngString = dataNeutroIng ? dataNeutroIng.join('|') : "";
+            const dataChocoIngString = dataChocoIng ? dataChocoIng.join('|') : "";
 
 
 
-        // Agregar las cadenas de texto al objeto values
-        values.ejemplo_neutro = dataNeutroString;
-        values.ejemplo_choco = dataChocoString;
-        values.ejemplo_neutro_ingles = dataNeutroIngString;
-        values.ejemplo_choco_ingles = dataChocoIngString;
+            // Agregar las cadenas de texto al objeto values
+            values.ejemplo_neutro = dataNeutroString;
+            values.ejemplo_choco = dataChocoString;
+            values.ejemplo_neutro_ingles = dataNeutroIngString;
+            values.ejemplo_choco_ingles = dataChocoIngString;
 
-        // Enviar los datos a la ruta del servidor
-        fetch('http://localhost:3000/palabras', {
-            method: 'POST',
-            body: JSON.stringify(values),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                // Hacer algo con la respuesta del servidor
-                console.log(data);
-                setArrTama([]);
-                setDataNeutro([]);
-                setDataChoco([]);
-                resetForm();
-
+            // Enviar los datos a la ruta del servidor
+            fetch('http://localhost:3000/palabras', {
+                method: 'POST',
+                body: JSON.stringify(values),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             })
-            .catch((error) => {
-                // Manejar el error
-                console.error(error);
-            });
+                .then((response) => response.json())
+                .then((data) => {
+                    // Hacer algo con la respuesta del servidor
+                    console.log(data);
+                    setArrTama([]);
+                    setDataNeutro([]);
+                    setDataChoco([]);
+                    resetForm();
 
-        setIsOpen(true);
+                })
+                .catch((error) => {
+                    // Manejar el error
+                    console.error(error);
+                });
+
+            setIsOpen(true);
+        } catch (error) {
+            console.log("mensaje", error)
+        }
+
+
     };
 
     /*function addEjemplos() {
@@ -247,7 +252,7 @@ const Formulario = () => {
                                 <div className='w-full'>
                                     <div className='w-full flex justify-around'>
                                         <FormField
-                                            label="Palabra"
+                                            label="Palabra:"
                                             name="palabra"
                                             placeholder="Ingrese la palabra"
                                             errors={errors}
@@ -271,14 +276,14 @@ const Formulario = () => {
                                     </div>
                                     <div className='w-full flex justify-around'>
                                         <FormField
-                                            label="Significado"
+                                            label="Significado:"
                                             name="significado"
                                             placeholder="Significado de la palabra"
                                             errors={errors}
                                         />
 
                                         <FormField
-                                            label="Sinónimos"
+                                            label="Sinónimos (separados por coma):"
                                             name="sinonimos"
                                             placeholder="Sinónimos de la palabra"
                                         // errors={errors}
@@ -290,14 +295,14 @@ const Formulario = () => {
 
                                     <div className='w-full flex justify-around'>
                                         <FormField
-                                            label="Acepciones"
+                                            label="Acepciones:"
                                             name="acepciones"
                                             placeholder="Acepciones de la palabra"
                                         // errors={errors}
                                         />
 
                                         <FormField
-                                            label="¿Cómo se usa?"
+                                            label="¿Cómo se usa?:"
                                             name="como_se_usa"
                                             placeholder="¿Cómo se usa?"
                                         // errors={errors}
@@ -333,7 +338,7 @@ const Formulario = () => {
                                         {arrTama.map((item, index) => (
                                             <div key={index} className='w-full flex justify-around content-end'>
                                                 <div className='text-left mb-3'>
-                                                    <label htmlFor={`ejemplo_neutro${index}`}>{`${index + 1}- Ejemplo Neutro`}</label>
+                                                    <label htmlFor={`ejemplo_neutro${index}`}>{`${index + 1}- Ejemplo Neutro:`}</label>
                                                     <Field
                                                         type='text'
                                                         id={`ejemplo_neutro${index}`}
@@ -349,7 +354,7 @@ const Formulario = () => {
                                                 </div>
 
                                                 <div className='text-left mb-3'>
-                                                    <label htmlFor={`ejemplo_choco${index}`}>{`${index + 1}- Ejemplo Choco`}</label>
+                                                    <label htmlFor={`ejemplo_choco${index}`}>{`${index + 1}- Ejemplo Choco:`}</label>
                                                     <Field
                                                         type='text'
                                                         id={`ejemplo_choco${index}`}
@@ -365,25 +370,29 @@ const Formulario = () => {
                                                 </div>
                                                 <button type="button" className='w-auto my-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={() => {
 
-                                                    const newDataNeutro = [...dataNeutro]; // Copia el arreglo original
-                                                    newDataNeutro.splice(index, 1); // Realiza la modificación en la copia
-                                                    setDataNeutro(newDataNeutro);
+                                                    try {
+                                                        const newDataNeutro = [...dataNeutro]; // Copia el arreglo original
+                                                        newDataNeutro.splice(index, 1); // Realiza la modificación en la copia
+                                                        setDataNeutro(newDataNeutro);
 
-                                                    const newDataChoco = [...dataChoco]; // Copia el arreglo original
-                                                    newDataChoco.splice(index, 1); // Realiza la modificación en la copia
-                                                    setDataChoco(newDataChoco);
+                                                        const newDataChoco = [...dataChoco]; // Copia el arreglo original
+                                                        newDataChoco.splice(index, 1); // Realiza la modificación en la copia
+                                                        setDataChoco(newDataChoco);
 
-                                                    const newDataNeutroIng = [...dataNeutroIng]; // Copia el arreglo original
-                                                    newDataNeutroIng.splice(index, 1); // Realiza la modificación en la copia
-                                                    setDataNeutroIng(newDataNeutroIng);
+                                                        const newDataNeutroIng = [...dataNeutroIng]; // Copia el arreglo original
+                                                        newDataNeutroIng.splice(index, 1); // Realiza la modificación en la copia
+                                                        setDataNeutroIng(newDataNeutroIng);
 
-                                                    const newDataChocoIng = [...dataChocoIng]; // Copia el arreglo original
-                                                    newDataChocoIng.splice(index, 1); // Realiza la modificación en la copia
-                                                    setDataChocoIng(newDataChocoIng);
+                                                        const newDataChocoIng = [...dataChocoIng]; // Copia el arreglo original
+                                                        newDataChocoIng.splice(index, 1); // Realiza la modificación en la copia
+                                                        setDataChocoIng(newDataChocoIng);
 
-                                                    const newArrTama = [...arrTama]; // Copia el arreglo original
-                                                    newArrTama.splice(index, 1); // Realiza la modificación en la copia
-                                                    setArrTama(newArrTama);
+                                                        const newArrTama = [...arrTama]; // Copia el arreglo original
+                                                        newArrTama.splice(index, 1); // Realiza la modificación en la copia
+                                                        setArrTama(newArrTama);
+                                                    } catch (error) {
+                                                        console.log("Mensaje", error)
+                                                    }
                                                 }}><i className="fa-solid fa-trash"></i></button>
                                             </div>
                                         ))}
@@ -428,14 +437,14 @@ const Formulario = () => {
                                         <FormField
                                             label="Significado"
                                             name="significadoIng"
-                                            placeholder="Significado de la palabra"
+                                            placeholder="Traducir significado de la palabra"
                                         //errors={errors}
                                         />
 
                                         <FormField
-                                            label="Sinónimos"
+                                            label="Sinónimos (separados por coma)"
                                             name="sinonimosIng"
-                                            placeholder="Sinónimos de la palabra"
+                                            placeholder="Traducir sinónimos de la palabra"
                                         // errors={errors}
                                         />
 
@@ -445,16 +454,16 @@ const Formulario = () => {
 
                                     <div className='w-full flex justify-around'>
                                         <FormField
-                                            label="Acepciones"
+                                            label="Acepciones:"
                                             name="acepcionesIng"
-                                            placeholder="Acepciones de la palabra"
+                                            placeholder="Traducir acepciones de la palabra"
                                         // errors={errors}
                                         />
 
                                         <FormField
-                                            label="¿Cómo se usa?"
+                                            label="¿Cómo se usa?:"
                                             name="como_se_usa_Ing"
-                                            placeholder="¿Cómo se usa?"
+                                            placeholder="Traducir ¿Cómo se usa?"
                                         // errors={errors}
                                         />
                                     </div>
@@ -462,8 +471,8 @@ const Formulario = () => {
 
                                 <div className='w-full'>
                                     <div className='w-full flex justify-around content-end'>
-                                        <div className='text-left'>
-                                            <label htmlFor='titleEjemplo'>Ejemplos Agregados: <span className='font-bold'>{`${arrTama.length}`}</span></label>
+                                        <div className='text-left w-full pl-6 mb-2'>
+                                            <label htmlFor='titleEjemplo'>Ejemplos a traducir: <span className='font-bold'>{`${arrTama.length}`}</span></label>
                                             <Field
                                                 type='text'
                                                 id='titleEjemplo'
@@ -480,7 +489,7 @@ const Formulario = () => {
                                         {arrTama.map((item, index) => (
                                             <div key={index} className='w-full flex justify-around content-end'>
                                                 <div className='text-left mb-3'>
-                                                    <label htmlFor={`ejemplo_neutro${index}`}>{`${index + 1}- Ejemplo Neutro`}</label>
+                                                    <label htmlFor={`ejemplo_neutro${index}`}>{`${index + 1}- Ejemplo Neutro:`}</label>
                                                     <Field
                                                         type='text'
                                                         id={`ejemplo_neutro${index}`}
@@ -496,7 +505,7 @@ const Formulario = () => {
                                                 </div>
 
                                                 <div className='text-left mb-3'>
-                                                    <label htmlFor={`ejemplo_choco${index}`}>{`${index + 1}- Ejemplo Choco`}</label>
+                                                    <label htmlFor={`ejemplo_choco${index}`}>{`${index + 1}- Ejemplo Choco:`}</label>
                                                     <Field
                                                         type='text'
                                                         id={`ejemplo_choco${index}`}
@@ -527,8 +536,8 @@ const Formulario = () => {
                                     }`}
                             >
                                 <div className="bg-white w-80 py-3 px-3 rounded-lg shadow-mfBoxShadow border-solid border-2 border-mfColor">
-                                    <p className="text-2xl text-gray-800 font-bold mb-2">Palabra Agregada</p>
-                                    <p className='text-6xl mb-2 text-green-600'><i className="fa-regular fa-circle-check"></i></p>
+                                    <p className="text-2xl text-gray-800 font-bold mb-3">Palabra Agregada</p>
+                                    <p className='text-7xl mb-2 text-green-600'><i className="fa-regular fa-circle-check"></i></p>
                                     <p className="text-base text-gray-700 font-medium mb-4">La palabra se ha agregado exitosamente al diccionario.</p>
                                     <button type="button" className='w-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={closeModal}>Aceptar</button>
                                 </div>
