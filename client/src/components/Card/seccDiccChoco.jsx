@@ -162,7 +162,7 @@ export default function Card() {
                 <div className='grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center md:px-8 lg:px-2 xl:px-9'>
                     {partirData.map(e =>
                         <Cards key={e.id} /*imagen={e.Multimedium.url_imagen} region={e.Region.region}*/significadoIng={e.Ingle.significadoIng} sinonimosIng={e.Ingle.sinonimosIng} 
-                        acepcionesIng={e.Ingle.acepcionesIng} como_se_usa_Ing={e.Ingle.como_se_usa_Ing} palabra={e.palabra} significado={e.significado} sinonimos={e.sinonimos}
+                        acepcionesIng={e.Ingle.acepcionesIng} como_se_usa_Ing={e.Ingle.como_se_usa_Ing} categoriaIng={e.Categorium.categoriaIng} palabra={e.palabra} significado={e.significado} sinonimos={e.sinonimos}
                             categoria={e.Categorium.categoria} acepciones={e.acepciones} comoSeUsa={e.como_se_usa} ejemploNeutro={e.Ejemplo.ejemplo_neutro} ejemploChoco={e.Ejemplo.ejemplo_choco}
                             ejemploneutroingles={e.Ejemplo.ejemplo_neutro_ingles} ejemplochocoingles={e.Ejemplo.ejemplo_choco_ingles}  />
                     )}

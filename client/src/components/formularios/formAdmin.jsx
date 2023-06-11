@@ -23,6 +23,8 @@ const Formulario = () => {
     const [dataCategoria, setDataCategoria] = useState([]);
     const [arrTama, setArrTama] = useState([]);
     const [dataNeutro, setDataNeutro] = useState([]);
+    const [dataNeutroIng, setDataNeutroIng] = useState([]);
+    const [dataChocoIng, setDataChocoIng] = useState([]);
     const [dataChoco, setDataChoco] = useState([]);
 
 
@@ -50,11 +52,16 @@ const Formulario = () => {
         const dataNeutroString = dataNeutro.join('|');
         const dataChocoString = dataChoco.join('|');
 
+        const dataNeutroIngString = dataNeutroIng ? dataNeutroIng.join('|'): "";
+        const dataChocoIngString = dataChocoIng ? dataChocoIng.join('|'): "";
+
 
 
         // Agregar las cadenas de texto al objeto values
         values.ejemplo_neutro = dataNeutroString;
         values.ejemplo_choco = dataChocoString;
+        values.ejemplo_neutro_ingles = dataNeutroIngString;
+        values.ejemplo_choco_ingles = dataChocoIngString;
 
         // Enviar los datos a la ruta del servidor
         fetch('http://localhost:3000/palabras', {
@@ -114,10 +121,30 @@ const Formulario = () => {
         
     }
 
+    function arrEjemNeutroIng(v,i) {
+        const newDataNeutroIng = [...dataNeutroIng]
+
+        newDataNeutroIng[i] = v
+
+        setDataNeutroIng(newDataNeutroIng)
+
+        
+    }
+
     function arrEjemChoco(v,i) {
         const newDataChoco = [...dataChoco]
         newDataChoco[i] = v
         setDataChoco(newDataChoco)
+        
+    }
+
+    function arrEjemChocoIng(v,i) {
+        const newDataChocoIng = [...dataChocoIng]
+
+        newDataChocoIng[i] = v
+
+        setDataChocoIng(newDataChocoIng)
+
         
     }
     return (
@@ -129,9 +156,13 @@ const Formulario = () => {
                     initialValues={{
                         palabra: '',
                         significado: '',
+                        significadoIng:'',
                         acepciones: '',
+                        acepcionesIng:'',
                         sinonimos: '',
+                        sinonimosIng:'',
                         como_se_usa: '',
+                        como_se_usa_Ing:'',
                         titleEjemplo: '',
                         id_categoria: 0,
                         id_tipo: 1,
@@ -146,16 +177,12 @@ const Formulario = () => {
                         //valores de palabra
                         if (!valores.palabra) {
                             errores.palabra = 'Campo obligatorio*'
-                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.palabra)) {
-                            errores.palabra = 'solo puedes escribir palabra y signos de puntuación'
-                        }
+                        } 
 
                         //valores de significado
                         if (!valores.significado) {
                             errores.significado = 'Campo obligatorio*'
-                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.significado)) {
-                            errores.significado = 'solo puedes escribir palabras'
-                        }
+                        } 
 
                         if (valores.id_categoria == 0) {
                             errores.id_categoria = 'Debe seleccionar una categoría*'
@@ -191,16 +218,11 @@ const Formulario = () => {
                         arrTama.map((item, index) => {
                             if (!dataNeutro[index]) {
                                 errores[`ejemplo_neutro${index}`] = 'Ejemplo neutro necesario*'
-                            } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores[`ejemplo_neutro${index}`])) {
-                                errores[`ejemplo_neutro${index}`] = 'solo puedes escribir palabras'
-                            }
-
+                            } 
                             //valores de ejemplo choco
                             if (!dataChoco[index]) {
                                 errores[`ejemplo_choco${index}`] = 'Ejemplo choco necesario*'
-                            } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores[`ejemplo_choco${index}`])) {
-                                errores[`ejemplo_choco${index}`] = 'solo puedes escribir palabras'
-                            }
+                            } 
                         })
 
 
@@ -212,7 +234,7 @@ const Formulario = () => {
                 >
                     {({ values, errors }) => (
                         <Form className='w-full p-4 mt-3 rounded-lg shadow-lg'>
-                            <h1 className='mb-4 font-semibold text-zinc-800 text-3xl'>Agregar Nueva Palabra</h1>
+                            <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Agregar Nueva Palabra</h2>
                             <div className='w-full flex'>
                                 <div className='w-full'>
                                     <div className='w-full flex justify-around'>
@@ -337,10 +359,143 @@ const Formulario = () => {
                                                     newDataChoco.splice(index, 1); // Realiza la modificación en la copia
                                                     setDataChoco(newDataChoco);
 
+                                                    const newDataNeutroIng = [...dataNeutroIng]; // Copia el arreglo original
+                                                    newDataNeutroIng.splice(index, 1); // Realiza la modificación en la copia
+                                                    setDataNeutroIng(newDataNeutroIng);
+
+                                                    const newDataChocoIng = [...dataChocoIng]; // Copia el arreglo original
+                                                    newDataChocoIng.splice(index, 1); // Realiza la modificación en la copia
+                                                    setDataChocoIng(newDataChocoIng);
+
                                                     const newArrTama = [...arrTama]; // Copia el arreglo original
                                                     newArrTama.splice(index, 1); // Realiza la modificación en la copia
                                                     setArrTama(newArrTama);
                                                 }}><i className="fa-solid fa-trash"></i></button>
+                                            </div>
+                                        ))}
+
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
+                            <hr className='border-solid border-2 border-gray-200 my-2'/>
+
+                            <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Traducir A Inglés</h2>
+                            <div className='w-full flex'>
+                                <div className='w-full'>
+                                    {/*<div className='w-full flex justify-around'>
+                                        <FormField
+                                            label="Palabra"
+                                            name="palabra"
+                                            placeholder="Ingrese la palabra"
+                                            errors={errors}
+                                        />
+
+                                        <div className='text-left'>
+                                            <label htmlFor="selectedOption">Categoría Gramatical:</label>
+                                            <Field as="select" name="id_categoria" id="id_categoria"
+                                                className="block w-64 rounded-md border-0 px-2 py-2 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor sm:max-w-xs sm:leading-6">
+                                                <option value="">Selecciona una categoría</option>
+                                                {dataCategoria.map((e) => (
+                                                    <option key={e.id} value={e.id}>
+                                                        {e.categoria}
+                                                    </option>
+                                                ))}
+                                            </Field>
+                                            <ErrorMessage name='id_categoria' component={() => (
+                                                <div className='error text-red-600 font-medium'>{errors.id_categoria}</div>
+                                            )} />
+                                        </div>
+                                            </div>*/}
+                                    <div className='w-full flex justify-around'>
+                                        <FormField
+                                            label="Significado"
+                                            name="significadoIng"
+                                            placeholder="Significado de la palabra"
+                                           //errors={errors}
+                                        />
+
+                                        <FormField
+                                            label="Sinónimos"
+                                            name="sinonimosIng"
+                                            placeholder="Sinónimos de la palabra"
+                                        // errors={errors}
+                                        />
+
+
+                                    </div>
+
+
+                                    <div className='w-full flex justify-around'>
+                                        <FormField
+                                            label="Acepciones"
+                                            name="acepcionesIng"
+                                            placeholder="Acepciones de la palabra"
+                                        // errors={errors}
+                                        />
+
+                                        <FormField
+                                            label="¿Cómo se usa?"
+                                            name="como_se_usa_Ing"
+                                            placeholder="¿Cómo se usa?"
+                                        // errors={errors}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className='w-full'>
+                                    <div className='w-full flex justify-around content-end'>
+                                        <div className='text-left'>
+                                            <label htmlFor='titleEjemplo'>Ejemplos {`${arrTama.length}`}</label>
+                                            <Field
+                                                type='text'
+                                                id='titleEjemplo'
+                                                name='titleEjemplo'
+                                                placeholder='acepsion'
+                                                hidden
+                                            />
+
+                                        </div>
+                                    
+                                    </div>
+
+                                    <div className='w-full max-h-52 overflow-auto mb-2'>
+                                        {arrTama.map((item, index) => (
+                                            <div key={index} className='w-full flex justify-around content-end'>
+                                                <div className='text-left mb-3'>
+                                                    <label htmlFor={`ejemplo_neutro${index}`}>{`${index + 1}- Ejemplo Neutro`}</label>
+                                                    <Field
+                                                        type='text'
+                                                        id={`ejemplo_neutro${index}`}
+                                                        name={`ejemplo_neutro${index}`}
+                                                        value={dataNeutroIng[index] || ''}
+                                                        placeholder="Escribe un ejemplo neutro"
+                                                        className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
+                                                        onChange={(event) => arrEjemNeutroIng(event.target.value, index)}
+                                                    />
+                                                    <ErrorMessage name={`ejemplo_neutro${index}`} component={() => (
+                                                        <div className='error text-red-600 font-medium'>{errors[`ejemplo_neutro${index}`]}</div>
+                                                    )} />
+                                                </div>
+
+                                                <div className='text-left mb-3'>
+                                                    <label htmlFor={`ejemplo_choco${index}`}>{`${index + 1}- Ejemplo Choco`}</label>
+                                                    <Field
+                                                        type='text'
+                                                        id={`ejemplo_choco${index}`}
+                                                        name={`ejemplo_choco${index}`}
+                                                        value={dataChocoIng[index] || ''}
+                                                        placeholder="Escribe un ejemplo neutro"
+                                                        className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
+                                                        onChange={(event) => arrEjemChocoIng(event.target.value, index)}
+                                                    />
+                                                    <ErrorMessage name={`ejemplo_choco${index}`} component={() => (
+                                                        <div className='error text-red-600 font-medium'>{errors[`ejemplo_choco${index}`]}</div>
+                                                    )} />
+                                                </div>
                                             </div>
                                         ))}
 
