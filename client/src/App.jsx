@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import Card from './components/Card/seccDiccChoco'
 import { Routes, Route } from 'react-router-dom'
-import FormAdmin from './components/formularios/formAdmin'
+import FormAdmin from './components/formularios/formAdminAdd'
 import FormPublic from './components/formularios/formPublic'
 
 function App() {
