@@ -256,9 +256,9 @@ const Formulario = () => {
                     {({ values, errors }) => (
                         <Form className='w-full p-4 mt-3 bg-white rounded-2xl shadow-mfBoxShadow'>
                             <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Agregar Nueva Palabra</h2>
-                            <div className='w-full flex'>
+                            <div className='w-full flex flex-col xl:flex-row gap-4'>
                                 <div className='w-full'>
-                                    <div className='w-full flex justify-around'>
+                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center gap-1 md:gap-5'>
                                         <FormField
                                             label="Palabra:"
                                             name="palabra"
@@ -269,7 +269,7 @@ const Formulario = () => {
                                         <div className='text-left'>
                                             <label htmlFor="selectedOption">Categoría Gramatical:</label>
                                             <Field as="select" name="id_categoria" id="id_categoria"
-                                                className="block w-64 rounded-md border-0 px-2 py-2 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor sm:max-w-xs sm:leading-6">
+                                                className="block w-64 mb-4 rounded-md border-0 px-2 py-2 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor sm:max-w-xs sm:leading-6">
                                                 <option value="">Selecciona una categoría</option>
                                                 {dataCategoria.map((e) => (
                                                     <option key={e.id} value={e.id}>
@@ -282,7 +282,7 @@ const Formulario = () => {
                                             )} />
                                         </div>
                                     </div>
-                                    <div className='w-full flex justify-around'>
+                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center gap-1 md:gap-5'>
                                         <FormField
                                             label="Significado:"
                                             name="significado"
@@ -301,7 +301,7 @@ const Formulario = () => {
                                     </div>
 
 
-                                    <div className='w-full flex justify-around'>
+                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center gap-1 md:gap-5'>
                                         <FormField
                                             label="Acepciones:"
                                             name="acepciones"
@@ -319,8 +319,8 @@ const Formulario = () => {
                                 </div>
 
                                 <div className='w-full'>
-                                    <div className='w-full flex justify-between px-2'>
-                                        <div className='text-left'>
+                                    <div className='w-full flex justify-between flex-col gap-2 md:gap-0 xl:flex-row items-center'>
+                                        <div className='text-left md:mb-2'>
                                             <label htmlFor='titleEjemplo'>Ejemplos Agregados: <span className='font-bold'>{`${arrTama.length}`}</span></label>
                                             <Field
                                                 type='text'
@@ -339,12 +339,12 @@ const Formulario = () => {
                                             )} />
 
                                         </div>
-                                        <button type="button" className='w-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={newEjemplos}>Nuevo Ejemplo</button>
+                                        <button type="button" className='w-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium mb-2' onClick={newEjemplos}><i className="fa-solid fa-plus"></i> Nuevo Ejemplo</button>
                                     </div>
 
                                     <div className='w-full max-h-52 overflow-auto mb-2'>
                                         {arrTama.map((item, index) => (
-                                            <div key={index} className='w-full flex justify-around content-end'>
+                                            <div key={index} className='w-auto flex flex-col md:flex-row gap-1 justify-center items-center md:gap-4'>
                                                 <div className='text-left mb-3'>
                                                     <label htmlFor={`ejemplo_neutro${index}`}>{`${index + 1}- Ejemplo Neutro:`}</label>
                                                     <Field
@@ -376,7 +376,7 @@ const Formulario = () => {
                                                         <div className='error text-red-600 font-medium'>{errors[`ejemplo_choco${index}`]}</div>
                                                     )} />
                                                 </div>
-                                                <button type="button" className='w-auto my-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={() => {
+                                                <button type="button" className='max-w-max my-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={() => {
 
                                                     try {
                                                         const newDataNeutro = [...dataNeutro]; // Copia el arreglo original
@@ -415,7 +415,7 @@ const Formulario = () => {
                             <hr className='border-solid border-2 border-gray-200 my-2' />
 
                             <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Traducir A Inglés</h2>
-                            <div className='w-full flex'>
+                            <div className='w-full flex flex-col xl:flex-row gap-4'>
                                 <div className='w-full'>
                                     {/*<div className='w-full flex justify-around'>
                                         <FormField
@@ -441,16 +441,16 @@ const Formulario = () => {
                                             )} />
                                         </div>
                                             </div>*/}
-                                    <div className='w-full flex justify-around'>
+                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center gap-1 md:gap-5'>
                                         <FormField
-                                            label="Significado"
+                                            label="Significado:"
                                             name="significadoIng"
                                             placeholder="Traducir significado de la palabra"
                                         //errors={errors}
                                         />
 
                                         <FormField
-                                            label="Sinónimos (separados por coma)"
+                                            label="Sinónimos (separados por coma):"
                                             name="sinonimosIng"
                                             placeholder="Traducir sinónimos de la palabra"
                                         // errors={errors}
@@ -460,7 +460,7 @@ const Formulario = () => {
                                     </div>
 
 
-                                    <div className='w-full flex justify-around'>
+                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center gap-1 md:gap-5'>
                                         <FormField
                                             label="Acepciones:"
                                             name="acepcionesIng"
@@ -478,8 +478,8 @@ const Formulario = () => {
                                 </div>
 
                                 <div className='w-full'>
-                                    <div className='w-full flex justify-around content-end'>
-                                        <div className='text-left w-full pl-6 mb-2'>
+                                    <div className='w-full flex'>
+                                        <div className='w-full flex justify-center xl:justify-normal items-center mb-2'>
                                             <label htmlFor='titleEjemplo'>Ejemplos a traducir: <span className='font-bold'>{`${arrTama.length}`}</span></label>
                                             <Field
                                                 type='text'
@@ -495,7 +495,7 @@ const Formulario = () => {
 
                                     <div className='w-full max-h-52 overflow-auto mb-2'>
                                         {arrTama.map((item, index) => (
-                                            <div key={index} className='w-full flex justify-around content-end'>
+                                            <div key={index} className='w-auto flex flex-col md:flex-row gap-1 justify-center xl:justify-normal items-center md:gap-4'>
                                                 <div className='text-left mb-3'>
                                                     <label htmlFor={`ejemplo_neutro${index}`}>{`${index + 1}- Ejemplo Neutro:`}</label>
                                                     <Field
