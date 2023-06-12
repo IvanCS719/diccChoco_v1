@@ -16,6 +16,8 @@ export default {
         mbColor: '#FFFFFF',
 
         mrColor: '#B31942',
+
+        modal: 'rgba(0, 0, 0, 0.35)'
       }
     },
   },

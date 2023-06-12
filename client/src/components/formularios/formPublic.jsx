@@ -323,7 +323,7 @@ const Formulario = () => {
 
                             <button type='submit' className='w-auto rounded-md mt-2 bg-mfColor px-5 py-1.5 text-white shadow-md font-medium'><i className="fa-solid fa-paper-plane"></i> Enviar</button>
                             <div
-                                className={`fixed inset-0 flex items-center justify-center transition-all duration-200 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                                className={`fixed bg-modal inset-0 flex items-center justify-center transition-all duration-200 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
                                     }`}
                             >
                                 <div className="bg-white w-80 lg:w-auto p-5 rounded-xl shadow-mfBoxShadow border">
