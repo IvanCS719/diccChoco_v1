@@ -125,7 +125,7 @@ const Formulario = () => {
     return (
         <div className='container flex flex-col items-center px-4 lg:px-0 w-screen min-h-screen'>
 
-            <p className='mb-4 mt-3 font-semibold text-mfColor text-3xl'>¡Gracias por contribuir en la mejora de este Diccionario!</p>
+            <p className='mb-4 mt-3 font-semibold text-mfColor text-4xl'>¡Gracias por contribuir en la mejora de este Diccionario!</p>
             
             <>
                 <Formik
@@ -205,11 +205,11 @@ const Formulario = () => {
                     onSubmit={handleSubmit}
                 >
                     {({ values, errors }) => (
-                        <Form className='max-w-max p-4 mt-3 bg-white rounded-2xl shadow-mfBoxShadow'>
-                            <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Agregar Nueva Palabra</h2>
+                        <Form className='max-w-max p-5 mt-3 bg-white rounded-2xl border-2 border-solid border-mfColor shadow-mfBoxShadow'>
+                            <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Aportar Palabra</h2>
                             <div className='w-full flex flex-col items-center'>
                                 
-                                    <div className='w-auto flex gap-5'>
+                                    <div className='w-auto flex flex-col md:flex-row gap-1 md:gap-5'>
                                         <FormField
                                             label="Palabra (requerido):"
                                             name="palabra"
@@ -281,7 +281,7 @@ const Formulario = () => {
                                         ))}
 
                                     </div>
-                                    <div className='w-auto flex gap-5'>
+                                    <div className='w-auto flex flex-col md:flex-row gap-1 md:gap-5'>
                                         <FormField
                                             label="Significado:"
                                             name="significado"
@@ -300,7 +300,7 @@ const Formulario = () => {
                                     </div>
 
 
-                                    <div className='w-auto flex gap-5'>
+                                    <div className='w-auto flex flex-col md:flex-row gap-1 md:gap-5'>
                                         <FormField
                                             label="Nombre:"
                                             name="colaborador"
@@ -321,7 +321,7 @@ const Formulario = () => {
 
                             </div>
 
-                            <button type='submit' className='w-auto rounded-md mt-2 bg-mfColor px-6 py-1.5 text-white shadow-md font-medium'>Enviar</button>
+                            <button type='submit' className='w-auto rounded-md mt-2 bg-mfColor px-5 py-1.5 text-white shadow-md font-medium'><i className="fa-solid fa-paper-plane"></i> Enviar</button>
                             <div
                                 className={`fixed inset-0 flex items-center justify-center transition-all duration-200 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
                                     }`}
@@ -329,7 +329,7 @@ const Formulario = () => {
                                 <div className="bg-white w-80 lg:w-auto p-5 rounded-xl shadow-mfBoxShadow border">
                                     <p className="text-2xl text-gray-800 font-bold mb-3">¡Gracias!</p>
                                     <p className='text-8xl mb-2 text-green-600'><i className="fa-regular fa-circle-check"></i></p>
-                                    <p className="text-lg text-gray-700 font-medium mb-4">Su aportación ha sido enviada para su revisión<br />y posterior anexión al diccionario choco.</p>
+                                    <p className="text-lg text-gray-700 font-medium mb-4">Su aportación ha sido enviada para su revisión<br />y posterior anexión al diccionario del choco.</p>
                                     <button type="button" className='w-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={closeModal}>Aceptar</button>
                                 </div>
                             </div>

@@ -168,7 +168,7 @@ const Formulario = () => {
     return (
         <div className='container px-4 lg:px-0 min-h-screen'>
 
-            <p className='mb-4 mt-3 font-semibold text-mfColor text-3xl'>Administrador del Diccionario Choco</p>
+            <p className='mb-4 mt-3 font-semibold text-mfColor text-4xl'>Administrador del Diccionario Choco</p>
             <>
                 <Formik
                     //almacena los valores de cada campo
