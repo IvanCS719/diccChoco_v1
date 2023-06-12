@@ -326,10 +326,10 @@ const Formulario = () => {
                                 className={`fixed bg-modal inset-0 flex items-center justify-center transition-all duration-200 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
                                     }`}
                             >
-                                <div className="bg-white w-80 lg:w-auto p-5 rounded-xl shadow-mfBoxShadow border">
+                                <div className="bg-white mx-4 sm:w-96 p-5 rounded-xl shadow-mfBoxShadow border">
                                     <p className="text-2xl text-gray-800 font-bold mb-3">¡Gracias!</p>
                                     <p className='text-8xl mb-2 text-green-600'><i className="fa-regular fa-circle-check"></i></p>
-                                    <p className="text-lg text-gray-700 font-medium mb-4">Su aportación ha sido enviada para su revisión<br />y posterior anexión al diccionario del choco.</p>
+                                    <p className="text-lg text-gray-700 font-medium mb-4">Su aportación ha sido enviada para su revisión y posterior anexión al diccionario del choco.</p>
                                     <button type="button" className='w-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={closeModal}>Aceptar</button>
                                 </div>
                             </div>
