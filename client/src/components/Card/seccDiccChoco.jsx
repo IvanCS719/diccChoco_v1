@@ -207,7 +207,7 @@ export default function Card() {
 
             <div className='mt-1 mb-2 w-full flex flex-col justify-center gap-3'>
                 <p className='text-center md:text-lg font-medium text-gray-800'>En este apartado podrás contribuir complementado palabras o significados <br /> que no encuentres en el diccionario.</p>            
-                    <Link to="/colaborar"><button className='rounded-md bg-mfColor px-3 py-2 text-white shadow-md font-medium'>Colaborar  <i className="fa-solid fa-pen-to-square"></i></button></Link>
+                    <Link to="/colaborar"><button className='rounded-md bg-mfColor px-3 py-2 text-white shadow-md font-medium'>Colaborar <i className="fa-solid fa-pen-to-square"></i></button></Link>
             </div>
         </div>
     )
