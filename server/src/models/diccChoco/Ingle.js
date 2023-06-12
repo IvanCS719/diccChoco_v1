@@ -8,18 +8,23 @@ export const Ingle = sequelize.define('Ingle', {
         autoIncrement: true
     },
     significadoIng: {
-        type: DataTypes.TEXT
+        type: DataTypes.TEXT,
+        defaultValue: 'No translation yet',
+        allowNull: true	
     },
     acepcionesIng: {
         type: DataTypes.TEXT,
+        defaultValue: 'No translation yet',
         allowNull: true
     },
     sinonimosIng: {
         type: DataTypes.TEXT,
+        defaultValue: 'No translation yet',
         allowNull: true
     },
     como_se_usa_Ing: {
         type: DataTypes.TEXT,
+        defaultValue: 'No translation yet',
         allowNull: true
     },
 }, { timestamps: false });
