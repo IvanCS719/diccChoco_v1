@@ -11,6 +11,8 @@ function App() {
        <Routes>
         <Route path='/' element={<Card></Card>}>  
         </Route>
+        <Route path='/loginDicc' element={<LoginAdmin></LoginAdmin>}>   
+        </Route>
         <Route path='/formulario' element={<FormAdmin></FormAdmin>}>   
         </Route>
         <Route path='/colaborar' element={<FormPublic></FormPublic>}>   

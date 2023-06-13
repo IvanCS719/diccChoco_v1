@@ -9,6 +9,7 @@ import { Categoria } from '../../models/diccChoco/Categoria.js';
 import { Colaborador } from '../../models/diccChoco/Colaborador.js';
 
 
+
 export const Palabras = sequelize.define('Palabras', {
     id:{
         type: DataTypes.INTEGER,
