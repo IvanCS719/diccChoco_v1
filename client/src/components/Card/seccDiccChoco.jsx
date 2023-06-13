@@ -1,6 +1,7 @@
 //import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cards from './Cards';
+import { Link } from 'react-router-dom';
 //import './cards.css'
 export default function Card() {
 
@@ -90,9 +91,9 @@ export default function Card() {
     const allWords = newFilter.length > 0 ? newFilter.length : datos.length
 
     return (
-        <div className='container px-4 lg:px-0 w-screen min-h-screen'>
+        <div className='container px-4 lg:px-0 min-h-screen'>
 
-            <h2 id='sectionId' className='text-3xl font-bold text-mfColor mb-5'>Palabras del Choco</h2>
+            <h2 id='sectionId' className='text-4xl font-bold text-mfColor my-5'>Palabras del Choco</h2>
             <div className='xl:mx-4 mb-6 w-auto flex flex-col gap-2'>
                 <div className='w-full flex flex-col gap-2 md:flex-row md:gap-0 md:justify-between items-center'>
 
@@ -190,7 +191,7 @@ export default function Card() {
 
             </div>
 
-            <div className='mt-5 w-full flex justify-center gap-3'>
+            <div className='mt-5 mb-4 w-full flex justify-center gap-3'>
                 {currentPage > 1 ?
                     <button className='rounded-md bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => setCurrent(currentPage - 1)}><i className="fa-solid fa-circle-left"></i> Anterior</button> : null}
                 {currentPage < allPages && partirData.length > 0 ?
@@ -202,6 +203,11 @@ export default function Card() {
                         }
 
                     }}>Siguiente <i className="fa-solid fa-circle-right"></i></button> : null}
+            </div>
+
+            <div className='mt-1 mb-2 w-full flex flex-col justify-center gap-3'>
+                <p className='text-center md:text-lg font-medium text-gray-800'>En este apartado podrás contribuir complementado palabras o significados <br /> que no encuentres en el diccionario.</p>            
+                    <Link to="/colaborar"><button className='rounded-md bg-mfColor px-3 py-2 text-white shadow-md font-medium'>Colaborar <i className="fa-solid fa-pen-to-square"></i></button></Link>
             </div>
         </div>
     )
