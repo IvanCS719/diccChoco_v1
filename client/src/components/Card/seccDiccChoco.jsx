@@ -107,6 +107,7 @@ export default function Card() {
                     </div>
 
                     <div className="flex gap-2">
+                     <p className='py-1 sm:text-lg font-medium text-gray-800'> Idioma:  <Link to="/Ingles" className="text-mfColor font-medium">Ingles</Link></p>
                         <p className='py-1 sm:text-lg font-medium text-gray-800'>Visualizar:</p>
                         <select
                             className="block w-auto rounded-md border-0 px-2 py-1 font-medium text-gray-800 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor text-center sm:max-w-xs sm:leading-6"
