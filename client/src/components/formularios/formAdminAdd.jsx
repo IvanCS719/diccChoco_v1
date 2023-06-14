@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import TablaAdmin from './tablapalabras';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-const FormField = ({ label, name, placeholder, errors, type = 'text' }) => (
+const FormField = ({ label, name, placeholder, errors, value,type = 'text', onChange }) => (
     <div className='text-left mb-3'>
         <label htmlFor={name}>{label}</label>
         <Field
@@ -10,6 +11,8 @@ const FormField = ({ label, name, placeholder, errors, type = 'text' }) => (
             id={name}
             name={name}
             placeholder={placeholder}
+            value={value}
+            onChange={onChange}
             className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
         />
         <ErrorMessage name={name} component={() => (
@@ -31,6 +34,34 @@ const Formulario = () => {
     const [modalAdd, setModalAdd] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
 
+    const [newFilter, setFiltro] = useState([])
+    const [idUpdate, setIdUpdate] = useState(null);
+    const [data, setData] = useState([]);
+    const [valoresForm, setValoresForm] = useState({
+        
+        palabra: '',
+        significado: '',
+        significadoIng: '',
+        acepciones: '',
+        acepcionesIng: '',
+        sinonimos: '',
+        sinonimosIng: '',
+        como_se_usa: '',
+        como_se_usa_Ing: '',
+        titleEjemplo: '',
+        EjemploChoco: '',
+        EjemploNeutror: '',
+        id_categoria: 1,
+        id_tipo: 1,
+        autorizado: true,
+        colaborador: 'Mercado Fácil',
+        correo_electronico: ''
+
+    
+});
+
+    //let result = []
+
     //let newDataNeutro = [];
     //let newDataChoco = [];
 
@@ -43,7 +74,7 @@ const Formulario = () => {
         }
     }, [dataCategoria])
 
-    const handleSubmit = (values, { resetForm }) => {
+    const handleSubmitAdd = (values, { resetForm }) => {
         try {
             //addEjemplos();
 
@@ -97,6 +128,68 @@ const Formulario = () => {
                 });
 
             setIsOpen(true);
+        } catch (error) {
+            console.log("mensaje", error)
+        }
+
+
+    };
+
+    const handleSubmitUpdate = (values, { resetForm }) => {
+        try {
+            //addEjemplos();
+
+            console.log('newDataNeutro:', dataNeutro);
+            console.log('newDataChoco:', dataChoco);
+
+            //Convertir los arreglos de ejemplos a una string
+
+            const dataNeutroString = dataNeutro.join('|');
+            const dataChocoString = dataChoco.join('|');
+
+            const dataNeutroIngString = dataNeutroIng.length ? dataNeutroIng.join('|') : 'No translation yet';
+            const dataChocoIngString = dataChocoIng.length ? dataChocoIng.join('|') : 'No translation yet';
+
+
+
+            // Agregar las cadenas de texto al objeto values
+            values.ejemplo_neutro = dataNeutroString;
+            values.ejemplo_choco = dataChocoString;
+            values.ejemplo_neutro_ingles = dataNeutroIngString;
+            values.ejemplo_choco_ingles = dataChocoIngString;
+            //values.significado = values.significado ? values.significado : 'No Aplica';
+            values.acepciones = values.acepciones ? values.acepciones : 'No Aplica';
+            values.sinonimos = values.sinonimos ? values.sinonimos : 'No Aplica';
+            values.significadoIng = values.significadoIng ? values.significadoIng : 'No translation yet';
+            values.acepcionesIng = values.acepcionesIng ? values.acepcionesIng : 'No translation yet';
+            values.sinonimosIng = values.sinonimosIng ? values.sinonimosIng : 'No translation yet';
+            values.como_se_usa_Ing = values.como_se_usa_Ing ? values.como_se_usa_Ing : 'No translation yet';
+
+            // Enviar los datos a la ruta del servidor
+            console.log(idUpdate)
+            fetch(`http://localhost:3000/palabras/${valoresForm.id}`, {
+                method: 'PUT',
+                body: JSON.stringify(values),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    // Hacer algo con la respuesta del servidor
+                    console.log(data);
+                    setArrTama([]);
+                    setDataNeutro([]);
+                    setDataChoco([]);
+                    resetForm();
+
+                })
+                .catch((error) => {
+                    // Manejar el error
+                    console.error(error);
+                });
+
+                setModalConfirUpdate(true);
         } catch (error) {
             console.log("mensaje", error)
         }
@@ -191,6 +284,15 @@ const Formulario = () => {
         //onClose();
     };
 
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setValoresForm((prevState) => ({
+          ...prevState,
+          [name]: value
+        }));
+      };
+
     return (
         <div className='container px-4 lg:px-0 min-h-screen'>
 
@@ -198,6 +300,8 @@ const Formulario = () => {
             <button type='button' className='w-auto rounded-md mt-2 bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => { setModalAdd(true) }}>Nueva Palabra</button>
             <button type='button' className='w-auto rounded-md mt-2 bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => { setModalUpdate(true) }}>Actualizar</button>
 
+            <TablaAdmin newFilter={newFilter} setFiltro={setFiltro} setModalUpdate={setModalUpdate} idUpdate={idUpdate} setIdUpdate={setIdUpdate} data={data} setData={setData}
+             setValoresForm={setValoresForm}/>
             <>
                 <Formik
                     //almacena los valores de cada campo
@@ -280,7 +384,7 @@ const Formulario = () => {
                         return errores;
                     }}
                     //para enviar formulario
-                    onSubmit={handleSubmit}
+                    onSubmit={handleSubmitAdd}
                 >
                     {({ values, errors }) => (
                         <Form >
@@ -608,62 +712,12 @@ const Formulario = () => {
 
                 <Formik
                     //almacena los valores de cada campo
-                    initialValues={{
-                        palabra: '',
-                        significado: '',
-                        significadoIng: '',
-                        acepciones: '',
-                        acepcionesIng: '',
-                        sinonimos: '',
-                        sinonimosIng: '',
-                        como_se_usa: '',
-                        como_se_usa_Ing: '',
-                        titleEjemplo: '',
-                        EjemploChoco: '',
-                        EjemploNeutror: '',
-                        id_categoria: 0,
-                        id_tipo: 1,
-                        autorizado: true,
-                        colaborador: 'Mercado Fácil',
-                        correo_electronico: ''
-
-                    }}
+                    initialValues={valoresForm}
                     //validar que los valores escritos dentro del campo, correspondan a lo solicitado en cada tabla
                     validate={(valores) => {
                         let errores = {};
 
-                        //valores de palabra
-                        if (!valores.palabra) {
-                            errores.palabra = 'Campo obligatorio*'
-                        }
-
-                        //valores de significado
-                        if (!valores.significado) {
-                            errores.significado = 'Campo obligatorio*'
-                        }
-
-                        if (valores.id_categoria == 0) {
-                            errores.id_categoria = 'Debe seleccionar una categoría*'
-                        }
-
-                        //valores de acepsiones
-                        /*if (!valores.acepciones) {
-                            errores.acepciones = 'ingrese una palabra'
-                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.acepciones)) {
-                            errores.acepciones = 'solo puedes escribir palabras'
-                        }*/
-
-                        //valores de sinónimos
-                        /*if (!valores.sinonimos) {
-                            errores.sinonimos = 'ingrese una palabra'
-                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.sinonimos)) {
-                            errores.sinonimos = 'solo puedes escribir palabras'
-                        }*/
-
-                        //valores de como se usa
-                        if (!valores.como_se_usa) {
-                            errores.como_se_usa = 'Campo obligatorio*'
-                        }
+                       
 
 
                         //valores de ejemplo neutro
@@ -687,7 +741,7 @@ const Formulario = () => {
                         return errores;
                     }}
                     //para enviar formulario
-                    onSubmit={handleSubmit}
+                    onSubmit={handleSubmitUpdate}
                 >
                     {({ values, errors }) => (
                         <Form >
@@ -709,9 +763,12 @@ const Formulario = () => {
                                                         label="Palabra:"
                                                         name="palabra"
                                                         placeholder="Ingrese la palabra"
+                                                        value={valoresForm.palabra}
+                                                        onChange={handleInputChange}
                                                         errors={errors}
                                                     />
 
+{console.log("Desde el formulario",valoresForm.palabra)}
                                                     <div className='text-left'>
                                                         <label htmlFor="selectedOption">Categoría Gramatical:</label>
                                                         <Field as="select" name="id_categoria" id="id_categoria"
@@ -733,6 +790,8 @@ const Formulario = () => {
                                                         label="Significado:"
                                                         name="significado"
                                                         placeholder="Significado de la palabra"
+                                                        value={valoresForm.significado}
+                                                        onChange={handleInputChange}
                                                         errors={errors}
                                                     />
 
@@ -752,6 +811,8 @@ const Formulario = () => {
                                                         label="Acepciones:"
                                                         name="acepciones"
                                                         placeholder="Acepciones de la palabra"
+                                                        value={valoresForm.acepciones}
+                                                        onChange={handleInputChange}
                                                     // errors={errors}
                                                     />
 
@@ -759,6 +820,8 @@ const Formulario = () => {
                                                         label="¿Cómo se usa?:"
                                                         name="como_se_usa"
                                                         placeholder="¿Cómo se usa?"
+                                                        value={valoresForm.como_se_usa}
+                                                        onChange={handleInputChange}
                                                         errors={errors}
                                                     />
                                                 </div>
