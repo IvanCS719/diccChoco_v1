@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import TablaAdmin from './tablapalabras';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-const FormField = ({ label, name, placeholder, errors, value,type = 'text', onChange }) => (
+const FormField = ({ label, name, placeholder, errors, value, type = 'text', onChange }) => (
     <div className='text-left mb-3'>
         <label htmlFor={name}>{label}</label>
         <Field
@@ -38,7 +38,7 @@ const Formulario = () => {
     const [idUpdate, setIdUpdate] = useState(null);
     const [data, setData] = useState([]);
     const [valoresForm, setValoresForm] = useState({
-        
+
         palabra: '',
         significado: '',
         significadoIng: '',
@@ -57,10 +57,10 @@ const Formulario = () => {
         colaborador: 'Mercado Fácil',
         correo_electronico: ''
 
-    
-});
 
-    //let result = []
+    });
+
+    let result = []
 
     //let newDataNeutro = [];
     //let newDataChoco = [];
@@ -135,6 +135,7 @@ const Formulario = () => {
 
     };
 
+
     const handleSubmitUpdate = (values, { resetForm }) => {
         try {
             //addEjemplos();
@@ -189,7 +190,7 @@ const Formulario = () => {
                     console.error(error);
                 });
 
-                setModalConfirUpdate(true);
+            setModalConfirUpdate(true);
         } catch (error) {
             console.log("mensaje", error)
         }
@@ -265,6 +266,7 @@ const Formulario = () => {
     const closeModalUp = () => {
         setModalConfirUpdate(false);
         setModalUpdate(false);
+        console.log("Desde formAdmin", idUpdate)
         //onClose();
     };
 
@@ -288,10 +290,10 @@ const Formulario = () => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setValoresForm((prevState) => ({
-          ...prevState,
-          [name]: value
+            ...prevState,
+            [name]: value
         }));
-      };
+    };
 
     return (
         <div className='container px-4 lg:px-0 min-h-screen'>
@@ -301,7 +303,7 @@ const Formulario = () => {
             <button type='button' className='w-auto rounded-md mt-2 bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => { setModalUpdate(true) }}>Actualizar</button>
 
             <TablaAdmin newFilter={newFilter} setFiltro={setFiltro} setModalUpdate={setModalUpdate} idUpdate={idUpdate} setIdUpdate={setIdUpdate} data={data} setData={setData}
-             setValoresForm={setValoresForm}/>
+                setValoresForm={setValoresForm} result={result} />
             <>
                 <Formik
                     //almacena los valores de cada campo
@@ -712,13 +714,70 @@ const Formulario = () => {
 
                 <Formik
                     //almacena los valores de cada campo
-                    initialValues={valoresForm}
+                    initialValues={{
+                        palabra: '',
+                        significado: '',
+                        acepciones: '',
+                        sinonimos: '',
+                        como_se_usa: '',
+                        ejemplo_neutro: '',
+                        ejemplo_choco: '',
+                        colaborador: 'Mercado Fácil',
+                        correo_electronico: '',
+                        autorizado: true,
+                        id_categoria: 0,
+                        id_tipo: 1,
+                        significadoIng: '',
+                        acepcionesIng: '',
+                        sinonimosIng: '',
+                        como_se_usa_Ing: '',
+                        ejemplo_neutro_ingles: '',
+                        ejemplo_choco_ingles: ''
+
+                    }}
                     //validar que los valores escritos dentro del campo, correspondan a lo solicitado en cada tabla
                     validate={(valores) => {
                         let errores = {};
 
-                       
 
+                        if (!valoresForm.palabra) {
+                            errores.palabra = 'Campo obligatorio*'
+                        }
+
+                        //valores de significado
+                        if (!valores.significado) {
+                            errores.significado = 'Campo obligatorio*'
+                        }
+
+                        if (valores.id_categoria == 0) {
+                            errores.id_categoria = 'Debe seleccionar una categoría*'
+                        }
+
+                        //valores de acepsiones
+                        /*if (!valores.acepciones) {
+                            errores.acepciones = 'ingrese una palabra'
+                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.acepciones)) {
+                            errores.acepciones = 'solo puedes escribir palabras'
+                        }*/
+
+                        //valores de sinónimos
+                        /*if (!valores.sinonimos) {
+                            errores.sinonimos = 'ingrese una palabra'
+                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.sinonimos)) {
+                            errores.sinonimos = 'solo puedes escribir palabras'
+                        }*/
+
+                        //valores de como se usa
+                        if (!valores.como_se_usa) {
+                            errores.como_se_usa = 'Campo obligatorio*'
+                        }
+
+
+                        //valores de ejemplo neutro
+
+                        if (arrTama.length == 0) {
+                            errores.titleEjemplo = 'Debe agregar almenos un ejemplo*'
+                        }
 
                         //valores de ejemplo neutro
 
@@ -768,7 +827,7 @@ const Formulario = () => {
                                                         errors={errors}
                                                     />
 
-{console.log("Desde el formulario",valoresForm.palabra)}
+                                                    {console.log("Desde el formulario", valoresForm.palabra)}
                                                     <div className='text-left'>
                                                         <label htmlFor="selectedOption">Categoría Gramatical:</label>
                                                         <Field as="select" name="id_categoria" id="id_categoria"
@@ -790,8 +849,7 @@ const Formulario = () => {
                                                         label="Significado:"
                                                         name="significado"
                                                         placeholder="Significado de la palabra"
-                                                        value={valoresForm.significado}
-                                                        onChange={handleInputChange}
+
                                                         errors={errors}
                                                     />
 
@@ -811,8 +869,7 @@ const Formulario = () => {
                                                         label="Acepciones:"
                                                         name="acepciones"
                                                         placeholder="Acepciones de la palabra"
-                                                        value={valoresForm.acepciones}
-                                                        onChange={handleInputChange}
+
                                                     // errors={errors}
                                                     />
 
@@ -820,8 +877,7 @@ const Formulario = () => {
                                                         label="¿Cómo se usa?:"
                                                         name="como_se_usa"
                                                         placeholder="¿Cómo se usa?"
-                                                        value={valoresForm.como_se_usa}
-                                                        onChange={handleInputChange}
+
                                                         errors={errors}
                                                     />
                                                 </div>

@@ -179,13 +179,13 @@ export const updatePalabra = async (req, res) => {
             como_se_usa,
             como_se_usa_Ing,
             autorizado,
-            id_ejemplos,
-            id_ingles,
+            //id_ejemplos,
+            //id_ingles,
             ejemplo_neutro,
             ejemplo_choco,
             ejemplo_neutro_ingles,
             ejemplo_choco_ingles,
-            id_colaborador,
+            //id_colaborador,
             colaborador,
             correo_electronico,
             id_categoria,
@@ -222,7 +222,7 @@ export const updatePalabra = async (req, res) => {
                 ejemplo_neutro_ingles: ejemplo_neutro_ingles
             }, {
                 where: {
-                  id: id_ejemplos
+                  id_palabras: id
                 }
               });
 
@@ -233,7 +233,7 @@ export const updatePalabra = async (req, res) => {
                 como_se_usa_Ing: como_se_usa_Ing,
             }, {
                 where: {
-                  id: id_ingles
+                  id_palabrasIng: id
                 }
               }); 
               
@@ -242,7 +242,7 @@ export const updatePalabra = async (req, res) => {
                 correo_electronico: correo_electronico,
             }, {
                 where: {
-                  id: id_colaborador
+                  id_palabras: id
                 }
               });
 
