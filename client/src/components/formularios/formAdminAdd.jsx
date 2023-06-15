@@ -65,7 +65,8 @@ const Formulario = () => {
         
         
         ejemplo_neutro_ingles: '',
-        ejemplo_choco_ingles: ''
+        ejemplo_choco_ingles: '',
+        titleEjemplo:''
 
     });
 
@@ -224,6 +225,16 @@ const Formulario = () => {
 
     }
 
+    function arrEjemNeutroActu(v, i) {
+        const newDataNeutroActu = [...dataNeutroActu]
+
+        newDataNeutroActu[i] = v
+
+        setDataNeutroActu(newDataNeutroActu)
+
+
+    }
+
     function arrEjemNeutroIng(v, i) {
         const newDataNeutroIng = [...dataNeutroIng]
 
@@ -317,7 +328,7 @@ const Formulario = () => {
             <button type='button' className='w-auto rounded-md mt-2 bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => { setModalUpdate(true) }}>Actualizar</button>
 
             <TablaAdmin newFilter={newFilter} setFiltro={setFiltro} setModalUpdate={setModalUpdate} idUpdate={idUpdate} setIdUpdate={setIdUpdate} data={data} setData={setData}
-                setValoresForm={setValoresForm} setArrTama={setArrTama} />
+                setValoresForm={setValoresForm} setArrTama={setArrTama} setDataNeutroActu={setDataNeutroActu} setDataChocoActu={setDataChocoActu}/>
             <>
                 <Formik
                     //almacena los valores de cada campo
@@ -691,7 +702,8 @@ const Formulario = () => {
 
                 <Formik
                     //almacena los valores de cada campo
-                    initialValues={valoresForm}
+                    initialValues={
+                        valoresForm}
                     //validar que los valores escritos dentro del campo, correspondan a lo solicitado en cada tabla
                     validate={(valores) => {
                         let errores = {};
@@ -729,7 +741,7 @@ const Formulario = () => {
                         }
 
                         arrTama.map((item, index) => {
-                            if (!dataNeutro[index]) {
+                            if (!dataNeutroActu[index]) {
                                 errores.titleEjemplo = 'Ejemplo neutro necesario*'
                             }
                             //valores de ejemplo choco
@@ -867,10 +879,10 @@ const Formulario = () => {
                                                                     type='text'
                                                                     id={`ejemplo_neutro${index}`}
                                                                     name={`ejemplo_neutro${index}`}
-                                                                    value={dataNeutro[index] || ''}
+                                                                    value={dataNeutroActu[index] || ''}
                                                                     placeholder="Escribe el ejemplo neutro"
                                                                     className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
-                                                                    onChange={(event) => arrEjemNeutro(event.target.value, index)}
+                                                                    onChange={(event) => arrEjemNeutroActu(event.target.value, index)}
                                                                 />
                                                                 <ErrorMessage name={`ejemplo_neutro${index}`} component={() => (
                                                                     <div className='error text-red-600 font-medium'>{errors[`ejemplo_neutro${index}`]}</div>
@@ -883,7 +895,7 @@ const Formulario = () => {
                                                                     type='text'
                                                                     id={`ejemplo_choco${index}`}
                                                                     name={`ejemplo_choco${index}`}
-                                                                    value={dataChoco[index] || ''}
+                                                                    value={dataChocoActu[index] || ''}
                                                                     placeholder="Escribe el ejemplo choco"
                                                                     className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                                     onChange={(event) => arrEjemChoco(event.target.value, index)}
@@ -895,13 +907,13 @@ const Formulario = () => {
                                                             <button type="button" className='max-w-max my-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={() => {
 
                                                                 try {
-                                                                    const newDataNeutro = [...dataNeutro]; // Copia el arreglo original
-                                                                    newDataNeutro.splice(index, 1); // Realiza la modificación en la copia
-                                                                    setDataNeutro(newDataNeutro);
+                                                                    const newDataNeutroActu = [...dataNeutroActu]; // Copia el arreglo original
+                                                                    newDataNeutroActu.splice(index, 1); // Realiza la modificación en la copia
+                                                                    setDataNeutroActu(newDataNeutroActu);
 
-                                                                    const newDataChoco = [...dataChoco]; // Copia el arreglo original
-                                                                    newDataChoco.splice(index, 1); // Realiza la modificación en la copia
-                                                                    setDataChoco(newDataChoco);
+                                                                    const newDataChocoActu = [...dataChocoActu]; // Copia el arreglo original
+                                                                    newDataChocoActu.splice(index, 1); // Realiza la modificación en la copia
+                                                                    setDataChocoActu(newDataChocoActu);
 
                                                                     const newDataNeutroIng = [...dataNeutroIng]; // Copia el arreglo original
                                                                     newDataNeutroIng.splice(index, 1); // Realiza la modificación en la copia

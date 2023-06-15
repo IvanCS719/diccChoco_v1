@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUpdate, setIdUpdate, data, setData, setIndexUp, setArrTama }) => {
+const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUpdate, setIdUpdate,
+   data, setData, setIndexUp, setArrTama, setDataNeutroActu, setDataChocoActu }) => {
   // const [data, setData] = useState([]);
   const [currentPage, setCurrent] = useState(1)
 
@@ -35,6 +36,20 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUp
   };
 
   const actualizarDato = (row) => {
+    const ejeNeutro = []
+    row.Ejemplo.ejemplo_neutro.split("|").map((segment) => (
+      ejeNeutro.push(segment)
+    ))
+    setDataNeutroActu(ejeNeutro)
+    setArrTama(ejeNeutro)
+
+    const ejeChoco = []
+    row.Ejemplo.ejemplo_choco.split("|").map((segment) => (
+      ejeChoco.push(segment)
+    ))
+    setDataNeutroActu(ejeChoco)
+    //setArrTama(ejeChoco)
+
     //setIdUpdate(row.id);
     setModalUpdate(true)
     console.log("resultado Row", row.id)
