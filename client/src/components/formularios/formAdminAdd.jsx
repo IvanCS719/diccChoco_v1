@@ -34,29 +34,38 @@ const Formulario = () => {
     const [modalAdd, setModalAdd] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
 
+
+    const [dataNeutroActu, setDataNeutroActu] = useState([]);
+    const [dataChocoActu, setDataChocoActu] = useState([]);
     const [newFilter, setFiltro] = useState([])
     const [idUpdate, setIdUpdate] = useState(null);
     const [data, setData] = useState([]);
     const [valoresForm, setValoresForm] = useState({
-
         palabra: '',
         significado: '',
-        significadoIng: '',
         acepciones: '',
-        acepcionesIng: '',
         sinonimos: '',
-        sinonimosIng: '',
         como_se_usa: '',
-        como_se_usa_Ing: '',
-        titleEjemplo: '',
-        EjemploChoco: '',
-        EjemploNeutror: '',
-        id_categoria: 1,
-        id_tipo: 1,
-        autorizado: true,
+        ejemplo_neutro: '',
+        ejemplo_choco: '',
         colaborador: 'Mercado Fácil',
-        correo_electronico: ''
-
+        correo_electronico: '',
+        autorizado: true,
+        id_categoria: 0,
+        Categorium: {
+            id: 0,
+        },
+        Ingle:{
+            significadoIng:'',
+            sinonimosIng: '',
+            acepcionesIng: '',
+            como_se_usa_Ing: ''
+        },
+        id_tipo: 1,
+        
+        
+        ejemplo_neutro_ingles: '',
+        ejemplo_choco_ingles: ''
 
     });
 
@@ -139,6 +148,7 @@ const Formulario = () => {
     const handleSubmitUpdate = (values, { resetForm }) => {
         try {
             //addEjemplos();
+            console.log("De values", values)
 
             console.log('newDataNeutro:', dataNeutro);
             console.log('newDataChoco:', dataChoco);
@@ -197,22 +207,6 @@ const Formulario = () => {
 
 
     };
-
-    /*function addEjemplos() {
-        console.log(dataNeutro)
-
-        arrTama.map((item, index) => {
-            const inputNeutro = document.getElementById(`ejemplo_neutro${index}`).value;
-            const inputChoco = document.getElementById(`ejemplo_choco${index}`).value;
-            newDataNeutro.push(inputNeutro);
-            newDataChoco.push(inputChoco);
-
-
-        })
-
-
-
-    };*/
 
     function newEjemplos() {
 
@@ -294,6 +288,26 @@ const Formulario = () => {
             [name]: value
         }));
     };
+    const handleInputChange2 = (e) => {
+        const { name, value } = e.target;
+        setValoresForm((prevState) => ({
+          ...prevState,
+          Ingle: {
+            ...prevState.Ingle,
+            [name]: value
+          }
+        }));
+    };
+    const handleSelectChange = (e) => {
+        const { name, value } = e.target;
+        setValoresForm((prevState) => ({
+          ...prevState,
+          Categorium: {
+            ...prevState.Categorium,
+            id: value
+          }
+        }));
+      };
 
     return (
         <div className='container px-4 lg:px-0 min-h-screen'>
@@ -303,7 +317,7 @@ const Formulario = () => {
             <button type='button' className='w-auto rounded-md mt-2 bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => { setModalUpdate(true) }}>Actualizar</button>
 
             <TablaAdmin newFilter={newFilter} setFiltro={setFiltro} setModalUpdate={setModalUpdate} idUpdate={idUpdate} setIdUpdate={setIdUpdate} data={data} setData={setData}
-                setValoresForm={setValoresForm} result={result} />
+                setValoresForm={setValoresForm} setArrTama={setArrTama} />
             <>
                 <Formik
                     //almacena los valores de cada campo
@@ -344,20 +358,6 @@ const Formulario = () => {
                         if (valores.id_categoria == 0) {
                             errores.id_categoria = 'Debe seleccionar una categoría*'
                         }
-
-                        //valores de acepsiones
-                        /*if (!valores.acepciones) {
-                            errores.acepciones = 'ingrese una palabra'
-                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.acepciones)) {
-                            errores.acepciones = 'solo puedes escribir palabras'
-                        }*/
-
-                        //valores de sinónimos
-                        /*if (!valores.sinonimos) {
-                            errores.sinonimos = 'ingrese una palabra'
-                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.sinonimos)) {
-                            errores.sinonimos = 'solo puedes escribir palabras'
-                        }*/
 
                         //valores de como se usa
                         if (!valores.como_se_usa) {
@@ -562,30 +562,7 @@ const Formulario = () => {
                                         <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Traducir A Inglés</h2>
                                         <div className='w-full flex flex-col xl:flex-row gap-4'>
                                             <div className='w-full'>
-                                                {/*<div className='w-full flex justify-around'>
-                                        <FormField
-                                            label="Palabra"
-                                            name="palabra"
-                                            placeholder="Ingrese la palabra"
-                                            errors={errors}
-                                        />
-
-                                        <div className='text-left'>
-                                            <label htmlFor="selectedOption">Categoría Gramatical:</label>
-                                            <Field as="select" name="id_categoria" id="id_categoria"
-                                                className="block w-64 rounded-md border-0 px-2 py-2 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor sm:max-w-xs sm:leading-6">
-                                                <option value="">Selecciona una categoría</option>
-                                                {dataCategoria.map((e) => (
-                                                    <option key={e.id} value={e.id}>
-                                                        {e.categoria}
-                                                    </option>
-                                                ))}
-                                            </Field>
-                                            <ErrorMessage name='id_categoria' component={() => (
-                                                <div className='error text-red-600 font-medium'>{errors.id_categoria}</div>
-                                            )} />
-                                        </div>
-                                            </div>*/}
+                                    
                                                 <div className='w-auto flex flex-col md:flex-row justify-center items-center gap-1 md:gap-5'>
                                                     <FormField
                                                         label="Significado:"
@@ -714,27 +691,7 @@ const Formulario = () => {
 
                 <Formik
                     //almacena los valores de cada campo
-                    initialValues={{
-                        palabra: '',
-                        significado: '',
-                        acepciones: '',
-                        sinonimos: '',
-                        como_se_usa: '',
-                        ejemplo_neutro: '',
-                        ejemplo_choco: '',
-                        colaborador: 'Mercado Fácil',
-                        correo_electronico: '',
-                        autorizado: true,
-                        id_categoria: 0,
-                        id_tipo: 1,
-                        significadoIng: '',
-                        acepcionesIng: '',
-                        sinonimosIng: '',
-                        como_se_usa_Ing: '',
-                        ejemplo_neutro_ingles: '',
-                        ejemplo_choco_ingles: ''
-
-                    }}
+                    initialValues={valoresForm}
                     //validar que los valores escritos dentro del campo, correspondan a lo solicitado en cada tabla
                     validate={(valores) => {
                         let errores = {};
@@ -745,30 +702,16 @@ const Formulario = () => {
                         }
 
                         //valores de significado
-                        if (!valores.significado) {
+                        if (!valoresForm.significado) {
                             errores.significado = 'Campo obligatorio*'
                         }
 
-                        if (valores.id_categoria == 0) {
+                        if (valoresForm.Categorium.id == 0) {
                             errores.id_categoria = 'Debe seleccionar una categoría*'
                         }
 
-                        //valores de acepsiones
-                        /*if (!valores.acepciones) {
-                            errores.acepciones = 'ingrese una palabra'
-                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.acepciones)) {
-                            errores.acepciones = 'solo puedes escribir palabras'
-                        }*/
-
-                        //valores de sinónimos
-                        /*if (!valores.sinonimos) {
-                            errores.sinonimos = 'ingrese una palabra'
-                        } else if (!/^[a-zA-Z\s.,;:?!¡¿()"'-]+$/.test(valores.sinonimos)) {
-                            errores.sinonimos = 'solo puedes escribir palabras'
-                        }*/
-
                         //valores de como se usa
-                        if (!valores.como_se_usa) {
+                        if (!valoresForm.como_se_usa) {
                             errores.como_se_usa = 'Campo obligatorio*'
                         }
 
@@ -831,6 +774,8 @@ const Formulario = () => {
                                                     <div className='text-left'>
                                                         <label htmlFor="selectedOption">Categoría Gramatical:</label>
                                                         <Field as="select" name="id_categoria" id="id_categoria"
+                                                        value={valoresForm.Categorium.id}
+                                                        onChange={handleSelectChange}
                                                             className="block w-64 rounded-md border-0 px-2 py-2 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor sm:max-w-xs sm:leading-6">
                                                             <option value="">Selecciona una categoría</option>
                                                             {dataCategoria.map((e) => (
@@ -843,13 +788,15 @@ const Formulario = () => {
                                                             <div className='error text-red-600 font-medium'>{errors.id_categoria}</div>
                                                         )} />
                                                     </div>
+                                                    {console.log("id de categoria", valoresForm.Categorium.id)}
                                                 </div>
                                                 <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
                                                     <FormField
                                                         label="Significado:"
                                                         name="significado"
                                                         placeholder="Significado de la palabra"
-
+                                                        value={valoresForm.significado}
+                                                        onChange={handleInputChange}
                                                         errors={errors}
                                                     />
 
@@ -857,6 +804,8 @@ const Formulario = () => {
                                                         label="Sinónimos (separados por coma):"
                                                         name="sinonimos"
                                                         placeholder="Sinónimos de la palabra"
+                                                        value={valoresForm.sinonimos}
+                                                        onChange={handleInputChange}
                                                     // errors={errors}
                                                     />
 
@@ -869,7 +818,8 @@ const Formulario = () => {
                                                         label="Acepciones:"
                                                         name="acepciones"
                                                         placeholder="Acepciones de la palabra"
-
+                                                        value={valoresForm.acepciones}
+                                                        onChange={handleInputChange}
                                                     // errors={errors}
                                                     />
 
@@ -877,7 +827,8 @@ const Formulario = () => {
                                                         label="¿Cómo se usa?:"
                                                         name="como_se_usa"
                                                         placeholder="¿Cómo se usa?"
-
+                                                        value={valoresForm.como_se_usa}
+                                                        onChange={handleInputChange}
                                                         errors={errors}
                                                     />
                                                 </div>
@@ -982,42 +933,21 @@ const Formulario = () => {
                                         <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Actualizar Traducción Inglés</h2>
                                         <div className='w-full flex flex-col xl:flex-row gap-4'>
                                             <div className='w-full'>
-                                                {/*<div className='w-full flex justify-around'>
-                                        <FormField
-                                            label="Palabra"
-                                            name="palabra"
-                                            placeholder="Ingrese la palabra"
-                                            errors={errors}
-                                        />
-
-                                        <div className='text-left'>
-                                            <label htmlFor="selectedOption">Categoría Gramatical:</label>
-                                            <Field as="select" name="id_categoria" id="id_categoria"
-                                                className="block w-64 rounded-md border-0 px-2 py-2 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor sm:max-w-xs sm:leading-6">
-                                                <option value="">Selecciona una categoría</option>
-                                                {dataCategoria.map((e) => (
-                                                    <option key={e.id} value={e.id}>
-                                                        {e.categoria}
-                                                    </option>
-                                                ))}
-                                            </Field>
-                                            <ErrorMessage name='id_categoria' component={() => (
-                                                <div className='error text-red-600 font-medium'>{errors.id_categoria}</div>
-                                            )} />
-                                        </div>
-                                            </div>*/}
                                                 <div className='w-auto flex flex-col md:flex-row justify-center items-center gap-1 md:gap-5'>
                                                     <FormField
                                                         label="Significado:"
                                                         name="significadoIng"
                                                         placeholder="Traducir significado de la palabra"
+                                                        value={valoresForm.Ingle.significadoIng == 'No translation yet' ? '': valoresForm.Ingle.significadoIng}
+                                                        onChange={handleInputChange2}
                                                     //errors={errors}
                                                     />
-
                                                     <FormField
                                                         label="Sinónimos (separados por coma):"
                                                         name="sinonimosIng"
                                                         placeholder="Traducir sinónimos de la palabra"
+                                                        value={valoresForm.Ingle.sinonimosIng == 'No translation yet' ? '': valoresForm.Ingle.sinonimosIng}
+                                                        onChange={handleInputChange2}
                                                     // errors={errors}
                                                     />
 
@@ -1030,6 +960,8 @@ const Formulario = () => {
                                                         label="Acepciones:"
                                                         name="acepcionesIng"
                                                         placeholder="Traducir acepciones de la palabra"
+                                                        value={valoresForm.Ingle.acepcionesIng == 'No translation yet' ? '': valoresForm.Ingle.acepcionesIng}
+                                                        onChange={handleInputChange2}
                                                     // errors={errors}
                                                     />
 
@@ -1037,6 +969,8 @@ const Formulario = () => {
                                                         label="¿Cómo se usa?:"
                                                         name="como_se_usa_Ing"
                                                         placeholder="Traducir ¿Cómo se usa?"
+                                                        value={valoresForm.Ingle.como_se_usa_Ing == 'No translation yet' ? '': valoresForm.Ingle.como_se_usa_Ing}
+                                                        onChange={handleInputChange2}
                                                     // errors={errors}
                                                     />
                                                 </div>
@@ -1098,8 +1032,6 @@ const Formulario = () => {
                                                 </div>
 
 
-
-
                                             </div>
                                         </div>
 
@@ -1124,8 +1056,6 @@ const Formulario = () => {
 
 
                         </Form>
-
-
 
 
                     )}

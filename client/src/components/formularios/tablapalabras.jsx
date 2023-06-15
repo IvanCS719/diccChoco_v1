@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUpdate, setIdUpdate, data, setData, setIndexUp, result }) => {
+const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUpdate, setIdUpdate, data, setData, setIndexUp, setArrTama }) => {
   // const [data, setData] = useState([]);
   const [currentPage, setCurrent] = useState(1)
 
   // buscar palabras
   //const [newFilter, setFiltro] = useState([])
   const [inicio, setInicio] = useState(false)
+  const [eliPalabra, setEliPalabra] = useState('');
 
 
   useEffect(() => {
@@ -16,7 +17,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUp
   const fetchData = async () => {
 
     try {
-      const response = await fetch('http://localhost:3000/palabras');
+      const response = await fetch('http://localhost:3000/palabrasall');
       const jsonData = await response.json();
       setData(jsonData);
       console.log(jsonData)
@@ -27,7 +28,8 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUp
 
   };
 
-  const eliminarDato = (id) => {
+  const eliminarDato = (id, palabra) => {
+    setEliPalabra(palabra);
     setItemToDelete(id);
     setShowWarningModal(true);
   };
@@ -104,67 +106,82 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUp
 
 
   return (
-    <div className="divide-orange-700 flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <br />
-      <br />
+    <div className="divide-orange-700 flex flex-col min-h-screen">
+
       <input
         className='px-3 py-2 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1'
         type="text"
         onChange={realTimeSearch}
         placeholder="Buscar palabra..."
       />
-      <table id='sectionId' className="table w-full border-separate">
-        <thead>
-          <tr className="text-md  text-blue-600 bg-gray-300 ">
-            <th className="px-6 ">ID</th>
-            <th className="px-6">PALABRA</th>
-            <th className="px-6">SIGNIFICADO</th>
-            <th className="px-3">ACEPCIONES</th>
-            <th className="px-6">SINÓNIMOS</th>
-            <th className="px-10">COMO SE USA</th>
-            <th className="px-8">EJEMPLO NEUTRO</th>
-            <th className="px-8">EJEMPLO CHOCO</th>
-            <th className="px-8">OPCIONES</th>
-            {/* ...otras columnas */}
-          </tr>
-        </thead>
-        <tbody>
-          {partirData.length > 0 ?
+      <div className='w-full overflow-x-auto'>
+        <table id='sectionId' className="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr className="text-md  text-blue-600 bg-gray-300 ">
+              <th className="px-4">ID</th>
+              <th className="px-4">PALABRA</th>
+              <th className="px-4">SIGNIFICADO</th>
+              <th className="px-4">CATEGORIA</th>
+              <th className="px-4">ACEPCIONES</th>
+              <th className="px-4">SINÓNIMOS</th>
+              <th className="px-4">COMO SE USA</th>
+              <th className="px-4">EJEMPLO NEUTRO</th>
+              <th className="px-4">EJEMPLO CHOCO</th>
+              <th className="px-4">OPCIONES</th>
+              {/* ...otras columnas */}
+            </tr>
+          </thead>
+          <tbody>
+            {partirData.length > 0 ?
 
-            partirData.map((e, index) => (
-              <tr key={e.id} className="hover:bg-orange-200 border-b border-gray-300">
-                <td>{e.id}</td>
-                <td>{e.palabra}</td>
+              partirData.map((e, index) => (
+                <tr key={e.id} className="hover:bg-gray-200 border-b border-gray-300">
+                  <td>{e.id}</td>
+                  <td>{e.palabra}</td>
 
-                <td>{e.significado}</td>
-                <td >{e.acepciones}</td>
-                <td>{e.sinonimos}</td>
-                <td >{e.como_se_usa}</td>
-                <td>{e.Ejemplo.ejemplo_neutro}</td>
-                <td >{e.Ejemplo.ejemplo_choco}</td>
-                <td className="text-black-600 hover:bg-blue-100">
-                  <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-2 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
-                  <button className="max-w-max my-auto h-min rounded-md bg-red-500 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id)}>
-                    <i className="fa-solid fa-trash"></i>
-                  </button>
-                </td>
+                  <td>{e.significado}</td>
+                  <td>{e.Categorium.categoria}</td>
+                  <td >{e.acepciones}</td>
+                  <td>{e.sinonimos}</td>
+                  <td >{e.como_se_usa}</td>
+                  <td>{e.Ejemplo.ejemplo_neutro.split("|").map((segment, index) => (
+                    <React.Fragment  key={index}>
+                      {`${index + 1}. ${segment}`}
+                      <br />
+                    </React.Fragment>
+                  ))}</td>
+                  <td>{e.Ejemplo.ejemplo_choco.split("|").map((segment, index) => (
+                    <React.Fragment key={index}>
+                      {`${index + 1}. ${segment}`}
+                      <br />
+                    </React.Fragment>
+                  ))}</td>
+                  
+                  <td className="text-black-600 hover:bg-blue-100">
+                    <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-2 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
+                    <button className="max-w-max my-auto h-min rounded-md bg-red-500 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
+                      <i className="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
 
-              </tr>
+                </tr>
 
-            ))
+              ))
 
-            :
-            <tr><td colSpan={9} className='font-bold text-gray-700 text-2xl'>Sin Resultados</td></tr>
-          }
-        </tbody>
-      </table>
+              :
+              <tr><td colSpan={9} className='font-bold text-gray-700 text-2xl'>Sin Resultados</td></tr>
+            }
+          </tbody>
+        </table>
+
+      </div>
 
 
       {/*muestra mensaje de advertencias para eliminar datos*/}
       {showWarningModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
-          <div className="bg-white p-8 rounded-md">
-            <p>¿Estás seguro de que deseas eliminar este dato?</p>
+        <div className="fixed inset-0 flex items-center justify-center bg-modal">
+          <div className="bg-white sm:mx-5 sm:w-96 p-5 rounded-xl shadow-mfBoxShadow border mx-2">
+            <p>¿Estás seguro de que deseas eliminar <span className='font-semibold'>{eliPalabra}</span>?</p>
             <div className="flex justify-end mt-6">
               <button
                 className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
