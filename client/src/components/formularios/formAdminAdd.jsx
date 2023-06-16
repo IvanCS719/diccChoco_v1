@@ -83,6 +83,21 @@ const Formulario = () => {
 
     });
 
+    const fetchData = async () => {
+
+        try {
+          const response = await fetch('http://localhost:3000/palabrasall');
+          const jsonData = await response.json();
+          setData(jsonData);
+          setFiltro(data)
+          console.log(jsonData)
+    
+        } catch (error) {
+          console.error(error);
+        }
+    
+      };
+
     useEffect(() => {
         if (!dataCategoria.length) {
             fetch('http://localhost:3000/categoriagra')
@@ -124,15 +139,17 @@ const Formulario = () => {
                 },
             })
                 .then((response) => response.json())
-                .then((data) => {
+                .then((response) => {
                     // Hacer algo con la respuesta del servidor
-                    console.log(data);
+                   
                     setArrTama([]);
                     setDataNeutro([]);
                     setDataChoco([]);
                     setDataNeutroIng([]);
                     setDataChocoIng([]);
                     resetForm();
+                    fetchData();
+                    setFiltro(data);
 
                 })
                 .catch((error) => {
@@ -205,15 +222,17 @@ const Formulario = () => {
                 },
             })
                 .then((response) => response.json())
-                .then((data) => {
+                .then((data2) => {
                     // Hacer algo con la respuesta del servidor
-                    console.log(data);
+                    console.log(data2);
                     setArrTama([]);
                     setDataNeutro([]);
                     setDataChoco([]);
                     setDataNeutroIng([]);
                     setDataChocoIng([]);
                     resetForm();
+                    fetchData();
+                    setFiltro(data);
 
                 })
                 .catch((error) => {
@@ -342,7 +361,7 @@ const Formulario = () => {
 
             <TablaAdmin newFilter={newFilter} setFiltro={setFiltro} setModalUpdate={setModalUpdate} data={data} setData={setData}
                 setValoresForm={setValoresForm} setArrTama={setArrTama} setDataNeutro={setDataNeutro}
-                setDataChoco={setDataChoco} setDataNeutroIng={setDataNeutroIng} setDataChocoIng={setDataChocoIng} />
+                setDataChoco={setDataChoco} setDataNeutroIng={setDataNeutroIng} setDataChocoIng={setDataChocoIng} fetchData={fetchData}/>
             <>
                 <Formik
                     //almacena los valores de cada campo
@@ -813,7 +832,7 @@ const Formulario = () => {
                                                         label="Sinónimos (separados por coma):"
                                                         name="sinonimos"
                                                         placeholder="Sinónimos de la palabra"
-                                                        value={valoresForm.sinonimos == 'No establecido' ? '' : valoresForm.sinonimos}
+                                                        value={valoresForm.sinonimos == 'No Aplica' ? '' : valoresForm.sinonimos}
                                                         onChange={handleInputChange}
                                                     // errors={errors}
                                                     />
@@ -827,7 +846,7 @@ const Formulario = () => {
                                                         label="Acepciones:"
                                                         name="acepciones"
                                                         placeholder="Acepciones de la palabra"
-                                                        value={valoresForm.acepciones == 'No establecido' ? '' : valoresForm.acepciones}
+                                                        value={valoresForm.acepciones == 'No Aplica' ? '' : valoresForm.acepciones}
                                                         onChange={handleInputChange}
                                                     // errors={errors}
                                                     />
@@ -992,7 +1011,7 @@ const Formulario = () => {
                                                                     type='text'
                                                                     id={`ejemplo_neutro${index}`}
                                                                     name={`ejemplo_neutro${index}`}
-                                                                    value={dataNeutroIng[index] || ''}
+                                                                    value={dataNeutroIng[index]  == 'No translation yet' ? '' : dataNeutroIng[index]}
                                                                     placeholder="Traducir ejemplo neutro"
                                                                     className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                                     onChange={(event) => arrEjemNeutroIng(event.target.value, index)}
@@ -1006,7 +1025,7 @@ const Formulario = () => {
                                                                     type='text'
                                                                     id={`ejemplo_choco${index}`}
                                                                     name={`ejemplo_choco${index}`}
-                                                                    value={dataChocoIng[index] || ''}
+                                                                    value={dataChocoIng[index]  == 'No translation yet' ? '' : dataChocoIng[index]}
                                                                     placeholder="Traducir ejemplo choco"
                                                                     className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                                     onChange={(event) => arrEjemChocoIng(event.target.value, index)}

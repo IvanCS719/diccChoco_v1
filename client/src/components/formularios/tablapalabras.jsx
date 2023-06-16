@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
-   data, setData, setArrTama, setDataNeutro, setDataChoco, setDataNeutroIng, setDataChocoIng }) => {
+   data, setData, setArrTama, setDataNeutro, setDataChoco, setDataNeutroIng, setDataChocoIng, fetchData}) => {
   // const [data, setData] = useState([]);
   const [currentPage, setCurrent] = useState(1)
 
@@ -15,19 +15,6 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
     fetchData();
   }, []);
 
-  const fetchData = async () => {
-
-    try {
-      const response = await fetch('http://localhost:3000/palabrasall');
-      const jsonData = await response.json();
-      setData(jsonData);
-      console.log(jsonData)
-
-    } catch (error) {
-      console.error(error);
-    }
-
-  };
 
   const eliminarDato = (id, palabra) => {
     setEliPalabra(palabra);

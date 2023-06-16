@@ -354,6 +354,7 @@ export const getAllPalabras = async (req, res) => {
                     required: true, // Utilizar INNER JOIN
                   },
               ],
+              order: [['id', 'ASC']],
         });
         res.json(arrPalabras);
     } catch (error) {
