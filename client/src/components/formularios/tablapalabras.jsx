@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUpdate, setIdUpdate,
-   data, setData, setIndexUp, setArrTama, setDataNeutro, setDataChoco, setDataNeutroIng, setDataChocoIng }) => {
+const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
+   data, setData, setArrTama, setDataNeutro, setDataChoco, setDataNeutroIng, setDataChocoIng }) => {
   // const [data, setData] = useState([]);
   const [currentPage, setCurrent] = useState(1)
 
@@ -141,25 +141,24 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUp
         onChange={realTimeSearch}
         placeholder="Buscar palabra..."
       />
-      <div className='w-full overflow-x-auto'>
+      <div className='w-full overflow-y-auto rounded-xl shadow-mfBoxShadow mt-2'>
         <table id='sectionId' className="min-w-full divide-y divide-gray-200">
-          <thead>
+          <thead className=''>
             <tr className="text-md  text-blue-600 bg-gray-300 ">
-              <th className="px-4">ID</th>
-              <th className="px-4">PALABRA</th>
-              <th className="px-4">SIGNIFICADO</th>
-              <th className="px-4">CATEGORIA</th>
-              <th className="px-4">ACEPCIONES</th>
-              <th className="px-4">SINÓNIMOS</th>
-              <th className="px-4">COMO SE USA</th>
-              <th className="px-4">EJEMPLO NEUTRO</th>
-              <th className="px-4">EJEMPLO CHOCO</th>
-              <th className="px-4">EJEMPLO NEUTRO INGLES</th>
+              <th className="px-4 ">ID</th>
+              <th className="px-4 ">PALABRA</th>
+              <th className="px-4 ">SIGNIFICADO</th>
+              <th className="px-4 ">CATEGORIA</th>
+              <th className="px-4 ">ACEPCIONES</th>
+              <th className="px-4 ">SINÓNIMOS</th>
+              <th className="px-4 ">COMO SE USA</th>
+              <th className="px-4 ">EJEMPLO NEUTRO</th>
+              <th className="px-4 ">EJEMPLO CHOCO</th>
               <th className="px-4">OPCIONES</th>
               {/* ...otras columnas */}
             </tr>
           </thead>
-          <tbody>
+          <tbody >
             {partirData.length > 0 ?
 
               partirData.map((e, index) => (
@@ -184,14 +183,8 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUp
                       <br />
                     </React.Fragment>
                   ))}</td>
-                  <td>{e.Ejemplo.ejemplo_neutro_ingles.split("|").map((segment, index) => (
-                    <React.Fragment key={index}>
-                      {`${index + 1}. ${segment}`}
-                      <br />
-                    </React.Fragment>
-                  ))}</td>
                   
-                  <td className="text-black-600 hover:bg-blue-100">
+                  <td className="py-2 text-black-600 hover:bg-blue-100">
                     <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-2 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
                     <button className="max-w-max my-auto h-min rounded-md bg-red-500 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
                       <i className="fa-solid fa-trash"></i>
@@ -203,7 +196,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUp
               ))
 
               :
-              <tr><td colSpan={9} className='font-bold text-gray-700 text-2xl'>Sin Resultados</td></tr>
+              <tr><td colSpan={10} className='py-3 font-bold text-gray-600 text-3xl'>Sin Resultados</td></tr>
             }
           </tbody>
         </table>

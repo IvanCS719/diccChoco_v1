@@ -51,7 +51,6 @@ const Formulario = () => {
     const [modalUpdate, setModalUpdate] = useState(false);
 
     const [newFilter, setFiltro] = useState([])
-    const [idUpdate, setIdUpdate] = useState(null);
     const [data, setData] = useState([]);
     const [valoresForm, setValoresForm] = useState({
         palabra: '',
@@ -84,12 +83,6 @@ const Formulario = () => {
 
     });
 
-    let result = []
-
-    //let newDataNeutro = [];
-    //let newDataChoco = [];
-
-
     useEffect(() => {
         if (!dataCategoria.length) {
             fetch('http://localhost:3000/categoriagra')
@@ -100,10 +93,6 @@ const Formulario = () => {
 
     const handleSubmitAdd = (values, { resetForm }) => {
         try {
-            //addEjemplos();
-
-            console.log('newDataNeutro:', dataNeutro);
-            console.log('newDataChoco:', dataChoco);
 
             //Convertir los arreglos de ejemplos a una string
 
@@ -112,8 +101,6 @@ const Formulario = () => {
 
             const dataNeutroIngString = dataNeutroIng.length ? dataNeutroIng.join('|') : 'No translation yet';
             const dataChocoIngString = dataChocoIng.length ? dataChocoIng.join('|') : 'No translation yet';
-
-
 
             // Agregar las cadenas de texto al objeto values
             values.ejemplo_neutro = dataNeutroString;
@@ -164,11 +151,6 @@ const Formulario = () => {
 
     const handleSubmitUpdate = (values, { resetForm }) => {
         try {
-            //addEjemplos();
-            console.log("De values", values)
-
-            console.log('newDataNeutro:', dataNeutro);
-            console.log('newDataChoco:', dataChoco);
 
             const newValoresForm = {
                 palabra: valoresForm.palabra,
@@ -192,16 +174,13 @@ const Formulario = () => {
                 
               }
               
-
             //Convertir los arreglos de ejemplos a una string
 
             const dataNeutroString = dataNeutro.join('|');
             const dataChocoString = dataChoco.join('|');
 
-            const dataNeutroIngString = dataNeutroIng.length ? dataNeutroIng.join('|') : 'No translation yet';
-            const dataChocoIngString = dataChocoIng.length ? dataChocoIng.join('|') : 'No translation yet';
-
-
+            const dataNeutroIngString = dataNeutroIng.length && !(dataNeutroIng.every((elemento) => elemento === "")) ? dataNeutroIng.join('|') : 'No translation yet';
+            const dataChocoIngString = dataChocoIng.length && !(dataChocoIng.every((elemento) => elemento === "")) ? dataChocoIng.join('|') : 'No translation yet';
 
             // Agregar las cadenas de texto al objeto values
             newValoresForm.ejemplo_neutro = dataNeutroString;
@@ -217,7 +196,6 @@ const Formulario = () => {
             newValoresForm.como_se_usa_Ing = valoresForm.Ingle.como_se_usa_Ing ? valoresForm.Ingle.como_se_usa_Ing : 'No translation yet';
 
             newValoresForm.id_categoria = valoresForm.Categorium.id;
-            //setValoresForm(newValoresForm);
             // Enviar los datos a la ruta del servidor
             fetch(`http://localhost:3000/palabras/${valoresForm.id}`, {
                 method: 'PUT',
@@ -303,7 +281,6 @@ const Formulario = () => {
     const closeModalUp = () => {
         setModalConfirUpdate(false);
         setModalUpdate(false);
-        console.log("Desde formAdmin", idUpdate)
         //onClose();
     };
 
@@ -363,7 +340,7 @@ const Formulario = () => {
             <button type='button' className='w-auto rounded-md mt-2 bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => { setModalAdd(true) }}>Nueva Palabra</button>
             <button type='button' className='w-auto rounded-md mt-2 bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => { setModalUpdate(true) }}>Actualizar</button>
 
-            <TablaAdmin newFilter={newFilter} setFiltro={setFiltro} setModalUpdate={setModalUpdate} idUpdate={idUpdate} setIdUpdate={setIdUpdate} data={data} setData={setData}
+            <TablaAdmin newFilter={newFilter} setFiltro={setFiltro} setModalUpdate={setModalUpdate} data={data} setData={setData}
                 setValoresForm={setValoresForm} setArrTama={setArrTama} setDataNeutro={setDataNeutro}
                 setDataChoco={setDataChoco} setDataNeutroIng={setDataNeutroIng} setDataChocoIng={setDataChocoIng} />
             <>
@@ -646,13 +623,6 @@ const Formulario = () => {
                                                 <div className='w-full flex'>
                                                     <div className='w-full flex justify-center xl:justify-normal items-center mb-2'>
                                                         <label htmlFor='titleEjemplo'>Ejemplos a traducir: <span className='font-bold'>{`${arrTama.length}`}</span></label>
-                                                        {/*<Field
-                                                            type='text'
-                                                            id='titleEjemplo'
-                                                            name='titleEjemplo'
-                                                            placeholder='acepsion'
-                                                            hidden
-                                                        />*/}
 
                                                     </div>
 
@@ -843,7 +813,7 @@ const Formulario = () => {
                                                         label="Sinónimos (separados por coma):"
                                                         name="sinonimos"
                                                         placeholder="Sinónimos de la palabra"
-                                                        value={valoresForm.sinonimos}
+                                                        value={valoresForm.sinonimos == 'No establecido' ? '' : valoresForm.sinonimos}
                                                         onChange={handleInputChange}
                                                     // errors={errors}
                                                     />
@@ -857,7 +827,7 @@ const Formulario = () => {
                                                         label="Acepciones:"
                                                         name="acepciones"
                                                         placeholder="Acepciones de la palabra"
-                                                        value={valoresForm.acepciones}
+                                                        value={valoresForm.acepciones == 'No establecido' ? '' : valoresForm.acepciones}
                                                         onChange={handleInputChange}
                                                     // errors={errors}
                                                     />
@@ -877,14 +847,7 @@ const Formulario = () => {
                                                 <div className='w-full flex justify-between flex-col gap-2 md:gap-0 xl:flex-row items-center xl:pr-5'>
                                                     <div className='text-left md:mb-2'>
                                                         <label htmlFor='titleEjemploAc'>Ejemplos Agregados: <span className='font-bold'>{`${arrTama.length}`}</span></label>
-                                                        {/*<Field
-                                                            type='text'
-                                                            id='titleEjemploAc'
-                                                            name='titleEjemploAc'
-                                                            placeholder='acepsion'
-                                                            hidden
-                                                            className='hidden'
-                                                        />*/}
+
                                                         <ErrorMessage name="titleEjemploAc" component={() => (
                                                             <div className='error text-red-600 font-medium'>{errors.titleEjemploAc}</div>
                                                         )} />
