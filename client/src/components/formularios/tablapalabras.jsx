@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUpdate, setIdUpdate,
-   data, setData, setIndexUp, setArrTama, setDataNeutroActu, setDataChocoActu }) => {
+   data, setData, setIndexUp, setArrTama, setDataNeutro, setDataChoco, setDataNeutroIng, setDataChocoIng }) => {
   // const [data, setData] = useState([]);
   const [currentPage, setCurrent] = useState(1)
 
@@ -40,19 +40,31 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUp
     row.Ejemplo.ejemplo_neutro.split("|").map((segment) => (
       ejeNeutro.push(segment)
     ))
-    setDataNeutroActu(ejeNeutro)
+    setDataNeutro(ejeNeutro)
     setArrTama(ejeNeutro)
 
     const ejeChoco = []
     row.Ejemplo.ejemplo_choco.split("|").map((segment) => (
       ejeChoco.push(segment)
     ))
-    setDataNeutroActu(ejeChoco)
+    setDataChoco(ejeChoco)
+
+    const ejeNeutroIng = []
+    row.Ejemplo.ejemplo_neutro_ingles.split("|").map((segment) => (
+      ejeNeutroIng.push(segment)
+    ))
+    setDataNeutroIng(ejeNeutroIng)
+
+    const ejeChocoIng = []
+    row.Ejemplo.ejemplo_choco_ingles.split("|").map((segment) => (
+      ejeChocoIng.push(segment)
+    ))
+    setDataChocoIng(ejeChocoIng)
     //setArrTama(ejeChoco)
 
     //setIdUpdate(row.id);
     setModalUpdate(true)
-    console.log("resultado Row", row.id)
+    console.log("resultado Row", row)
     setValoresForm(row)
 
   };
@@ -142,6 +154,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUp
               <th className="px-4">COMO SE USA</th>
               <th className="px-4">EJEMPLO NEUTRO</th>
               <th className="px-4">EJEMPLO CHOCO</th>
+              <th className="px-4">EJEMPLO NEUTRO INGLES</th>
               <th className="px-4">OPCIONES</th>
               {/* ...otras columnas */}
             </tr>
@@ -166,6 +179,12 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate, idUp
                     </React.Fragment>
                   ))}</td>
                   <td>{e.Ejemplo.ejemplo_choco.split("|").map((segment, index) => (
+                    <React.Fragment key={index}>
+                      {`${index + 1}. ${segment}`}
+                      <br />
+                    </React.Fragment>
+                  ))}</td>
+                  <td>{e.Ejemplo.ejemplo_neutro_ingles.split("|").map((segment, index) => (
                     <React.Fragment key={index}>
                       {`${index + 1}. ${segment}`}
                       <br />

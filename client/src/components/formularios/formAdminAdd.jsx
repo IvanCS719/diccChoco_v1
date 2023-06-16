@@ -21,6 +21,22 @@ const FormField = ({ label, name, placeholder, errors, value, type = 'text', onC
     </div>
 );
 
+const FormField2 = ({ label, name, placeholder, errors, type = 'text', }) => (
+    <div className='text-left mb-3'>
+        <label htmlFor={name}>{label}</label>
+        <Field
+            type={type}
+            id={name}
+            name={name}
+            placeholder={placeholder}
+            className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
+        />
+        <ErrorMessage name={name} component={() => (
+            <div className='error text-red-600 font-medium'>{errors[name]}</div>
+        )} />
+    </div>
+);
+
 const Formulario = () => {
     // const [formularioenviado, cambiarformularioenviado] = useState(false);
     const [dataCategoria, setDataCategoria] = useState([]);
@@ -34,9 +50,6 @@ const Formulario = () => {
     const [modalAdd, setModalAdd] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
 
-
-    const [dataNeutroActu, setDataNeutroActu] = useState([]);
-    const [dataChocoActu, setDataChocoActu] = useState([]);
     const [newFilter, setFiltro] = useState([])
     const [idUpdate, setIdUpdate] = useState(null);
     const [data, setData] = useState([]);
@@ -53,20 +66,21 @@ const Formulario = () => {
         autorizado: true,
         id_categoria: 0,
         Categorium: {
-            id: 0,
+            id: 0
         },
-        Ingle:{
-            significadoIng:'',
+        Ingle: {
+            significadoIng: '',
             sinonimosIng: '',
             acepcionesIng: '',
             como_se_usa_Ing: ''
         },
         id_tipo: 1,
-        
-        
+
+
         ejemplo_neutro_ingles: '',
         ejemplo_choco_ingles: '',
-        titleEjemplo:''
+        EjemploChoco: '',
+        titleEjemploAc: ''
 
     });
 
@@ -129,6 +143,8 @@ const Formulario = () => {
                     setArrTama([]);
                     setDataNeutro([]);
                     setDataChoco([]);
+                    setDataNeutroIng([]);
+                    setDataChocoIng([]);
                     resetForm();
 
                 })
@@ -154,6 +170,29 @@ const Formulario = () => {
             console.log('newDataNeutro:', dataNeutro);
             console.log('newDataChoco:', dataChoco);
 
+            const newValoresForm = {
+                palabra: valoresForm.palabra,
+                significado: valoresForm.significado,
+                acepciones: '',
+                sinonimos: '',
+                como_se_usa: valoresForm.como_se_usa,
+                ejemplo_neutro: "",
+                ejemplo_choco: "",
+                colaborador: "Mercado Fácil",
+                correo_electronico: "",
+                autorizado: true,
+                id_categoria: 1,
+                id_tipo: 1,
+                significadoIng: "",
+                acepcionesIng: "",
+                sinonimosIng: "",
+                como_se_usa_Ing: "",
+                ejemplo_neutro_ingles: "",
+                ejemplo_choco_ingles: ""
+                
+              }
+              
+
             //Convertir los arreglos de ejemplos a una string
 
             const dataNeutroString = dataNeutro.join('|');
@@ -165,23 +204,24 @@ const Formulario = () => {
 
 
             // Agregar las cadenas de texto al objeto values
-            values.ejemplo_neutro = dataNeutroString;
-            values.ejemplo_choco = dataChocoString;
-            values.ejemplo_neutro_ingles = dataNeutroIngString;
-            values.ejemplo_choco_ingles = dataChocoIngString;
+            newValoresForm.ejemplo_neutro = dataNeutroString;
+            newValoresForm.ejemplo_choco = dataChocoString;
+            newValoresForm.ejemplo_neutro_ingles = dataNeutroIngString;
+            newValoresForm.ejemplo_choco_ingles = dataChocoIngString;
             //values.significado = values.significado ? values.significado : 'No Aplica';
-            values.acepciones = values.acepciones ? values.acepciones : 'No Aplica';
-            values.sinonimos = values.sinonimos ? values.sinonimos : 'No Aplica';
-            values.significadoIng = values.significadoIng ? values.significadoIng : 'No translation yet';
-            values.acepcionesIng = values.acepcionesIng ? values.acepcionesIng : 'No translation yet';
-            values.sinonimosIng = values.sinonimosIng ? values.sinonimosIng : 'No translation yet';
-            values.como_se_usa_Ing = values.como_se_usa_Ing ? values.como_se_usa_Ing : 'No translation yet';
+            newValoresForm.acepciones = valoresForm.acepciones ? valoresForm.acepciones : 'No Aplica';
+            newValoresForm.sinonimos = valoresForm.sinonimos ? valoresForm.sinonimos : 'No Aplica';
+            newValoresForm.significadoIng = valoresForm.Ingle.significadoIng ? valoresForm.Ingle.significadoIng : 'No translation yet';
+            newValoresForm.acepcionesIng = valoresForm.Ingle.acepcionesIng ? valoresForm.Ingle.acepcionesIng : 'No translation yet';
+            newValoresForm.sinonimosIng = valoresForm.Ingle.sinonimosIng ? valoresForm.Ingle.sinonimosIng : 'No translation yet';
+            newValoresForm.como_se_usa_Ing = valoresForm.Ingle.como_se_usa_Ing ? valoresForm.Ingle.como_se_usa_Ing : 'No translation yet';
 
+            newValoresForm.id_categoria = valoresForm.Categorium.id;
+            //setValoresForm(newValoresForm);
             // Enviar los datos a la ruta del servidor
-            console.log(idUpdate)
             fetch(`http://localhost:3000/palabras/${valoresForm.id}`, {
                 method: 'PUT',
-                body: JSON.stringify(values),
+                body: JSON.stringify(newValoresForm),
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -193,6 +233,8 @@ const Formulario = () => {
                     setArrTama([]);
                     setDataNeutro([]);
                     setDataChoco([]);
+                    setDataNeutroIng([]);
+                    setDataChocoIng([]);
                     resetForm();
 
                 })
@@ -221,16 +263,6 @@ const Formulario = () => {
         newDataNeutro[i] = v
 
         setDataNeutro(newDataNeutro)
-
-
-    }
-
-    function arrEjemNeutroActu(v, i) {
-        const newDataNeutroActu = [...dataNeutroActu]
-
-        newDataNeutroActu[i] = v
-
-        setDataNeutroActu(newDataNeutroActu)
 
 
     }
@@ -280,6 +312,8 @@ const Formulario = () => {
         setArrTama([]);
         setDataNeutro([]);
         setDataChoco([]);
+        setDataNeutroIng([]);
+        setDataChocoIng([]);
         //onClose();
     };
 
@@ -288,6 +322,8 @@ const Formulario = () => {
         setArrTama([]);
         setDataNeutro([]);
         setDataChoco([]);
+        setDataNeutroIng([]);
+        setDataChocoIng([]);
         //onClose();
     };
 
@@ -302,23 +338,23 @@ const Formulario = () => {
     const handleInputChange2 = (e) => {
         const { name, value } = e.target;
         setValoresForm((prevState) => ({
-          ...prevState,
-          Ingle: {
-            ...prevState.Ingle,
-            [name]: value
-          }
+            ...prevState,
+            Ingle: {
+                ...prevState.Ingle,
+                [name]: value
+            }
         }));
     };
     const handleSelectChange = (e) => {
         const { name, value } = e.target;
         setValoresForm((prevState) => ({
-          ...prevState,
-          Categorium: {
-            ...prevState.Categorium,
-            id: value
-          }
+            ...prevState,
+            Categorium: {
+                ...prevState.Categorium,
+                id: value
+            }
         }));
-      };
+    };
 
     return (
         <div className='container px-4 lg:px-0 min-h-screen'>
@@ -328,7 +364,8 @@ const Formulario = () => {
             <button type='button' className='w-auto rounded-md mt-2 bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => { setModalUpdate(true) }}>Actualizar</button>
 
             <TablaAdmin newFilter={newFilter} setFiltro={setFiltro} setModalUpdate={setModalUpdate} idUpdate={idUpdate} setIdUpdate={setIdUpdate} data={data} setData={setData}
-                setValoresForm={setValoresForm} setArrTama={setArrTama} setDataNeutroActu={setDataNeutroActu} setDataChocoActu={setDataChocoActu}/>
+                setValoresForm={setValoresForm} setArrTama={setArrTama} setDataNeutro={setDataNeutro}
+                setDataChoco={setDataChoco} setDataNeutroIng={setDataNeutroIng} setDataChocoIng={setDataChocoIng} />
             <>
                 <Formik
                     //almacena los valores de cada campo
@@ -344,7 +381,6 @@ const Formulario = () => {
                         como_se_usa_Ing: '',
                         titleEjemplo: '',
                         EjemploChoco: '',
-                        EjemploNeutror: '',
                         id_categoria: 0,
                         id_tipo: 1,
                         autorizado: true,
@@ -415,7 +451,7 @@ const Formulario = () => {
                                         <div className='w-full flex flex-col xl:flex-row gap-4'>
                                             <div className='w-full'>
                                                 <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5 mb-4 xl:mb-0'>
-                                                    <FormField
+                                                    <FormField2
                                                         label="Palabra:"
                                                         name="palabra"
                                                         placeholder="Ingrese la palabra"
@@ -439,14 +475,14 @@ const Formulario = () => {
                                                     </div>
                                                 </div>
                                                 <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
-                                                    <FormField
+                                                    <FormField2
                                                         label="Significado:"
                                                         name="significado"
                                                         placeholder="Significado de la palabra"
                                                         errors={errors}
                                                     />
 
-                                                    <FormField
+                                                    <FormField2
                                                         label="Sinónimos (separados por coma):"
                                                         name="sinonimos"
                                                         placeholder="Sinónimos de la palabra"
@@ -458,14 +494,14 @@ const Formulario = () => {
 
 
                                                 <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
-                                                    <FormField
+                                                    <FormField2
                                                         label="Acepciones:"
                                                         name="acepciones"
                                                         placeholder="Acepciones de la palabra"
                                                     // errors={errors}
                                                     />
 
-                                                    <FormField
+                                                    <FormField2
                                                         label="¿Cómo se usa?:"
                                                         name="como_se_usa"
                                                         placeholder="¿Cómo se usa?"
@@ -512,9 +548,7 @@ const Formulario = () => {
                                                                     className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                                     onChange={(event) => arrEjemNeutro(event.target.value, index)}
                                                                 />
-                                                                <ErrorMessage name={`ejemplo_neutro${index}`} component={() => (
-                                                                    <div className='error text-red-600 font-medium'>{errors[`ejemplo_neutro${index}`]}</div>
-                                                                )} />
+
                                                             </div>
 
                                                             <div className='text-left mb-3'>
@@ -528,9 +562,7 @@ const Formulario = () => {
                                                                     className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                                     onChange={(event) => arrEjemChoco(event.target.value, index)}
                                                                 />
-                                                                <ErrorMessage name={`ejemplo_choco${index}`} component={() => (
-                                                                    <div className='error text-red-600 font-medium'>{errors[`ejemplo_choco${index}`]}</div>
-                                                                )} />
+
                                                             </div>
                                                             <button type="button" className='max-w-max my-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={() => {
 
@@ -573,16 +605,16 @@ const Formulario = () => {
                                         <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Traducir A Inglés</h2>
                                         <div className='w-full flex flex-col xl:flex-row gap-4'>
                                             <div className='w-full'>
-                                    
+
                                                 <div className='w-auto flex flex-col md:flex-row justify-center items-center gap-1 md:gap-5'>
-                                                    <FormField
+                                                    <FormField2
                                                         label="Significado:"
                                                         name="significadoIng"
                                                         placeholder="Traducir significado de la palabra"
                                                     //errors={errors}
                                                     />
 
-                                                    <FormField
+                                                    <FormField2
                                                         label="Sinónimos (separados por coma):"
                                                         name="sinonimosIng"
                                                         placeholder="Traducir sinónimos de la palabra"
@@ -594,14 +626,14 @@ const Formulario = () => {
 
 
                                                 <div className='w-auto flex flex-col md:flex-row justify-center items-center gap-1 md:gap-5'>
-                                                    <FormField
+                                                    <FormField2
                                                         label="Acepciones:"
                                                         name="acepcionesIng"
                                                         placeholder="Traducir acepciones de la palabra"
                                                     // errors={errors}
                                                     />
 
-                                                    <FormField
+                                                    <FormField2
                                                         label="¿Cómo se usa?:"
                                                         name="como_se_usa_Ing"
                                                         placeholder="Traducir ¿Cómo se usa?"
@@ -614,13 +646,13 @@ const Formulario = () => {
                                                 <div className='w-full flex'>
                                                     <div className='w-full flex justify-center xl:justify-normal items-center mb-2'>
                                                         <label htmlFor='titleEjemplo'>Ejemplos a traducir: <span className='font-bold'>{`${arrTama.length}`}</span></label>
-                                                        <Field
+                                                        {/*<Field
                                                             type='text'
                                                             id='titleEjemplo'
                                                             name='titleEjemplo'
                                                             placeholder='acepsion'
                                                             hidden
-                                                        />
+                                                        />*/}
 
                                                     </div>
 
@@ -640,9 +672,7 @@ const Formulario = () => {
                                                                     className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                                     onChange={(event) => arrEjemNeutroIng(event.target.value, index)}
                                                                 />
-                                                                <ErrorMessage name={`ejemplo_neutro${index}`} component={() => (
-                                                                    <div className='error text-red-600 font-medium'>{errors[`ejemplo_neutro${index}`]}</div>
-                                                                )} />
+
                                                             </div>
 
                                                             <div className='text-left mb-3'>
@@ -656,9 +686,7 @@ const Formulario = () => {
                                                                     className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                                     onChange={(event) => arrEjemChocoIng(event.target.value, index)}
                                                                 />
-                                                                <ErrorMessage name={`ejemplo_choco${index}`} component={() => (
-                                                                    <div className='error text-red-600 font-medium'>{errors[`ejemplo_choco${index}`]}</div>
-                                                                )} />
+
                                                             </div>
                                                         </div>
                                                     ))}
@@ -702,8 +730,7 @@ const Formulario = () => {
 
                 <Formik
                     //almacena los valores de cada campo
-                    initialValues={
-                        valoresForm}
+                    initialValues={valoresForm}
                     //validar que los valores escritos dentro del campo, correspondan a lo solicitado en cada tabla
                     validate={(valores) => {
                         let errores = {};
@@ -731,18 +758,18 @@ const Formulario = () => {
                         //valores de ejemplo neutro
 
                         if (arrTama.length == 0) {
-                            errores.titleEjemplo = 'Debe agregar almenos un ejemplo*'
+                            errores.titleEjemploAc = 'Debe agregar almenos un ejemplo*'
                         }
 
                         //valores de ejemplo neutro
 
                         if (arrTama.length == 0) {
-                            errores.titleEjemplo = 'Debe agregar almenos un ejemplo*'
+                            errores.titleEjemploAc = 'Debe agregar almenos un ejemplo*'
                         }
 
                         arrTama.map((item, index) => {
-                            if (!dataNeutroActu[index]) {
-                                errores.titleEjemplo = 'Ejemplo neutro necesario*'
+                            if (!dataNeutro[index]) {
+                                errores.titleEjemploAc = 'Ejemplo neutro necesario*'
                             }
                             //valores de ejemplo choco
                             if (!dataChoco[index]) {
@@ -786,8 +813,8 @@ const Formulario = () => {
                                                     <div className='text-left'>
                                                         <label htmlFor="selectedOption">Categoría Gramatical:</label>
                                                         <Field as="select" name="id_categoria" id="id_categoria"
-                                                        value={valoresForm.Categorium.id}
-                                                        onChange={handleSelectChange}
+                                                            value={valoresForm.Categorium.id}
+                                                            onChange={handleSelectChange}
                                                             className="block w-64 rounded-md border-0 px-2 py-2 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor sm:max-w-xs sm:leading-6">
                                                             <option value="">Selecciona una categoría</option>
                                                             {dataCategoria.map((e) => (
@@ -849,17 +876,17 @@ const Formulario = () => {
                                             <div className='w-full'>
                                                 <div className='w-full flex justify-between flex-col gap-2 md:gap-0 xl:flex-row items-center xl:pr-5'>
                                                     <div className='text-left md:mb-2'>
-                                                        <label htmlFor='titleEjemplo'>Ejemplos Agregados: <span className='font-bold'>{`${arrTama.length}`}</span></label>
-                                                        <Field
+                                                        <label htmlFor='titleEjemploAc'>Ejemplos Agregados: <span className='font-bold'>{`${arrTama.length}`}</span></label>
+                                                        {/*<Field
                                                             type='text'
-                                                            id='titleEjemplo'
-                                                            name='titleEjemplo'
+                                                            id='titleEjemploAc'
+                                                            name='titleEjemploAc'
                                                             placeholder='acepsion'
                                                             hidden
                                                             className='hidden'
-                                                        />
-                                                        <ErrorMessage name="titleEjemplo" component={() => (
-                                                            <div className='error text-red-600 font-medium'>{errors.titleEjemplo}</div>
+                                                        />*/}
+                                                        <ErrorMessage name="titleEjemploAc" component={() => (
+                                                            <div className='error text-red-600 font-medium'>{errors.titleEjemploAc}</div>
                                                         )} />
 
                                                         <ErrorMessage name="EjemploChoco" component={() => (
@@ -879,14 +906,12 @@ const Formulario = () => {
                                                                     type='text'
                                                                     id={`ejemplo_neutro${index}`}
                                                                     name={`ejemplo_neutro${index}`}
-                                                                    value={dataNeutroActu[index] || ''}
+                                                                    value={dataNeutro[index] || ''}
                                                                     placeholder="Escribe el ejemplo neutro"
                                                                     className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
-                                                                    onChange={(event) => arrEjemNeutroActu(event.target.value, index)}
+                                                                    onChange={(event) => arrEjemNeutro(event.target.value, index)}
                                                                 />
-                                                                <ErrorMessage name={`ejemplo_neutro${index}`} component={() => (
-                                                                    <div className='error text-red-600 font-medium'>{errors[`ejemplo_neutro${index}`]}</div>
-                                                                )} />
+
                                                             </div>
 
                                                             <div className='text-left mb-3'>
@@ -895,25 +920,23 @@ const Formulario = () => {
                                                                     type='text'
                                                                     id={`ejemplo_choco${index}`}
                                                                     name={`ejemplo_choco${index}`}
-                                                                    value={dataChocoActu[index] || ''}
+                                                                    value={dataChoco[index] || ''}
                                                                     placeholder="Escribe el ejemplo choco"
                                                                     className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                                     onChange={(event) => arrEjemChoco(event.target.value, index)}
                                                                 />
-                                                                <ErrorMessage name={`ejemplo_choco${index}`} component={() => (
-                                                                    <div className='error text-red-600 font-medium'>{errors[`ejemplo_choco${index}`]}</div>
-                                                                )} />
+
                                                             </div>
                                                             <button type="button" className='max-w-max my-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={() => {
 
                                                                 try {
-                                                                    const newDataNeutroActu = [...dataNeutroActu]; // Copia el arreglo original
-                                                                    newDataNeutroActu.splice(index, 1); // Realiza la modificación en la copia
-                                                                    setDataNeutroActu(newDataNeutroActu);
+                                                                    const newDataNeutro = [...dataNeutro]; // Copia el arreglo original
+                                                                    newDataNeutro.splice(index, 1); // Realiza la modificación en la copia
+                                                                    setDataNeutro(newDataNeutro);
 
-                                                                    const newDataChocoActu = [...dataChocoActu]; // Copia el arreglo original
-                                                                    newDataChocoActu.splice(index, 1); // Realiza la modificación en la copia
-                                                                    setDataChocoActu(newDataChocoActu);
+                                                                    const newDataChoco = [...dataChoco]; // Copia el arreglo original
+                                                                    newDataChoco.splice(index, 1); // Realiza la modificación en la copia
+                                                                    setDataChoco(newDataChoco);
 
                                                                     const newDataNeutroIng = [...dataNeutroIng]; // Copia el arreglo original
                                                                     newDataNeutroIng.splice(index, 1); // Realiza la modificación en la copia
@@ -950,7 +973,7 @@ const Formulario = () => {
                                                         label="Significado:"
                                                         name="significadoIng"
                                                         placeholder="Traducir significado de la palabra"
-                                                        value={valoresForm.Ingle.significadoIng == 'No translation yet' ? '': valoresForm.Ingle.significadoIng}
+                                                        value={valoresForm.Ingle.significadoIng == 'No translation yet' ? '' : valoresForm.Ingle.significadoIng}
                                                         onChange={handleInputChange2}
                                                     //errors={errors}
                                                     />
@@ -958,7 +981,7 @@ const Formulario = () => {
                                                         label="Sinónimos (separados por coma):"
                                                         name="sinonimosIng"
                                                         placeholder="Traducir sinónimos de la palabra"
-                                                        value={valoresForm.Ingle.sinonimosIng == 'No translation yet' ? '': valoresForm.Ingle.sinonimosIng}
+                                                        value={valoresForm.Ingle.sinonimosIng == 'No translation yet' ? '' : valoresForm.Ingle.sinonimosIng}
                                                         onChange={handleInputChange2}
                                                     // errors={errors}
                                                     />
@@ -972,7 +995,7 @@ const Formulario = () => {
                                                         label="Acepciones:"
                                                         name="acepcionesIng"
                                                         placeholder="Traducir acepciones de la palabra"
-                                                        value={valoresForm.Ingle.acepcionesIng == 'No translation yet' ? '': valoresForm.Ingle.acepcionesIng}
+                                                        value={valoresForm.Ingle.acepcionesIng == 'No translation yet' ? '' : valoresForm.Ingle.acepcionesIng}
                                                         onChange={handleInputChange2}
                                                     // errors={errors}
                                                     />
@@ -981,7 +1004,7 @@ const Formulario = () => {
                                                         label="¿Cómo se usa?:"
                                                         name="como_se_usa_Ing"
                                                         placeholder="Traducir ¿Cómo se usa?"
-                                                        value={valoresForm.Ingle.como_se_usa_Ing == 'No translation yet' ? '': valoresForm.Ingle.como_se_usa_Ing}
+                                                        value={valoresForm.Ingle.como_se_usa_Ing == 'No translation yet' ? '' : valoresForm.Ingle.como_se_usa_Ing}
                                                         onChange={handleInputChange2}
                                                     // errors={errors}
                                                     />
@@ -991,14 +1014,7 @@ const Formulario = () => {
                                             <div className='w-full'>
                                                 <div className='w-full flex'>
                                                     <div className='w-full flex justify-center xl:justify-normal items-center mb-2'>
-                                                        <label htmlFor='titleEjemplo'>Ejemplos a traducir: <span className='font-bold'>{`${arrTama.length}`}</span></label>
-                                                        <Field
-                                                            type='text'
-                                                            id='titleEjemplo'
-                                                            name='titleEjemplo'
-                                                            placeholder='acepsion'
-                                                            hidden
-                                                        />
+                                                        <label htmlFor='titleEjemploAc'>Ejemplos a traducir: <span className='font-bold'>{`${arrTama.length}`}</span></label>
 
                                                     </div>
 
@@ -1018,9 +1034,7 @@ const Formulario = () => {
                                                                     className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                                     onChange={(event) => arrEjemNeutroIng(event.target.value, index)}
                                                                 />
-                                                                <ErrorMessage name={`ejemplo_neutro${index}`} component={() => (
-                                                                    <div className='error text-red-600 font-medium'>{errors[`ejemplo_neutro${index}`]}</div>
-                                                                )} />
+
                                                             </div>
 
                                                             <div className='text-left mb-3'>
@@ -1034,9 +1048,7 @@ const Formulario = () => {
                                                                     className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                                     onChange={(event) => arrEjemChocoIng(event.target.value, index)}
                                                                 />
-                                                                <ErrorMessage name={`ejemplo_choco${index}`} component={() => (
-                                                                    <div className='error text-red-600 font-medium'>{errors[`ejemplo_choco${index}`]}</div>
-                                                                )} />
+
                                                             </div>
                                                         </div>
                                                     ))}
