@@ -9,8 +9,6 @@ import { Ejemplos } from "../../models/diccChoco/Ejemplos.js";
 import { Op } from "sequelize";
 
 
-
-
 export const getPalabras = async (req, res) => {
     
     try {
@@ -181,12 +179,12 @@ export const updatePalabra = async (req, res) => {
             como_se_usa,
             como_se_usa_Ing,
             autorizado,
+            id_multimedia,
+            url_sonido,
+            url_imagen,
             id_ejemplos,
-            id_ingles,
             ejemplo_neutro,
             ejemplo_choco,
-            ejemplo_neutro_ingles,
-            ejemplo_choco_ingles,
             id_colaborador,
             colaborador,
             correo_electronico,
@@ -224,7 +222,7 @@ export const updatePalabra = async (req, res) => {
                 ejemplo_neutro_ingles: ejemplo_neutro_ingles
             }, {
                 where: {
-                  id: id_ejemplos
+                  id_palabras: id
                 }
               });
 
@@ -235,16 +233,16 @@ export const updatePalabra = async (req, res) => {
                 como_se_usa_Ing: como_se_usa_Ing,
             }, {
                 where: {
-                  id: id_ingles
+                  id_palabrasIng: id
                 }
-              }); 
-              
+              });
+
             const updateColaborador = await Colaborador.update({ 
                 colaborador: colaborador,
                 correo_electronico: correo_electronico,
             }, {
                 where: {
-                  id: id_colaborador
+                  id_palabras: id
                 }
               });
 
@@ -326,39 +324,6 @@ export const getCategoriagra = async (req, res) => {
     }
 }
 
-export const getAllPalabras = async (req, res) => {
-    
-    try {
-        const arrPalabras = await Palabras.findAll({ 
-            attributes: ['id','palabra',
-            'significado',
-            'acepciones',
-            'sinonimos',
-            'como_se_usa'],
-            include: [
-                  {
-                    model: Ejemplos,
-                    required: true, // Utilizar INNER JOIN
-                  },
-                  {
-                    model: Ingle,
-                    required: true, // Utilizar INNER JOIN
-                  },
-                  {
-                    model: Colaborador,
-                    required: true, // Utilizar INNER JOIN
-                  },
-                  {
-                    model: Categoria,
-                    required: true, // Utilizar INNER JOIN
-                  }, {
-                    model: Tipo,
-                    required: true, // Utilizar INNER JOIN
-                  },
-              ],
-        });
-        res.json(arrPalabras);
-    } catch (error) {
-        return res.status(500).json({message: error.message});
-    }
-}
+
+
+

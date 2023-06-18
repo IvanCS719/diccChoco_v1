@@ -18,6 +18,9 @@ export default {
         mrColor: '#B31942',
 
         modal: 'rgba(0, 0, 0, 0.35)'
+      },
+      maxHeight:{
+        table: '50rem'
       }
     },
   },
