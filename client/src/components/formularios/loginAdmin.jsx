@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useNavigate } from 'react-router-dom';
 
 const FormField = ({ label, name, placeholder, errors, type = 'text' }) => (
     <div className='text-left mb-5'>
@@ -24,9 +25,37 @@ export default function Example() {
         setModalConfirUpdate(false);
         //onClose();
     };
+
+    const navigate = useNavigate();
+
+    const handleLogin = (values) => {
+        const { usuario, password } = values;
+        const usuarioCorrecto = 'asd';
+        const contraseñaCorrecta = '1234';
+
+        if (usuario === usuarioCorrecto && password === contraseñaCorrecta) {
+            // Inicio de sesión exitoso, redirigir a otra página
+            navigate('/formulario');// URL de la página a la que deseas redirigir
+            // Credenciales correctas
+            const token = 'tokenprueba'; // Reemplaza esto con tu token real
+
+            // Almacena el token en localStorage
+            localStorage.setItem('tokenprueba', token);
+            // Obtén el token después de que el usuario haya iniciado sesión
+            // const token = 'token'; // Reemplaza esto con tu token real
+
+            // Almacena el token en localStorage
+            //  localStorage.setItem('token', token);
+
+        } else {
+            // Credenciales incorrectas, mostrar modal de error
+            setModalConfirUpdate(true);
+        }
+    };
+
     return (
         <>
-        
+
             <div className="min-h-full flex flex-1 flex-col justify-center px-5 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img
@@ -66,7 +95,7 @@ export default function Example() {
                             return errores;
                         }}
                     //para enviar formulario
-                    // onSubmit={handleSubmit}
+                    onSubmit={handleLogin}
                     >
                         {({ values, errors }) => (
                             <Form >
@@ -99,21 +128,21 @@ export default function Example() {
                         )}
                     </Formik>
 
-                    
+
 
 
                 </div>
                 <div
-                                            className={`fixed bg-modal inset-0 flex items-center justify-center px-3 sm:px-0 transition-all duration-200 ${modalConfirUpdate ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                                                }`}
-                                        >
-                                            <div className="bg-white sm:mx-5 sm:w-96 p-5 rounded-xl shadow-mfBoxShadow border">
-                                                <p className="text-2xl text-gray-800 font-bold mb-3">Usuario no encontrado</p>
-                                                <p className='text-8xl mb-2 text-red-600'><i className="fa-regular fa-circle-xmark"></i></p>
-                                                <p className="text-lg text-gray-700 font-medium mb-4">Verfique que el usuario y contraseña sean correctos.</p>
-                                                <button type="button" className='w-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={closeModalUp}>Aceptar</button>
-                                            </div>
-                                        </div>
+                    className={`fixed bg-modal inset-0 flex items-center justify-center px-3 sm:px-0 transition-all duration-200 ${modalConfirUpdate ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                        }`}
+                >
+                    <div className="bg-white sm:mx-5 sm:w-96 p-5 rounded-xl shadow-mfBoxShadow border">
+                        <p className="text-2xl text-gray-800 font-bold mb-3">Usuario no encontrado</p>
+                        <p className='text-8xl mb-2 text-red-600'><i className="fa-regular fa-circle-xmark"></i></p>
+                        <p className="text-lg text-gray-700 font-medium mb-4">Verfique que el usuario y contraseña sean correctos.</p>
+                        <button type="button" className='w-auto h-min rounded-md bg-mfColor px-3 py-1.5 text-white shadow-md font-medium' onClick={closeModalUp}>Aceptar</button>
+                    </div>
+                </div>
             </div>
         </>
     )
