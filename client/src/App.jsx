@@ -3,6 +3,7 @@ import './App.css'
 import Card from './components/Card/seccDiccChoco'
 import { Routes, Route } from 'react-router-dom'
 import FormAdmin from './components/formularios/formAdminAdd'
+import LoginAdmin from './components/formularios/loginAdmin'
 import FormPublic from './components/formularios/formPublic'
 
 function App() {
