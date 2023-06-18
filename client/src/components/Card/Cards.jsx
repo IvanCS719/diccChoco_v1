@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom';
 export default function Cards({ /*imagen, categoria*/ palabra, significado, sinonimos, categoria, acepciones, comoSeUsa,
     ejemploNeutro, ejemploChoco, ejemploneutroingles, ejemplochocoingles, significadoIng, acepcionesIng, categoriaIng,sinonimosIng, como_se_usa_Ing }) {
     let [activeDiv, setActiveDiv] = useState(false)
@@ -74,7 +75,7 @@ export default function Cards({ /*imagen, categoria*/ palabra, significado, sino
                     <p className="overflow-auto h-8 w-full">{sinonimosIng}</p>
 
                     <div className='container flex mt-2 gap-3 justify-center'>
-                        <button className="rounded-lg  bg-mrColor px-3 py-2 text-white shadow-sm" title='Meanings' onClick={() => handleButtonClick(5)}><i className="fa-solid fa-book-open"></i></button>
+                        <button className="rounded-lg  bg-mrColor px-3 py-2 text-white shadow-sm" title='Sense' onClick={() => handleButtonClick(5)}><i className="fa-solid fa-book-open"></i></button>
                         <button className="rounded-lg  bg-mrColor px-3 py-2 text-white shadow-sm" title='Examples' onClick={() => handleButtonClick(6)}><i className="fa-solid fa-lightbulb"></i></button>
                         <button className="rounded-lg  bg-mrColor px-3 py-2 text-white shadow-sm" title='How can I use It?' onClick={() => handleButtonClick(7)}><i className="fa-solid fa-circle-question"></i></button>
                     </div>
@@ -84,7 +85,7 @@ export default function Cards({ /*imagen, categoria*/ palabra, significado, sino
                 return <div>
                     <p className="text-2xl font-bold text-white">{palabra}</p>
                     <div className='my-3'>
-                        <p className='font-bold text-white'>Meanings</p>
+                        <p className='font-bold text-white'>Sense</p>
                         <p className="">{acepcionesIng}</p>
                     </div>
                     <button className="rounded-md w-auto shadow-sm px-3 py-2 text-white font-semibold" title='Regresar a la palabra en Inglés' onClick={() => handleButtonClick(4)}>Go Back <i className="fa-solid fa-rotate-left"></i></button>
