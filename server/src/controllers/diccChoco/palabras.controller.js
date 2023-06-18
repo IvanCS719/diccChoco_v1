@@ -356,6 +356,7 @@ export const getAllPalabras = async (req, res) => {
                   },
               ],
               order: [['id', 'DESC']],
+              
         });
         res.json(arrPalabras);
     } catch (error) {
