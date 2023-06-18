@@ -355,13 +355,12 @@ const Formulario = () => {
     return (
         <div className='container px-4 lg:px-0 min-h-screen'>
 
-            <p className='mb-4 mt-3 font-semibold text-mfColor text-4xl'>Administrador del Diccionario Choco</p>
-            <button type='button' className='w-auto rounded-md mt-2 bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => { setModalAdd(true) }}>Nueva Palabra</button>
-            <button type='button' className='w-auto rounded-md mt-2 bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => { setModalUpdate(true) }}>Actualizar</button>
+            <p className='mb-5 mt-3 font-semibold text-mfColor text-4xl'>Administrador del Diccionario Choco</p>
+           
 
             <TablaAdmin newFilter={newFilter} setFiltro={setFiltro} setModalUpdate={setModalUpdate} data={data} setData={setData}
                 setValoresForm={setValoresForm} setArrTama={setArrTama} setDataNeutro={setDataNeutro}
-                setDataChoco={setDataChoco} setDataNeutroIng={setDataNeutroIng} setDataChocoIng={setDataChocoIng} fetchData={fetchData}/>
+                setDataChoco={setDataChoco} setDataNeutroIng={setDataNeutroIng} setDataChocoIng={setDataChocoIng} fetchData={fetchData} setModalAdd={setModalAdd}/>
             <>
                 <Formik
                     //almacena los valores de cada campo
@@ -730,7 +729,7 @@ const Formulario = () => {
                         }
 
                         //valores de significado
-                        if (!valoresForm.significado) {
+                        if (!valoresForm.significado || valoresForm.significado == 'No Aplica') {
                             errores.significado = 'Campo obligatorio*'
                         }
 
@@ -823,7 +822,7 @@ const Formulario = () => {
                                                         label="Significado:"
                                                         name="significado"
                                                         placeholder="Significado de la palabra"
-                                                        value={valoresForm.significado}
+                                                        value={valoresForm.significado == 'No Aplica' ? '' : valoresForm.significado}
                                                         onChange={handleInputChange}
                                                         errors={errors}
                                                     />

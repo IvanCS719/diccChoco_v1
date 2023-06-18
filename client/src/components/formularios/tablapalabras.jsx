@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
-   data, setData, setArrTama, setDataNeutro, setDataChoco, setDataNeutroIng, setDataChocoIng, fetchData}) => {
+  data, setData, setArrTama, setDataNeutro, setDataChoco, setDataNeutroIng, setDataChocoIng, fetchData,
+  setModalAdd }) => {
   // const [data, setData] = useState([]);
   const [currentPage, setCurrent] = useState(1)
 
@@ -95,8 +96,8 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
 
   }
 
-  let next = currentPage * 6
-  let prev = next - 6
+  let next = currentPage * 8
+  let prev = next - 8
   let partirData
 
   if (inicio) {
@@ -109,9 +110,9 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
     partirData = data.slice(prev, next)
   }
 
-  const allPages = newFilter.length > 0 ? Math.ceil(newFilter.length / 6) : Math.ceil(data.length / 6)
+  const allPages = newFilter.length > 0 ? Math.ceil(newFilter.length / 8) : Math.ceil(data.length / 8)
   //const allWords = newFilter.length > 0 ? newFilter.length : datos.length
-  //const allWords = data.length
+  const allWords = data.length
 
 
   const [showWarningModal, setShowWarningModal] = useState(false);
@@ -120,28 +121,68 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
 
 
   return (
-    <div className="divide-orange-700 flex flex-col min-h-screen">
+    <div className=" w-full divide-orange-700 flex flex-col min-h-max">
+      <div className='w-full flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-0 sm:justify-between mb-2'>
+        <button type='button' className='w-auto rounded-md bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => { setModalAdd(true) }}><i className="fa-solid fa-plus"></i> Nueva Palabra</button>
+        <div className='flex items-center gap-2'>
+          <p className='font-medium text-base text-gray-800'>Contenido en:</p>
+        <select name="" id="" className='block w-auto rounded-md border-0 px-2 py-2 font-medium text-gray-800 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor text-center sm:max-w-xs sm:leading-6'>
+          <option value="">Español</option>
+          <option value="">Inglés</option>
+        </select>
+        </div>
+        
+      </div>
+      <div className='w-full mb-3'>
+        <p className='font-medium text-gray-800 text-xl '>Palabras Visibles: <span className='font-bold text-mfColor'>{allWords}</span></p>
+      </div>
+      <div className='w-full flex flex-col sm:flex-row  justify-between mb-5'>
 
-      <input
-        className='px-3 py-2 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1'
-        type="text"
-        onChange={realTimeSearch}
-        placeholder="Buscar palabra..."
-      />
-      <div className='w-full overflow-y-auto rounded-xl shadow-mfBoxShadow mt-2'>
-        <table id='sectionId' className="min-w-full divide-y divide-gray-200">
+        <input
+          className='px-3 py-2 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor mx-auto sm:mx-0 mb-2 sm:mb-0 w-72 sm:w-64 rounded-md sm:text-base focus:ring-1'
+          type="text"
+          onChange={realTimeSearch}
+          placeholder="Buscar palabra..."
+        />
+
+        <div className='flex justify-center items-center'>
+          {currentPage > 1 ?
+            <button className='rounded-md bg-mfColor px-3 py-1 text-white shadow-md border-solid border-2 border-mfColor font-bold' onClick={() => setCurrent(currentPage - 1)}><i className="fa-solid fa-chevron-left"></i></button> : <button className='rounded-md bg-white px-3 py-1 text-mfColor border-solid border-2 border-mfColor shadow-md font-bold'><i className="fa-solid fa-chevron-left"></i></button>}
+          {partirData.length > 0 ?
+            <div className='mx-2 text-lg'>
+
+              <p className=''><span className='text-mfColor font-semibold'>{currentPage}</span> de <span className='text-mfColor font-semibold'>{allPages}</span></p>
+            </div>
+            :
+            <div className='mx-2 text-lg'>
+
+              <p className=''><span className='text-mfColor font-semibold'>0</span> de <span className='text-mfColor font-semibold'>0</span></p>
+
+            </div>
+          }
+
+          {currentPage < allPages && partirData.length > 0 ?
+            <button className='rounded-md bg-mfColor px-3 py-1 text-white shadow-md font-bold border-solid border-2 border-mfColor' onClick={() =>
+              setCurrent(currentPage + 1)}><i className="fa-solid fa-chevron-right"></i></button> : <button className='rounded-md bg-white px-3 py-1 text-mfColor shadow-md font-bold border-solid border-2 border-mfColor'><i className="fa-solid fa-chevron-right"></i></button>}
+
+        </div>
+      </div>
+
+
+      <div className='w-full overflow-y-auto rounded-xl shadow-mfBoxShadow p-1 h-table max-h-table mb-6'>
+        <table className="min-w-full divide-y divide-gray-200">
           <thead className=''>
-            <tr className="text-md  text-blue-600 bg-gray-300 ">
-              <th className="px-4 ">ID</th>
-              <th className="px-4 ">PALABRA</th>
-              <th className="px-4 ">SIGNIFICADO</th>
-              <th className="px-4 ">CATEGORIA</th>
-              <th className="px-4 ">ACEPCIONES</th>
-              <th className="px-4 ">SINÓNIMOS</th>
-              <th className="px-4 ">COMO SE USA</th>
-              <th className="px-4 ">EJEMPLO NEUTRO</th>
-              <th className="px-4 ">EJEMPLO CHOCO</th>
-              <th className="px-4">OPCIONES</th>
+            <tr className="font-bold text-gray-900">
+              <th className="px-4 py-2">Id</th>
+              <th className="px-4 py-2">Palabra</th>
+              <th className="px-4 py-2">Significado</th>
+              <th className="px-4 py-2">Categoría</th>
+              <th className="px-4 py-2">Acepciones</th>
+              <th className="px-4 py-2">Sinónimos</th>
+              <th className="px-4 py-2">Cómo se usa</th>
+              <th className="px-4 py-2">Ejemplo(s) Neutro</th>
+              <th className="px-4 py-2">Ejemplo(s) Choco</th>
+              <th className="px-4 py-2">Opciones</th>
               {/* ...otras columnas */}
             </tr>
           </thead>
@@ -149,30 +190,31 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
             {partirData.length > 0 ?
 
               partirData.map((e, index) => (
-                <tr key={e.id} className="hover:bg-gray-200 border-b border-gray-300">
-                  <td>{e.id}</td>
-                  <td>{e.palabra}</td>
+                <tr key={e.id} className="hover:bg-gray-100 border-b border-gray-300">
+                  <td>{e.autorizado ? 'si' : 'no'}</td>
+                  <td className="py-3">{e.id}</td>
+                  <td className="py-3">{e.palabra}</td>
 
-                  <td>{e.significado}</td>
-                  <td>{e.Categorium.categoria}</td>
-                  <td >{e.acepciones}</td>
-                  <td>{e.sinonimos}</td>
-                  <td >{e.como_se_usa}</td>
-                  <td>{e.Ejemplo.ejemplo_neutro.split("|").map((segment, index) => (
-                    <React.Fragment  key={index}>
-                      {`${index + 1}. ${segment}`}
-                      <br />
-                    </React.Fragment>
-                  ))}</td>
-                  <td>{e.Ejemplo.ejemplo_choco.split("|").map((segment, index) => (
+                  <td className="py-3">{e.significado}</td>
+                  <td className="py-3">{e.Categorium.categoria}</td>
+                  <td className="py-3">{e.acepciones}</td>
+                  <td className="py-3">{e.sinonimos}</td>
+                  <td className="py-3">{e.como_se_usa}</td>
+                  <td className="py-3">{e.Ejemplo.ejemplo_neutro.split("|").map((segment, index) => (
                     <React.Fragment key={index}>
                       {`${index + 1}. ${segment}`}
                       <br />
                     </React.Fragment>
                   ))}</td>
-                  
-                  <td className="py-2 text-black-600 hover:bg-blue-100">
-                    <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-2 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
+                  <td className="py-3">{e.Ejemplo.ejemplo_choco.split("|").map((segment, index) => (
+                    <React.Fragment key={index}>
+                      {`${index + 1}. ${segment}`}
+                      <br />
+                    </React.Fragment>
+                  ))}</td>
+
+                  <td className="py-3 text-black-600 hover:bg-blue-100">
+                    <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
                     <button className="max-w-max my-auto h-min rounded-md bg-red-500 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
                       <i className="fa-solid fa-trash"></i>
                     </button>
@@ -189,6 +231,8 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
         </table>
 
       </div>
+
+      
 
 
       {/*muestra mensaje de advertencias para eliminar datos*/}
@@ -214,35 +258,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
         </div>
       )}
       {/* ...otras celdas */}
-      <div className='w-full md:text-lg font-medium text-gray-800 mt-4'>
-        {partirData.length > 0 ?
-          <div className='w-full'>
 
-            <p className=''>Página <span className='text-mfColor font-semibold'>{currentPage}</span> de <span className='text-mfColor font-semibold'>{allPages}</span></p>
-          </div>
-          :
-          <div className='w-full'>
-
-            <p className=''>Página <span className='text-mfColor font-semibold'>0</span> de <span className='text-mfColor font-semibold'>0</span></p>
-
-          </div>
-        }
-
-      </div>
-
-      <div className='mt-5 mb-4 w-full flex justify-center gap-3'>
-        {currentPage > 1 ?
-          <button className='rounded-md bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => setCurrent(currentPage - 1)}><i className="fa-solid fa-circle-left"></i> Anterior</button> : null}
-        {currentPage < allPages && partirData.length > 0 ?
-          <button className='rounded-md bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => {
-            setCurrent(currentPage + 1)
-            const section = document.getElementById('sectionId');
-            if (section) {
-              section.scrollIntoView({ behavior: 'smooth' });
-            }
-
-          }}>Siguiente <i className="fa-solid fa-circle-right"></i></button> : null}
-      </div>
     </div>
   );
 };

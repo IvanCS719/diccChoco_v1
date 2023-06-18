@@ -50,9 +50,9 @@ const Formulario = () => {
 
 
             // Agregar las cadenas de texto al objeto values
-            values.significado = values.significado ? values.significado : 'No establecido';
-            values.acepciones = values.acepciones ? values.acepciones: 'No establecido';
-            values.sinonimos = values.sinonimos ? values.sinonimos : 'No establecido';
+            values.significado = values.significado ? values.significado : 'No Aplica';
+            values.acepciones = values.acepciones ? values.acepciones: 'No Aplica';
+            values.sinonimos = values.sinonimos ? values.sinonimos : 'No Aplica';
             values.ejemplo_choco = dataChocoString;
             values.ejemplo_neutro = '';
 
@@ -142,7 +142,7 @@ const Formulario = () => {
                         //como_se_usa_Ing: '',
                         titleEjemplo: '',
                         EjemploChoco: '',
-                        id_categoria: 4,
+                        id_categoria: 0,
                         id_tipo: 1,
                         colaborador: '',
                         correo_electronico:''

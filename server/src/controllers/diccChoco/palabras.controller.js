@@ -332,7 +332,8 @@ export const getAllPalabras = async (req, res) => {
             'significado',
             'acepciones',
             'sinonimos',
-            'como_se_usa'],
+            'como_se_usa',
+            'autorizado'],
             include: [
                   {
                     model: Ejemplos,
@@ -354,7 +355,7 @@ export const getAllPalabras = async (req, res) => {
                     required: true, // Utilizar INNER JOIN
                   },
               ],
-              order: [['id', 'ASC']],
+              order: [['id', 'DESC']],
         });
         res.json(arrPalabras);
     } catch (error) {
