@@ -20,7 +20,7 @@ export default {
         modal: 'rgba(0, 0, 0, 0.35)'
       },
       maxHeight:{
-        table: '30rem'
+        table: '50rem'
       }
     },
   },

@@ -86,17 +86,17 @@ const Formulario = () => {
     const fetchData = async () => {
 
         try {
-          const response = await fetch('http://localhost:3000/palabrasall');
-          const jsonData = await response.json();
-          setData(jsonData);
-          setFiltro(data)
-          console.log(jsonData)
-    
+            const response = await fetch('http://localhost:3000/palabrasall');
+            const jsonData = await response.json();
+            setData(jsonData);
+            setFiltro(data)
+            console.log(jsonData)
+
         } catch (error) {
-          console.error(error);
+            console.error(error);
         }
-    
-      };
+
+    };
 
     useEffect(() => {
         if (!dataCategoria.length) {
@@ -141,7 +141,7 @@ const Formulario = () => {
                 .then((response) => response.json())
                 .then((response) => {
                     // Hacer algo con la respuesta del servidor
-                   
+
                     setArrTama([]);
                     setDataNeutro([]);
                     setDataChoco([]);
@@ -188,9 +188,9 @@ const Formulario = () => {
                 como_se_usa_Ing: "",
                 ejemplo_neutro_ingles: "",
                 ejemplo_choco_ingles: ""
-                
-              }
-              
+
+            }
+
             //Convertir los arreglos de ejemplos a una string
 
             const dataNeutroString = dataNeutro.join('|');
@@ -356,11 +356,11 @@ const Formulario = () => {
         <div className='container px-4 lg:px-0 min-h-screen'>
 
             <p className='mb-5 mt-3 font-semibold text-mfColor text-4xl'>Administrador del Diccionario Choco</p>
-           
+
 
             <TablaAdmin newFilter={newFilter} setFiltro={setFiltro} setModalUpdate={setModalUpdate} data={data} setData={setData}
                 setValoresForm={setValoresForm} setArrTama={setArrTama} setDataNeutro={setDataNeutro}
-                setDataChoco={setDataChoco} setDataNeutroIng={setDataNeutroIng} setDataChocoIng={setDataChocoIng} fetchData={fetchData} setModalAdd={setModalAdd}/>
+                setDataChoco={setDataChoco} setDataNeutroIng={setDataNeutroIng} setDataChocoIng={setDataChocoIng} fetchData={fetchData} setModalAdd={setModalAdd} />
             <>
                 <Formik
                     //almacena los valores de cada campo
@@ -435,12 +435,10 @@ const Formulario = () => {
 
 
 
-
                             <div
-                                className={`absolute z-50 w-full max-h-min inset-0 flex items-center justify-center transition-all duration-200 ${modalAdd ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                                    }`}
+                                className={`fixed bg-modal z-50 inset-0 flex items-center justify-center transition-all duration-200 ${modalAdd ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                             >
-                                <div className='w-full h-full p-3'>
+                                <div className='w-full h-full p-3 max-h-full flex-col overflow-auto'>
                                     <div className='w-full p-4 bg-white rounded-2xl shadow-mfBoxShadow border-solid border-2 border-mfColor'>
                                         <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Agregar Nueva Palabra</h2>
                                         <div className='w-full flex flex-col xl:flex-row gap-4'>
@@ -779,10 +777,9 @@ const Formulario = () => {
 
 
                             <div
-                                className={`absolute z-50 w-full max-h-min inset-0 flex items-center justify-center transition-all duration-200 ${modalUpdate ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                                    }`}
+                                className={`fixed bg-modal z-50 inset-0 flex items-center justify-center transition-all duration-200 ${modalUpdate ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                             >
-                                <div className='w-full h-full p-3'>
+                                <div className='w-full h-full p-3 max-h-full flex-col overflow-auto'>
                                     <div className='w-full p-4 bg-white rounded-2xl shadow-mfBoxShadow border-solid border-2 border-mfColor'>
                                         <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Actualizar Palabra</h2>
                                         <div className='w-full flex flex-col xl:flex-row gap-4'>
@@ -1010,7 +1007,7 @@ const Formulario = () => {
                                                                     type='text'
                                                                     id={`ejemplo_neutro${index}`}
                                                                     name={`ejemplo_neutro${index}`}
-                                                                    value={dataNeutroIng[index]  == 'No translation yet' ? '' : dataNeutroIng[index]}
+                                                                    value={dataNeutroIng[index] == 'No translation yet' ? '' : dataNeutroIng[index]}
                                                                     placeholder="Traducir ejemplo neutro"
                                                                     className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                                     onChange={(event) => arrEjemNeutroIng(event.target.value, index)}
@@ -1024,7 +1021,7 @@ const Formulario = () => {
                                                                     type='text'
                                                                     id={`ejemplo_choco${index}`}
                                                                     name={`ejemplo_choco${index}`}
-                                                                    value={dataChocoIng[index]  == 'No translation yet' ? '' : dataChocoIng[index]}
+                                                                    value={dataChocoIng[index] == 'No translation yet' ? '' : dataChocoIng[index]}
                                                                     placeholder="Traducir ejemplo choco"
                                                                     className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
                                                                     onChange={(event) => arrEjemChocoIng(event.target.value, index)}
