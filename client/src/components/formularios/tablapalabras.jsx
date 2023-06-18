@@ -383,18 +383,18 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         <td className="py-3">{e.id}</td>
                         <td className="py-3">{e.palabra}</td>
 
-                        <td className="py-3">{e.significado}</td>
-                        <td className="py-3">{e.Categorium.categoria}</td>
-                        <td className="py-3">{e.acepciones}</td>
-                        <td className="py-3">{e.sinonimos}</td>
-                        <td className="py-3">{e.como_se_usa}</td>
-                        <td className="py-3">{e.Ejemplo.ejemplo_neutro.split("|").map((segment, index) => (
+                        <td className="py-3">{e.Ingle.significadoIng}</td>
+                        <td className="py-3">{e.Categorium.categoriaIng}</td>
+                        <td className="py-3">{e.Ingle.acepcionesIng}</td>
+                        <td className="py-3">{e.Ingle.sinonimosIng}</td>
+                        <td className="py-3">{e.Ingle.como_se_usa_Ing}</td>
+                        <td className="py-3">{e.Ejemplo.ejemplo_neutro_ingles.split("|").map((segment, index) => (
                           <React.Fragment key={index}>
                             {`${index + 1}. ${segment}`}
                             <br />
                           </React.Fragment>
                         ))}</td>
-                        <td className="py-3">{e.Ejemplo.ejemplo_choco.split("|").map((segment, index) => (
+                        <td className="py-3">{e.Ejemplo.ejemplo_choco_ingles.split("|").map((segment, index) => (
                           <React.Fragment key={index}>
                             {`${index + 1}. ${segment}`}
                             <br />
