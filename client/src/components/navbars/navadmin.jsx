@@ -42,7 +42,7 @@ const Navbar = ({rol}) => {
                
               </div>
               <button onClick={cerrarSesion} className="border-b-2 hover:bg-gray-300 text-black  py-2 px-3 rounded">
-                  Cerrar Sesión
+                  Cerrar Sesiónn
                 </button>
             </div>
             
