@@ -7,6 +7,8 @@ import { Routes, Route } from 'react-router-dom'
 import FormAdmin from './components/formularios/formAdminAdd'
 import LoginAdmin from './components/formularios/loginAdmin'
 import FormPublic from './components/formularios/formPublic'
+import NavAdmin from './components/navbars/navadmin'
+import NavPublic from './components/navbars/navpublic'
 
 function App() {
   return (
@@ -16,11 +18,15 @@ function App() {
         </Route>
         <Route path='/loginDicc' element={<LoginAdmin></LoginAdmin>}>   
         </Route>
-        <Route path='/formulario' element={<FormAdmin></FormAdmin>}>   
+        <Route path='/admin' element={<FormAdmin></FormAdmin>}>   
         </Route>
         <Route path='/colaborar' element={<FormPublic></FormPublic>}>   
         </Route>
         <Route path='/Ingles' element={<SeccDiccChocoIngles></SeccDiccChocoIngles>}>       
+        </Route>
+        <Route path='/navad' element={<NavAdmin></NavAdmin>}>       
+        </Route>
+        <Route path='/navpu' element={<NavPublic></NavPublic>}>       
         </Route>
       </Routes>
       

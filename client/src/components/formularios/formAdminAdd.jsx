@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TablaAdmin from './tablapalabras';
+import NavbarAdmin from '../navbars/navadmin';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 
@@ -42,15 +43,25 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
     const Formulario = () => {
 
-
+        const [rol, setRol] = useState([""])
         const navigate = useNavigate();
 
         useEffect(() => {
-            const expectedToken = 'tokenprueba'; // Reemplaza 'token_esperado' con tu token esperado
-            const storedToken = localStorage.getItem('tokenprueba');
+            const expectedToken = 'admin23mf'; // Reemplaza 'token_esperado' con tu token esperado
+            const storedToken = localStorage.getItem('admin');
+
+            const expectedToken2 = 'cola23mf23'; // Reemplaza 'token_esperado' con tu token esperado
+            const storedToken2 = localStorage.getItem('colaborador');
     
-            if (storedToken !== expectedToken) {
+            if (storedToken === expectedToken) {
+                setRol("Admin")
                 // Si el token almacenado no coincide con el token esperado, redirige a la página de inicio de sesión
+               
+            } else if (storedToken2 === expectedToken2) {
+                setRol("Colaborador")
+                // Si el token almacenado no coincide con el token esperado, redirige a la página de inicio de sesión
+                
+            } else {
                 navigate('/loginDicc');
             }
         }, [navigate]);
@@ -371,13 +382,15 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
         return (
             <div className='container px-4 lg:px-0 min-h-screen'>
+                <NavbarAdmin rol={rol}/>
 
-                <p className='mb-5 mt-3 font-semibold text-mfColor text-4xl'>Administrador del Diccionario Choco</p>
+                <p className='my-5 font-semibold text-mfColor text-4xl'>Administrador del Diccionario Choco</p>
 
 
                 <TablaAdmin newFilter={newFilter} setFiltro={setFiltro} setModalUpdate={setModalUpdate} data={data} setData={setData}
                     setValoresForm={setValoresForm} setArrTama={setArrTama} setDataNeutro={setDataNeutro}
-                    setDataChoco={setDataChoco} setDataNeutroIng={setDataNeutroIng} setDataChocoIng={setDataChocoIng} fetchData={fetchData} setModalAdd={setModalAdd} />
+                    setDataChoco={setDataChoco} setDataNeutroIng={setDataNeutroIng} setDataChocoIng={setDataChocoIng} fetchData={fetchData} setModalAdd={setModalAdd}
+                    rol={rol} />
                 <>
                     <Formik
                         //almacena los valores de cada campo

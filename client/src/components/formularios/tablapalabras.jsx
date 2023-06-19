@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
   data, setData, setArrTama, setDataNeutro, setDataChoco, setDataNeutroIng, setDataChocoIng, fetchData,
-  setModalAdd }) => {
+  setModalAdd, rol }) => {
   // const [data, setData] = useState([]);
   const [currentPage, setCurrent] = useState(1)
   const [currentPage2, setCurrent2] = useState(1)
@@ -101,10 +101,16 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         ))}</td>
 
                         <td className="py-3 text-black-600 hover:bg-blue-100">
-                          <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
+                        
+                        {rol === "Admin" ? 
+                          <div className='w-full'>
+                            <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
                           <button className="max-w-max my-auto h-min rounded-md bg-red-500 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
                             <i className="fa-solid fa-trash"></i>
                           </button>
+                          </div>
+                          : <p className='font-medium text-blue-500'>No Disponibles</p>}
+                          
                         </td>
 
                       </tr>
@@ -198,10 +204,15 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         ))}</td>
 
                         <td className="py-3 text-black-600 hover:bg-blue-100">
-                          <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
+                        <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
+                        {rol === "Admin" ? 
+                          <div className='w-full'>
+                            <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
                           <button className="max-w-max my-auto h-min rounded-md bg-red-500 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
                             <i className="fa-solid fa-trash"></i>
                           </button>
+                          </div>
+                          : <p className='font-medium text-blue-500'>No Disponibles</p>}
                         </td>
 
                       </tr>
@@ -305,10 +316,15 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         ))}</td>
 
                         <td className="py-3 text-black-600 hover:bg-blue-100">
-                          <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
+                        <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
+                        {rol === "Admin" ? 
+                          <div className='w-full'>
+                            <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
                           <button className="max-w-max my-auto h-min rounded-md bg-red-500 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
                             <i className="fa-solid fa-trash"></i>
                           </button>
+                          </div>
+                          : <p className='font-medium text-blue-500'>No Disponibles</p>}
                         </td>
 
                       </tr>
@@ -402,10 +418,15 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         ))}</td>
 
                         <td className="py-3 text-black-600 hover:bg-blue-100">
-                          <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
+                        <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
+                        {rol === "Admin" ? 
+                          <div className='w-full'>
+                            <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
                           <button className="max-w-max my-auto h-min rounded-md bg-red-500 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
                             <i className="fa-solid fa-trash"></i>
                           </button>
+                          </div>
+                          : <p className='font-medium text-blue-500'>No Disponibles</p>}
                         </td>
 
                       </tr>

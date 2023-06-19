@@ -18,6 +18,7 @@ export const Categoria = sequelize.define('Categoria', {
 
 // Array con los datos a insertar
 /*const usersData = [
+  { categoria: 'Sin categoría', categoriaIng: 'no category' },
     { categoria: 'Sustantivo', categoriaIng: 'Noun' },
     { categoria: 'Adjetivo', categoriaIng: 'Adjective' },
     { categoria: 'Verbo', categoriaIng: 'Verb' }

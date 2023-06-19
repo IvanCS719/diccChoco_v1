@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Cards from './Cards';
 import { Link } from 'react-router-dom';
+import NavbarPublic from '../navbars/navpublic';
 //import './cards.css'
 export default function Card() {
 
@@ -91,10 +92,13 @@ export default function Card() {
     const allWords = newFilter.length > 0 ? newFilter.length : datos.length
 
     return (
+        
         <div className='container px-4 lg:px-0 min-h-screen'>
+            <NavbarPublic/>
 
-            <h2 id='sectionId' className='text-4xl font-bold text-mfColor my-5'>Palabras del Choco</h2>
-            <div className='xl:mx-4 mb-6 w-auto flex flex-col gap-2'>
+            
+            <h2 id='sectionId' className='text-3xl font-bold text-mfColor my-3'>Palabras del Choco</h2> 
+            <div className='xl:mx-4 mb-6 w-auto  flex flex-col gap-2'>
                 <div className='w-full flex flex-col gap-2 md:flex-row md:gap-0 md:justify-between items-center'>
 
                     <div className="">
@@ -107,10 +111,10 @@ export default function Card() {
                     </div>
 
                     <div className="flex gap-2">
-                     <p className='py-1 sm:text-lg font-medium text-gray-800'> Idioma:  <Link to="/Ingles" className="text-mfColor font-medium">Ingles</Link></p>
-                        <p className='py-1 sm:text-lg font-medium text-gray-800'>Visualizar:</p>
+                     <p className='py-1 sm:text-lg  text-gray-800 '> Idioma:  <Link to="/Ingles" className=" text-black font-medium py-1 px-2 rounded">Ingles</Link></p>
+                        <p className='py-1 sm:text-lg  text-gray-800'>Letra:</p>
                         <select
-                            className="block w-auto rounded-md border-0 px-2 py-1 font-medium text-gray-800 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor text-center sm:max-w-xs sm:leading-6"
+                            className="block w-auto rounded-md px-2 font-medium text-gray-800 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor text-center sm:max-w-xs sm:leading-6"
                             onChange={filtroLetra}>
                             <option value='ALL'>Todos</option>
                             <option>A</option>
@@ -141,11 +145,16 @@ export default function Card() {
                             <option>Y</option>
                             <option>Z</option>
                         </select>
+                        
                     </div>
                 </div>
-                <div className='w-full md:text-lg font-medium text-gray-900 mt-1'>
+               
+            </div>
+            
+            
+            <div className='w-full md:text-lg font-medium text-gray-900 mt-1'>
                     {partirData.length > 0 ?
-                        <div className='w-full flex flex-col sm:flex-row sm:justify-between'>
+                        <div className='w-full flex flex-col sm:flex-row sm:justify-between my-4'>
                             <p className=''>Palabras Encontradas: <span className='text-mfColor font-semibold'>{allWords}</span></p>
 
 
@@ -158,7 +167,9 @@ export default function Card() {
                     }
 
                 </div>
-            </div>
+
+
+            
 
             {partirData.length > 0 ?
                 <div className='grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center md:px-8 lg:px-2 xl:px-9'>

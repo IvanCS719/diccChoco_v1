@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
+
 const FormField = ({ label, name, placeholder, errors, type = 'text' }) => (
     <div className='text-left mb-5'>
         <label className='block text-base font-medium leading-6 text-gray-900 mb-2' htmlFor={name}>{label}</label>
@@ -30,23 +31,39 @@ export default function Example() {
 
     const handleLogin = (values) => {
         const { usuario, password } = values;
-        const usuarioCorrecto = 'asd';
-        const contraseñaCorrecta = '1234';
+        const usuarioCorrecto = 'admin';
+        const contrasenaCorrecta = '123';
 
-        if (usuario === usuarioCorrecto && password === contraseñaCorrecta) {
-            // Inicio de sesión exitoso, redirigir a otra página
-            navigate('/formulario');// URL de la página a la que deseas redirigir
+        const usuarioCorrectoCola = 'colaborador';
+        const contrasenaCorrectaCola = '123';
+
+        if (usuario === usuarioCorrecto && password === contrasenaCorrecta) {
+
             // Credenciales correctas
-            const token = 'tokenprueba'; // Reemplaza esto con tu token real
+            const token = 'admin23mf'; // Reemplaza esto con tu token real
 
             // Almacena el token en localStorage
-            localStorage.setItem('tokenprueba', token);
+            localStorage.setItem('admin', token);
             // Obtén el token después de que el usuario haya iniciado sesión
             // const token = 'token'; // Reemplaza esto con tu token real
-
+            // Inicio de sesión exitoso, redirigir a otra página
+            navigate('/admin');// URL de la página a la que deseas redirigir
             // Almacena el token en localStorage
             //  localStorage.setItem('token', token);
 
+        } else if (usuario === usuarioCorrectoCola && password === contrasenaCorrectaCola) {
+
+            // Credenciales correctas
+            const token = 'cola23mf23'; // Reemplaza esto con tu token real
+
+            // Almacena el token en localStorage
+            localStorage.setItem('colaborador', token);
+            // Obtén el token después de que el usuario haya iniciado sesión
+            // const token = 'token'; // Reemplaza esto con tu token real
+            // Inicio de sesión exitoso, redirigir a otra página
+            navigate('/admin');// URL de la página a la que deseas redirigir
+            // Almacena el token en localStorage
+            //  localStorage.setItem('token', token);
         } else {
             // Credenciales incorrectas, mostrar modal de error
             setModalConfirUpdate(true);
@@ -58,11 +75,7 @@ export default function Example() {
 
             <div className="min-h-full flex flex-1 flex-col justify-center px-5 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <img
-                        className="mx-auto h-36 w-auto"
-                        src='/src/assets/logoDiccChoco.jpeg'
-                        alt="Your Company"
-                    />
+                    <p className='text-9xl text-mfColor'><i className="fa-solid fa-circle-user"></i></p>
                     <h2 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-800">
                         Las Palabras del Choco<br />(Admnistrador)
                     </h2>
@@ -94,8 +107,8 @@ export default function Example() {
 
                             return errores;
                         }}
-                    //para enviar formulario
-                    onSubmit={handleLogin}
+                        //para enviar formulario
+                        onSubmit={handleLogin}
                     >
                         {({ values, errors }) => (
                             <Form >
