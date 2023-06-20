@@ -43,7 +43,7 @@ const Formulario = () => {
             //addEjemplos();
 
 
-            console.log('newDataChoco:', dataChoco);
+           // console.log('newDataChoco:', dataChoco);
 
             //Convertir los arreglos de ejemplos a una string
 
@@ -68,7 +68,7 @@ const Formulario = () => {
                 .then((response) => response.json())
                 .then((data) => {
                     // Hacer algo con la respuesta del servidor
-                    console.log(data);
+                    //console.log(data);
                     setArrTama([]);
                     setDataChoco([]);
                     resetForm();

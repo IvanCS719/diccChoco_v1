@@ -3,8 +3,10 @@ import {sequelize} from '../../database/database.js';
 //import { Multimedia } from '../../models/diccChoco/Multimedia.js';
 import { Ejemplos } from '../../models/diccChoco/Ejemplos.js';
 import { Ingle } from '../../models/diccChoco/Ingle.js';
+
 //import { Region } from '../../models/diccChoco/Region.js';
 import { Tipo } from '../../models/diccChoco/Tipo.js';
+
 import { Categoria } from '../../models/diccChoco/Categoria.js';
 import { Colaborador } from '../../models/diccChoco/Colaborador.js';
 
@@ -63,6 +65,9 @@ Ingle.belongsTo(Palabras,{
     targetId: 'id'
 });
 
+//Relación con Ingles
+
+
 /*
 //Relación con Region
 Region.hasMany(Palabras,{
@@ -97,6 +102,8 @@ Palabras.belongsTo(Tipo,{
     foreignKey: 'id_tipo',
     targetId: 'id'
 });
+
+
 
 
 //Relación con Colaborador

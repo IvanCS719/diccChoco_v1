@@ -90,14 +90,20 @@ const usersData = [
   
   // Sincroniza los modelos con la base de datos y crea las tablas
   sequelize.sync()
-    .then(() => {
-      return Categoria.bulkCreate(usersData);
-    })
-    .then(() => {
-      console.log('Datos insertados exitosamente!');
-      // Aquí puedes realizar otras operaciones con las tablas
-    })
-    .catch(err => {
-      console.error('Error al crear las tablas y insertar los datos:', err);
+  .then(() => {
+    const promises = usersData.map(userData => {
+      return Categoria.findOrCreate({
+        where: { categoria: userData.categoria },
+        defaults: userData
+      });
     });
 
+    return Promise.all(promises);
+  })
+  .then(() => {
+    console.log('Datos insertados exitosamente!');
+    // Aquí puedes realizar otras operaciones con las tablas
+  })
+  .catch(err => {
+    console.error('Error al crear las tablas y insertar los datos:', err);
+  });

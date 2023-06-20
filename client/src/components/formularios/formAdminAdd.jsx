@@ -118,7 +118,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                 const jsonData = await response.json();
                 setData(jsonData);
                 setFiltro(data)
-                console.log(jsonData)
+                //console.log(jsonData)
 
             } catch (error) {
                 console.error(error);
@@ -252,7 +252,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                     .then((response) => response.json())
                     .then((data2) => {
                         // Hacer algo con la respuesta del servidor
-                        console.log(data2);
+                        //console.log(data2);
                         setArrTama([]);
                         setDataNeutro([]);
                         setDataChoco([]);
@@ -382,7 +382,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
         return (
             <div className='w-full min-h-screen'>
-                <NavBar rol={rol} verDicc={"Ver Diccionario"} verDiccLink={'/'} mfLogoAd={"MercadoFácil.mx"} mfLinkAd={"https://mercadofacil.mx/"}
+                <NavBar rol={rol} verDicc={"Ver Diccionario"} verDiccLink={'/'} tar={'_blank'} mfLogoAd={"MercadoFácil.mx"} mfLinkAd={"https://mercadofacil.mx/"}
                 CS={"Cerrar Sesión"}/>
 
                <div className='w-full px-4 md:px-6'>
@@ -826,7 +826,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                                             errors={errors}
                                         />
 
-                                        {console.log("Desde el formulario", valoresForm.palabra)}
+                                        
                                         <div className='text-left'>
                                             <label htmlFor="selectedOption">Categoría Gramatical:</label>
                                             <Field as="select" name="id_categoria" id="id_categoria"
@@ -844,7 +844,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                                                 <div className='error text-red-600 font-medium'>{errors.id_categoria}</div>
                                             )} />
                                         </div>
-                                        {console.log("id de categoria", valoresForm.Categorium.id)}
+                                      
                                     </div>
                                     <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
                                         <FormField

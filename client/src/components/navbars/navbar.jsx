@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 
-const Navbar = ({ rol, mfLogo, mfLink, verDicc, verDiccLink, CS, mfLogoAd, mfLinkAd, cola, colaLink,
+const Navbar = ({ rol, mfLogo, mfLink, verDicc, verDiccLink, tar, CS, mfLogoAd, mfLinkAd, cola, colaLink,
   masInfo, masInfoLink}) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -41,7 +41,7 @@ const Navbar = ({ rol, mfLogo, mfLink, verDicc, verDiccLink, CS, mfLogoAd, mfLin
               <div className="ml-10 flex items-center space-x-4">
 
 
-                {verDicc ? <Link to={verDiccLink} className='text-white font-medium hover:border-b-2'>{verDicc}</Link> : null}
+                {verDicc ? <Link to={verDiccLink} target={tar ? tar : ''} className='text-white font-medium hover:border-b-2'>{verDicc}</Link> : null}
 
                 {mfLogoAd ? <a href={mfLinkAd} className="text-white font-medium hover:border-b-2">
                   {mfLogoAd}

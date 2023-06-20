@@ -497,7 +497,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
 
     //setIdUpdate(row.id);
     setModalUpdate(true)
-    console.log("resultado Row", row)
+    //console.log("resultado Row", row)
     setValoresForm(row)
 
   };
