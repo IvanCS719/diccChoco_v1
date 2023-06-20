@@ -1,8 +1,10 @@
-import {DataTypes} from 'sequelize';
-import {sequelize} from '../../database/database.js';
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../../database/database.js';
 //import { Multimedia } from '../../models/diccChoco/Multimedia.js';
 import { Ejemplos } from '../../models/diccChoco/Ejemplos.js';
 import { Ingle } from '../../models/diccChoco/Ingle.js';
+
+import { EjemplosIng } from '../../models/diccChoco/EjemplosIngle.js';
 
 //import { Region } from '../../models/diccChoco/Region.js';
 import { Tipo } from '../../models/diccChoco/Tipo.js';
@@ -13,12 +15,12 @@ import { Colaborador } from '../../models/diccChoco/Colaborador.js';
 
 
 export const Palabras = sequelize.define('Palabras', {
-    id:{
+    id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    palabra:{
+    palabra: {
         type: DataTypes.STRING
     },
     significado: {
@@ -44,26 +46,16 @@ export const Palabras = sequelize.define('Palabras', {
 
 
 //Relación con Ejemplos
-Palabras.hasOne(Ejemplos,{
+Palabras.hasOne(Ejemplos, {
     foreignKey: 'id_palabras',
     sourceKey: 'id'
 });
 
-Ejemplos.belongsTo(Palabras,{
+Ejemplos.belongsTo(Palabras, {
     foreignKey: 'id_palabras',
     targetId: 'id'
 });
 
-//Relación con Ingles
-Palabras.hasOne(Ingle,{
-    foreignKey: 'id_palabrasIng',
-    sourceKey: 'id'
-});
-
-Ingle.belongsTo(Palabras,{
-    foreignKey: 'id_palabrasIng',
-    targetId: 'id'
-});
 
 //Relación con Ingles
 
@@ -82,23 +74,23 @@ Palabras.belongsTo(Region,{
 
 
 //Relación con Categoria
-Categoria.hasMany(Palabras,{
+Categoria.hasMany(Palabras, {
     foreignKey: 'id_categoria',
     sourceKey: 'id'
 });
 
-Palabras.belongsTo(Categoria,{
+Palabras.belongsTo(Categoria, {
     foreignKey: 'id_categoria',
     targetId: 'id'
 });
 
 //Relación con Tipo
-Tipo.hasMany(Palabras,{
+Tipo.hasMany(Palabras, {
     foreignKey: 'id_tipo',
     sourceKey: 'id'
 });
 
-Palabras.belongsTo(Tipo,{
+Palabras.belongsTo(Tipo, {
     foreignKey: 'id_tipo',
     targetId: 'id'
 });
@@ -107,12 +99,12 @@ Palabras.belongsTo(Tipo,{
 
 
 //Relación con Colaborador
-Palabras.hasOne(Colaborador,{
+Palabras.hasOne(Colaborador, {
     foreignKey: 'id_palabras',
     sourceKey: 'id'
 });
 
-Colaborador.belongsTo(Palabras,{
+Colaborador.belongsTo(Palabras, {
     foreignKey: 'id_palabras',
     targetId: 'id'
 });
@@ -127,3 +119,75 @@ Multimedia.belongsTo(Palabras,{
     foreignKey: 'id_palabras',
     targetId: 'id'
 });*/
+
+
+//Nueva tablas de traduccion, Ingles
+
+//Relación con Ingles
+try {
+    Palabras.hasOne(Ingle, {
+        foreignKey: 'id_palabras',
+        sourceKey: 'id'
+    });
+    
+    Ingle.belongsTo(Palabras, {
+        foreignKey: 'id_palabras',
+        targetId: 'id'
+    });
+    
+    
+    Palabras.hasOne(EjemplosIng, {
+        foreignKey: 'id_palabras',
+        sourceKey: 'id'
+    });
+    EjemplosIng.belongsTo(Palabras, {
+        foreignKey: 'id_palabras',
+        targetId: 'id'
+    });
+    
+    let dataEjemplos = []
+    Palabras.findAll({
+        attributes: ['id'] // Reemplaza 'nombreColumna' con el nombre de la columna que deseas seleccionar
+    })
+        .then((palabras) => {
+            // Aquí puedes trabajar con los registros obtenidos
+            dataEjemplos = palabras;
+        })
+        .catch((error) => {
+            console.error('Error al obtener los registros:', error);
+        });
+    
+    sequelize.sync()
+        .then(() => {
+            const promises = dataEjemplos.map(dataEjemplos => {
+                 try {
+                    Ingle.findOrCreate({
+                        where: { id_palabras: dataEjemplos.id },
+                        defaults: dataEjemplos
+                    });
+        
+                    EjemplosIng.findOrCreate({
+                        where: { id_palabras: dataEjemplos.id },
+                        defaults: dataEjemplos
+                    });
+        
+                    return true
+                 } catch (error) {
+                    console.log("Error de insersion Ingles",error)
+                    return false
+                 }
+            });
+    
+            return Promise.all(promises);
+        })
+        .then(() => {
+            console.log('Insersion correcta!');
+            // Aquí puedes realizar otras operaciones con las tablas
+        })
+        .catch(err => {
+            console.error('Error al crear las tablas y insertar los datos:', err);
+        });
+    
+} catch (error) {
+    console.log("Error de realcion Ingles",error)
+}

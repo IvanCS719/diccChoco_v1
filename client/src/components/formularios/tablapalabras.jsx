@@ -297,22 +297,22 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         <td className="py-3">{e.palabra}</td>
 
                         <td className="py-3">{e.Ingle.significadoIng}</td>
-                        <td className="py-3">{e.Categorium.categoriaIng}</td>
+                        <td className="py-3">{e.Categorium.CategoriaIng.categoriaIng}</td>
                         <td className="py-3">{e.Ingle.acepcionesIng}</td>
                         <td className="py-3">{e.Ingle.sinonimosIng}</td>
                         <td className="py-3">{e.Ingle.como_se_usa_Ing}</td>
-                        <td className="py-3">{e.Ejemplo.ejemplo_neutro_ingles.split("|").map((segment, index) => (
+                        <td className="py-3">{e.EjemplosIng?e.EjemplosIng.ejemplo_neutro_ingles.split("|").map((segment, index) => (
                           <React.Fragment key={index}>
                             {`${index + 1}. ${segment}`}
                             <br />
                           </React.Fragment>
-                        ))}</td>
-                        <td className="py-3">{e.Ejemplo.ejemplo_choco_ingles.split("|").map((segment, index) => (
+                        )):'No translation yet'}</td>
+                        <td className="py-3">{e.EjemplosIng?e.EjemplosIng.ejemplo_choco_ingles.split("|").map((segment, index) => (
                           <React.Fragment key={index}>
                             {`${index + 1}. ${segment}`}
                             <br />
                           </React.Fragment>
-                        ))}</td>
+                        )):'No translation yet'}</td>
 
                         <td className="py-3 text-black-600 hover:bg-blue-100">
                         {rol === "Admin" ? 
@@ -398,22 +398,22 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         <td className="py-3">{e.palabra}</td>
 
                         <td className="py-3">{e.Ingle.significadoIng}</td>
-                        <td className="py-3">{e.Categorium.categoriaIng}</td>
+                        <td className="py-3">{e.Categorium.CategoriaIng.categoriaIng}</td>
                         <td className="py-3">{e.Ingle.acepcionesIng}</td>
                         <td className="py-3">{e.Ingle.sinonimosIng}</td>
                         <td className="py-3">{e.Ingle.como_se_usa_Ing}</td>
-                        <td className="py-3">{e.Ejemplo.ejemplo_neutro_ingles.split("|").map((segment, index) => (
+                        <td className="py-3">{e.EjemplosIng?e.EjemplosIng.ejemplo_neutro_ingles.split("|").map((segment, index) => (
                           <React.Fragment key={index}>
                             {`${index + 1}. ${segment}`}
                             <br />
                           </React.Fragment>
-                        ))}</td>
-                        <td className="py-3">{e.Ejemplo.ejemplo_choco_ingles.split("|").map((segment, index) => (
+                        )):'No translation yet'}</td>
+                        <td className="py-3">{e.EjemplosIng?e.EjemplosIng.ejemplo_choco_ingles.split("|").map((segment, index) => (
                           <React.Fragment key={index}>
                             {`${index + 1}. ${segment}`}
                             <br />
                           </React.Fragment>
-                        ))}</td>
+                        )):'No translation yet'}</td>
 
                         <td className="py-3 text-black-600 hover:bg-blue-100">
                         {rol === "Admin" ? 
@@ -483,15 +483,15 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
     setDataChoco(ejeChoco)
 
     const ejeNeutroIng = []
-    row.Ejemplo.ejemplo_neutro_ingles.split("|").map((segment) => (
+    row.EjemplosIng ? row.EjemplosIng.ejemplo_neutro_ingles.split("|").map((segment) => (
       ejeNeutroIng.push(segment)
-    ))
+    )): ejeNeutroIng.push('No translation yet')
     setDataNeutroIng(ejeNeutroIng)
 
     const ejeChocoIng = []
-    row.Ejemplo.ejemplo_choco_ingles.split("|").map((segment) => (
+    row.EjemplosIng ? row.EjemplosIng.ejemplo_choco_ingles.split("|").map((segment) => (
       ejeChocoIng.push(segment)
-    ))
+    )) : ejeChocoIng.push('No translation yet')
     setDataChocoIng(ejeChocoIng)
     //setArrTama(ejeChoco)
 
