@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-const Navbar = ({rol}) => {
+
+const Navbar = ({ rol, mfLogo, mfLink, verDicc, verDiccLink, CS, mfLogoAd, mfLinkAd, cola, colaLink,
+  masInfo, masInfoLink}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleNavbar = () => {
@@ -10,43 +12,53 @@ const Navbar = ({rol}) => {
   };
 
   const navigate = useNavigate();
-  const cerrarSesion = () =>{
+  const cerrarSesion = () => {
     try {
-      localStorage.getItem('admin') ? localStorage.removeItem('admin')  : null
-    localStorage.getItem('colaborador') ? localStorage.removeItem('colaborador')  : null
-    navigate('/loginDicc');
+      localStorage.getItem('admin') ? localStorage.removeItem('admin') : null
+      localStorage.getItem('colaborador') ? localStorage.removeItem('colaborador') : null
+      navigate('/loginDicc');
     } catch (error) {
       console.log("Error SC", error)
     }
-    
+
   }
 
   return (
     <nav className="bg-mfColor w-full">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-7">
         <div className="flex items-center justify-between h-16 flex-grow">
           <div className="w-full flex items-center">
             <div className="flex-shrink-0">
-              <a href="https://mercadofacil.mx/">
-              <span className="text-white font-bold text-xl">Mercadofácil.mx</span>
-              </a>
-             
+
+              {rol ? <span title='Modo de acceso' className="text-white font-bold text-xl">{rol === "Admin" ? "Administrador" : rol}</span> : null}
+              {mfLogo ? <a href={mfLink}>
+                <span className="text-white font-bold text-xl">{mfLogo}</span>
+              </a> : null}
+
+
             </div>
             <div className="hidden md:flex md:w-full justify-between">
               <div className="ml-10 flex items-center space-x-4">
 
-            
-                <Link href="/" className='text-white font-medium hover:border-b-2'>Inicio</Link>
-                <Link href="/colaborar" className='text-white font-medium hover:border-b-2'>Colaborar</Link>
-               
+
+                {verDicc ? <Link to={verDiccLink} className='text-white font-medium hover:border-b-2'>{verDicc}</Link> : null}
+
+                {mfLogoAd ? <a href={mfLinkAd} className="text-white font-medium hover:border-b-2">
+                  {mfLogoAd}
+                </a> : null}
+                {masInfo ? <a href={masInfoLink} className="text-white font-medium hover:border-b-2">
+                  {masInfo}
+                </a> : null}
+
               </div>
-              <button onClick={cerrarSesion} className="hover:bg-white hover:text-mfColor hover:font-semibold text-white font-medium py-2 px-3 rounded-lg">
-                Acceder
-              </button>
+              {CS ? <button onClick={cerrarSesion} className="hover:bg-white hover:text-mfColor hover:font-semibold border-solid border-2 border-white text-white font-medium py-2 px-3 rounded-lg">
+                {CS}
+              </button>: null}
+              {cola ? <Link to={colaLink} className="hover:bg-white hover:text-mfColor hover:font-semibold border-solid border-2 border-white text-white font-medium py-2 px-3 rounded-lg">{cola}</Link> : null}
             </div>
-            
+
           </div>
-           
+
           <div className="-mr-2 flex md:hidden">
             <button
               onClick={toggleNavbar}
@@ -95,12 +107,16 @@ const Navbar = ({rol}) => {
       </div>
       {isOpen && (
         <div className="md:hidden" id="mobile-menu">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <a href="https://mercadofacil.mx/" className='text-white font-medium hover:bg-gray-300  rounded'>Mercado Fácil</a>
-          <Link to="/" className='text-white font-medium hover:bg-gray-300  rounded'><p>Ver Diccionario</p></Link>
-          <button onClick={cerrarSesion} className="hover:bg-gray-300 text-white font-bold  rounded">
-                  Cerrar Sesión
-                </button>
+          <div className="flex flex-col items-center gap-2 py-3">
+          {verDicc ? <Link to={verDiccLink} className='text-white font-medium hover:border-b-2'>{verDicc}</Link> : null}
+          {mfLogoAd ? <a href={mfLinkAd} className="text-white font-medium hover:border-b-2">
+                  {mfLogoAd}
+                </a> : null}
+           
+            {CS ? <button onClick={cerrarSesion} className="hover:bg-white hover:text-mfColor hover:font-semibold text-white font-medium py-2 px-3 rounded-lg">
+                {CS}
+              </button>: null}
+              {cola ? <Link to={colaLink} className="hover:bg-white hover:text-mfColor hover:font-semibold border-solid border-2 border-white text-white font-medium py-2 px-3 rounded-lg">{cola}</Link> : null}
           </div>
         </div>
       )}

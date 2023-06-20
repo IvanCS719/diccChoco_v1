@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import NavBar from '../navbars/navbar';
 
 const FormField = ({ label, name, placeholder, errors, type = 'text' }) => (
     <div className='text-left mb-5'>
@@ -123,9 +124,12 @@ const Formulario = () => {
     };
 
     return (
-        <div className='container flex flex-col items-center px-4 lg:px-0 w-screen min-h-screen'>
+        <div className='w-full min-h-screen'>
+            <NavBar mfLogo={"MercadoFácil.mx"} mfLink={"https://mercadofacil.mx/"} cola={"Volver"} colaLink={"/"}
+            verDicc={"Inicio"} verDiccLink={'/'} masInfo={"Saber más"} masInfoLink={"https://mercadofacil.mx/las-palabras-del-choco/"}/>
 
-            <p className='mb-4 mt-3 font-semibold text-mfColor text-4xl'>¡Gracias por contribuir en la mejora de este Diccionario!</p>
+           <div className='w-full px-4 mb-2 md:px-6 flex flex-col items-center'>
+           <p className='mb-4 mt-3 font-semibold text-mfColor text-4xl'>¡Gracias por contribuir en la mejora de este Diccionario!</p>
             
             <>
                 <Formik
@@ -339,6 +343,7 @@ const Formulario = () => {
 
             </>
             
+           </div>
         </div>
     );
 }
