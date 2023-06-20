@@ -17,13 +17,13 @@ export const Tipo = sequelize.define('Tipo', {
 
 
 // Array con los datos a insertar
-/*const usersData = [
+const usersData = [
     { tipo: 'Palabra'},
     { tipo: 'Frase o Modismo'}
   ];
   
   // Sincroniza los modelos con la base de datos y crea las tablas
-  sequelize.sync({ force: true })
+  sequelize.sync()
     .then(() => {
       return Tipo.bulkCreate(usersData);
     })
@@ -33,4 +33,4 @@ export const Tipo = sequelize.define('Tipo', {
     })
     .catch(err => {
       console.error('Error al crear las tablas y insertar los datos:', err);
-    });*/
+    });

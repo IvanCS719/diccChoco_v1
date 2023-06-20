@@ -84,7 +84,7 @@ export default function Example() {
                         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                             <p className='text-9xl text-mfColor'><i className="fa-solid fa-circle-user"></i></p>
                             <h2 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-800">
-                                Las Palabras del Choco<br />(Admnistrador)
+                                Las Palabras del Choco<br/>(Panel)
                             </h2>
                         </div>
 

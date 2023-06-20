@@ -91,7 +91,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
             colaborador: 'Mercado Fácil',
             correo_electronico: '',
             autorizado: true,
-            id_categoria: 0,
+            id_categoria: 1,
             Categorium: {
                 id: 0
             },
