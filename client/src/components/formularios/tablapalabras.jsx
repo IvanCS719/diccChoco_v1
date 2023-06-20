@@ -204,7 +204,6 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         ))}</td>
 
                         <td className="py-3 text-black-600 hover:bg-blue-100">
-                        <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
                         {rol === "Admin" ? 
                           <div className='w-full'>
                             <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
@@ -316,7 +315,6 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         ))}</td>
 
                         <td className="py-3 text-black-600 hover:bg-blue-100">
-                        <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
                         {rol === "Admin" ? 
                           <div className='w-full'>
                             <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
@@ -418,7 +416,6 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         ))}</td>
 
                         <td className="py-3 text-black-600 hover:bg-blue-100">
-                        <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
                         {rol === "Admin" ? 
                           <div className='w-full'>
                             <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
@@ -500,7 +497,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
 
     //setIdUpdate(row.id);
     setModalUpdate(true)
-    console.log("resultado Row", row)
+    //console.log("resultado Row", row)
     setValoresForm(row)
 
   };
