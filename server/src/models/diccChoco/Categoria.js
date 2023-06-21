@@ -94,7 +94,8 @@ CategoriaIng.belongsTo(Categoria, {
       { categoria: 'Numeral fraccionario', categoriaIng: 'Fractional numeral' },
   
       { categoria: 'Infinitivo', categoriaIng: 'Infinitive' },
-      { categoria: 'Sin categoría', categoriaIng: 'no category' }
+      { categoria: 'Sin categoría', categoriaIng: 'no category' },
+      { categoria: 'verbo pronominal', categoriaIng: 'pronominal verb'}
     ];
   
   // Sincroniza los modelos con la base de datos y crea las tablas

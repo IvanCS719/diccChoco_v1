@@ -21,7 +21,10 @@ export default function Card() {
             const result = datos.filter(element => {
                 //const regex = /^(¡¿")?/i;
                 // console.log(element.palabra.startsWith(e.target.value.toUpperCase()) ? element.palabra.startsWith(e.target.value.toUpperCase()) : "No hay")    
-                return element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase()) || ((element.palabra.startsWith('¡' || '¿' || '"') && element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase(), 1)))
+                return element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase()) ||
+    (element.palabra.startsWith('¡') && element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase(), 1)) ||
+    (element.palabra.startsWith('¿') && element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase(), 1)) ||
+    (element.palabra.startsWith('"') && element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase(), 1));
                 //regets
 
             })

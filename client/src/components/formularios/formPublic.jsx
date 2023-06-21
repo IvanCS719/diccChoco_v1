@@ -161,6 +161,9 @@ const Formulario = () => {
                             errores.palabra = 'Campo obligatorio*'
                         }
 
+                        if (!valores.significado) {
+                            errores.significado = 'Campo obligatorio*'
+                        }
                         //valores de significado
                         if (!valores.como_se_usa) {
                             errores.como_se_usa = 'Campo obligatorio*'
@@ -220,13 +223,14 @@ const Formulario = () => {
                                             placeholder="Ingrese la palabra"
                                             errors={errors}
                                         />
-
                                         <FormField
-                                            label="¿En qué casos se usa? (requerido):"
-                                            name="como_se_usa"
-                                            placeholder="Explique brevemente"
+                                            label="Significado (requerido):"
+                                            name="significado"
+                                            placeholder="Significado de la palabra"
                                             errors={errors}
                                         />
+
+                                       
 
                                     </div>
                                     <div className='w-auto flex flex-col items-center gap-1 mb-3'>
@@ -286,13 +290,13 @@ const Formulario = () => {
 
                                     </div>
                                     <div className='w-auto flex flex-col md:flex-row gap-1 md:gap-5'>
-                                        <FormField
-                                            label="Significado:"
-                                            name="significado"
-                                            placeholder="Significado de la palabra"
-                                            
+                                        
+                                    <FormField
+                                            label="¿En qué casos se usa? (requerido):"
+                                            name="como_se_usa"
+                                            placeholder="Explique brevemente"
+                                            errors={errors}
                                         />
-
                                         <FormField
                                             label="Sinónimos (separados por coma):"
                                             name="sinonimos"

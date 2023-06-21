@@ -9,7 +9,7 @@ import { Tipo } from "../../models/diccChoco/Tipo.js";
 //import { Multimedia } from "../../models/diccChoco/Multimedia.js";
 import { Ejemplos } from "../../models/diccChoco/Ejemplos.js";
 import { Op } from "sequelize";
-
+import {sequelize} from '../../database/database.js';
 
 export const getPalabras = async (req, res) => {
     
@@ -56,6 +56,13 @@ export const getPalabras = async (req, res) => {
                     model: EjemplosIng,
                     required: false,
                   },
+              ],
+              order: [
+                // Expresión SQL personalizada para ordenar las palabras
+                sequelize.literal(`CASE
+                  WHEN SUBSTRING(palabra, 1, 1) IN ('¡', '¿', '"') THEN SUBSTRING(palabra, 2)
+                  ELSE palabra
+                END`),
               ],
         });
         res.json(arrPalabras);

@@ -23,6 +23,7 @@ const FormField = ({ label, name, placeholder, errors, type = 'text' }) => (
 
 export default function Example() {
     const [modalConfirUpdate, setModalConfirUpdate] = useState(false);
+    const [typeInput, setTypeInput] = useState('password');
     const closeModalUp = () => {
         setModalConfirUpdate(false);
         //onClose();
@@ -153,14 +154,18 @@ export default function Example() {
                                             placeholder="Ingrese su nombre de usuario"
                                             errors={errors}
                                         />
-
+                                        
                                         <FormField
-                                            type='password'
+                                            type={typeInput}
                                             label="Contraseña:"
                                             name="contrasena"
                                             placeholder="Ingrese su contraseña"
                                             errors={errors}
                                         />
+                                        <div className='w-full -mt-4 mb-4 flex justify-end'>
+                                            <span className='font-semibold text-gray-700 hover:text-gray-900 cursor-pointer' onClick={() => {typeInput === 'password' ? setTypeInput('text') : setTypeInput('password')}}>Ver contraseña</span>
+                                        </div>
+
                                         <div>
                                             <button
                                                 type="submit"
