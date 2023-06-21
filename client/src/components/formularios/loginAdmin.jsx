@@ -30,9 +30,36 @@ export default function Example() {
 
     const navigate = useNavigate();
 
-    const handleLogin = (values) => {
-        const { usuario, password } = values;
-        const usuarioCorrecto = 'admin';
+    const handleLogin = async (values) => {
+        const { rol, contrasena } = values;
+        try {
+            const response = await fetch('http://localhost:3000/api/auth/chocologin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ rol, contrasena }),
+            });
+
+            if (response.ok) {
+                const { token , user} = await response.json();
+                //console.log("dentro", user)
+                if(user === 'Admin' || user === 'admin'){
+                    localStorage.setItem('admin', token);
+                }else{
+                    localStorage.setItem('colaborador', token);
+                }
+                
+                navigate('/admin'); // Redirigir a la página protegida después de iniciar sesión
+            } else {
+                setModalConfirUpdate(true);
+            }
+        } catch (error) {
+            console.error(error);
+            setModalConfirUpdate(true);
+        }
+     
+        /*const usuarioCorrecto = 'admin';
         const contrasenaCorrecta = '123';
 
         const usuarioCorrectoCola = 'colaborador';
@@ -68,14 +95,14 @@ export default function Example() {
         } else {
             // Credenciales incorrectas, mostrar modal de error
             setModalConfirUpdate(true);
-        }
+        }*/
     };
 
     return (
         <>
             <div className='w-full min-h-screen'>
                 <NavBar mfLogo={"MercadoFácil.mx"} mfLink={"https://mercadofacil.mx/"} cola={"Salir"} colaLink={"/"}
-                    />
+                />
 
                 <div className='w-full px-2 md:px-2 flex flex-col items-center'>
 
@@ -84,7 +111,7 @@ export default function Example() {
                         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                             <p className='text-9xl text-mfColor'><i className="fa-solid fa-circle-user"></i></p>
                             <h2 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-800">
-                                Las Palabras del Choco<br/>(Panel)
+                                Las Palabras del Choco<br />(Panel)
                             </h2>
                         </div>
 
@@ -92,8 +119,8 @@ export default function Example() {
                             <Formik
                                 //almacena los valores de cada campo
                                 initialValues={{
-                                    usuario: '',
-                                    password: ''
+                                    rol: '',
+                                    contrasena: ''
 
                                 }}
                                 //validar que los valores escritos dentro del campo, correspondan a lo solicitado en cada tabla
@@ -101,13 +128,13 @@ export default function Example() {
                                     let errores = {};
 
                                     //valores de palabra
-                                    if (!valores.usuario) {
-                                        errores.usuario = 'Usuario requerido*'
+                                    if (!valores.rol) {
+                                        errores.rol = 'Usuario requerido*'
                                     }
 
                                     //valores de significado
-                                    if (!valores.password) {
-                                        errores.password = 'Contraseña requerida*'
+                                    if (!valores.contrasena) {
+                                        errores.contrasena = 'Contraseña requerida*'
                                     }
 
 
@@ -122,7 +149,7 @@ export default function Example() {
 
                                         <FormField
                                             label="Usuario:"
-                                            name="usuario"
+                                            name="rol"
                                             placeholder="Ingrese su nombre de usuario"
                                             errors={errors}
                                         />
@@ -130,7 +157,7 @@ export default function Example() {
                                         <FormField
                                             type='password'
                                             label="Contraseña:"
-                                            name="password"
+                                            name="contrasena"
                                             placeholder="Ingrese su contraseña"
                                             errors={errors}
                                         />

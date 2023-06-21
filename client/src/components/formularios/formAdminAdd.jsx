@@ -47,17 +47,17 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
         const navigate = useNavigate();
 
         useEffect(() => {
-            const expectedToken = 'admin23mf'; // Reemplaza 'token_esperado' con tu token esperado
+            //const expectedToken = 'admin23mf'; // Reemplaza 'token_esperado' con tu token esperado
             const storedToken = localStorage.getItem('admin');
 
-            const expectedToken2 = 'cola23mf23'; // Reemplaza 'token_esperado' con tu token esperado
+            //const expectedToken2 = 'cola23mf23'; // Reemplaza 'token_esperado' con tu token esperado
             const storedToken2 = localStorage.getItem('colaborador');
     
-            if (storedToken === expectedToken) {
+            if (storedToken) {
                 setRol("Admin")
                 // Si el token almacenado no coincide con el token esperado, redirige a la página de inicio de sesión
                
-            } else if (storedToken2 === expectedToken2) {
+            } else if (storedToken2) {
                 setRol("Colaborador")
                 // Si el token almacenado no coincide con el token esperado, redirige a la página de inicio de sesión
                 

@@ -20,4 +20,14 @@ async function main() {
       }
 }
 
+import router from './routes/diccChoco/login.routes.js';
+import router2 from './routes/diccChoco/protected.js';
+
+// Rutas de autenticación
+app.use('/api/auth', router);
+
+// Rutas protegidas
+app.use('/api', router2);
+
+
 main();
