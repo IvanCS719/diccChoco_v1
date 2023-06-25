@@ -43,13 +43,9 @@ export default function Example() {
             });
 
             if (response.ok) {
-                const { token , user} = await response.json();
+                const { token } = await response.json();
                 //console.log("dentro", user)
-                if(user === 'Admin' || user === 'admin'){
-                    localStorage.setItem('admin', token);
-                }else{
-                    localStorage.setItem('colaborador', token);
-                }
+                localStorage.setItem('token', token);
                 
                 navigate('/admin'); // Redirigir a la página protegida después de iniciar sesión
             } else {

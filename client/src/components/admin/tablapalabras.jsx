@@ -2,8 +2,8 @@ import { setIn } from 'formik';
 import React, { useEffect, useState } from 'react';
 
 const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
-  data, setData, setArrTama, setDataNeutro, setDataChoco, setDataNeutroIng, setDataChocoIng, fetchData,
-  setModalAdd, rol }) => {
+  data, setArrTama, setDataNeutro, setDataChoco, setDataNeutroIng, setDataChocoIng, fetchData,
+  setModalAdd, addmf, editmf, elimf, apropu, elipu }) => {
   // const [data, setData] = useState([]);
   const [currentPage, setCurrent] = useState(1)
   const [currentPage2, setCurrent2] = useState(1)
@@ -15,9 +15,9 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
 
   const [content, setContent] = useState("Español");
 
-  function showContent(e){
+  function showContent(e) {
     setContent(e.target.value);
-};
+  };
 
 
   const renderContent = () => {
@@ -101,16 +101,30 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         ))}</td>
 
                         <td className="py-3 text-black-600 hover:bg-blue-100">
-                        
-                        {rol === "Admin" ? 
-                          <div className='w-full'>
-                            <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
-                          <button className="max-w-max my-auto h-min rounded-md bg-red-500 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
-                            <i className="fa-solid fa-trash"></i>
-                          </button>
-                          </div>
-                          : <p className='font-medium text-blue-500'>No Disponibles</p>}
-                          
+
+                          {
+                            editmf ? (
+                              <button className="max-w-max my-auto h-min rounded-md bg-blue-600 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}>
+                                <i className="fa-solid fa-pen-to-square"></i>
+                              </button>
+                            ) : null
+                          }
+
+                          {
+                            elimf ? (
+                              <button className="max-w-max my-auto h-min rounded-md bg-red-600 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
+                                <i className="fa-solid fa-trash"></i>
+                              </button>
+                            ) : null
+                          }
+
+                          {
+                            !editmf && !elimf ? (
+                              <p className='font-medium text-blue-600'>No Disponibles</p>
+                            ) : null
+                          }
+
+
                         </td>
 
                       </tr>
@@ -204,14 +218,15 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         ))}</td>
 
                         <td className="py-3 text-black-600 hover:bg-blue-100">
-                        {rol === "Admin" ? 
-                          <div className='w-full'>
-                            <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
-                          <button className="max-w-max my-auto h-min rounded-md bg-red-500 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
+                          {apropu ? (<button className="max-w-max my-auto h-min rounded-md bg-blue-600 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>) : null}
+                          {elipu ? (<button className="max-w-max my-auto h-min rounded-md bg-red-600 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
                             <i className="fa-solid fa-trash"></i>
-                          </button>
-                          </div>
-                          : <p className='font-medium text-blue-500'>No Disponibles</p>}
+                          </button>) : null}
+                          {
+                            !apropu && !elipu ? (
+                              <p className='font-medium text-blue-600'>No Disponibles</p>
+                            ) : null
+                          }
                         </td>
 
                       </tr>
@@ -301,28 +316,42 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         <td className="py-3">{e.Ingle.acepcionesIng}</td>
                         <td className="py-3">{e.Ingle.sinonimosIng}</td>
                         <td className="py-3">{e.Ingle.como_se_usa_Ing}</td>
-                        <td className="py-3">{e.EjemplosIng?e.EjemplosIng.ejemplo_neutro_ingles.split("|").map((segment, index) => (
+                        <td className="py-3">{e.EjemplosIng ? e.EjemplosIng.ejemplo_neutro_ingles.split("|").map((segment, index) => (
                           <React.Fragment key={index}>
                             {`${index + 1}. ${segment}`}
                             <br />
                           </React.Fragment>
-                        )):'No translation yet'}</td>
-                        <td className="py-3">{e.EjemplosIng?e.EjemplosIng.ejemplo_choco_ingles.split("|").map((segment, index) => (
+                        )) : 'No translation yet'}</td>
+                        <td className="py-3">{e.EjemplosIng ? e.EjemplosIng.ejemplo_choco_ingles.split("|").map((segment, index) => (
                           <React.Fragment key={index}>
                             {`${index + 1}. ${segment}`}
                             <br />
                           </React.Fragment>
-                        )):'No translation yet'}</td>
+                        )) : 'No translation yet'}</td>
 
                         <td className="py-3 text-black-600 hover:bg-blue-100">
-                        {rol === "Admin" ? 
-                          <div className='w-full'>
-                            <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
-                          <button className="max-w-max my-auto h-min rounded-md bg-red-500 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
-                            <i className="fa-solid fa-trash"></i>
-                          </button>
-                          </div>
-                          : <p className='font-medium text-blue-500'>No Disponibles</p>}
+                          {
+                            editmf ? (
+                              <button className="max-w-max my-auto h-min rounded-md bg-blue-600 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}>
+                                <i className="fa-solid fa-pen-to-square"></i>
+                              </button>
+                            ) : null
+                          }
+
+                          {
+                            elimf ? (
+                              <button className="max-w-max my-auto h-min rounded-md bg-red-600 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
+                                <i className="fa-solid fa-trash"></i>
+                              </button>
+                            ) : null
+                          }
+
+                          {
+                            !editmf && !elimf ? (
+                              <p className='font-medium text-blue-600'>No Disponibles</p>
+                            ) : null
+                          }
+
                         </td>
 
                       </tr>
@@ -402,28 +431,29 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         <td className="py-3">{e.Ingle.acepcionesIng}</td>
                         <td className="py-3">{e.Ingle.sinonimosIng}</td>
                         <td className="py-3">{e.Ingle.como_se_usa_Ing}</td>
-                        <td className="py-3">{e.EjemplosIng?e.EjemplosIng.ejemplo_neutro_ingles.split("|").map((segment, index) => (
+                        <td className="py-3">{e.EjemplosIng ? e.EjemplosIng.ejemplo_neutro_ingles.split("|").map((segment, index) => (
                           <React.Fragment key={index}>
                             {`${index + 1}. ${segment}`}
                             <br />
                           </React.Fragment>
-                        )):'No translation yet'}</td>
-                        <td className="py-3">{e.EjemplosIng?e.EjemplosIng.ejemplo_choco_ingles.split("|").map((segment, index) => (
+                        )) : 'No translation yet'}</td>
+                        <td className="py-3">{e.EjemplosIng ? e.EjemplosIng.ejemplo_choco_ingles.split("|").map((segment, index) => (
                           <React.Fragment key={index}>
                             {`${index + 1}. ${segment}`}
                             <br />
                           </React.Fragment>
-                        )):'No translation yet'}</td>
+                        )) : 'No translation yet'}</td>
 
                         <td className="py-3 text-black-600 hover:bg-blue-100">
-                        {rol === "Admin" ? 
-                          <div className='w-full'>
-                            <button className="max-w-max my-auto h-min rounded-md bg-blue-500 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
-                          <button className="max-w-max my-auto h-min rounded-md bg-red-500 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
+                        {apropu ? (<button className="max-w-max my-auto h-min rounded-md bg-blue-600 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>) : null}
+                          {elipu ? (<button className="max-w-max my-auto h-min rounded-md bg-red-600 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.palabra)}>
                             <i className="fa-solid fa-trash"></i>
-                          </button>
-                          </div>
-                          : <p className='font-medium text-blue-500'>No Disponibles</p>}
+                          </button>) : null}
+                          {
+                            !apropu && !elipu ? (
+                              <p className='font-medium text-blue-600'>No Disponibles</p>
+                            ) : null
+                          }
                         </td>
 
                       </tr>
@@ -485,7 +515,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
     const ejeNeutroIng = []
     row.EjemplosIng ? row.EjemplosIng.ejemplo_neutro_ingles.split("|").map((segment) => (
       ejeNeutroIng.push(segment)
-    )): ejeNeutroIng.push('No translation yet')
+    )) : ejeNeutroIng.push('No translation yet')
     setDataNeutroIng(ejeNeutroIng)
 
     const ejeChocoIng = []
@@ -615,34 +645,35 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
 
       </div>
       <div className='w-full mb-3'>
-        <button type='button' className='w-auto rounded-md bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => { setModalAdd(true) }}><i className="fa-solid fa-plus"></i> Nueva Palabra</button>
+        {addmf ? <button type='button' className='w-auto rounded-md bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => { setModalAdd(true) }}><i className="fa-solid fa-plus"></i> Nueva Palabra</button> : null}
+
       </div>
 
       {renderContent()}
 
-            {/*muestra mensaje de advertencias para eliminar datos*/}
-            {showWarningModal && (
-              <div className="fixed inset-0 flex items-center justify-center bg-modal">
-                <div className="bg-white sm:mx-5 sm:w-96 p-5 rounded-xl shadow-mfBoxShadow border mx-2">
-                  <p>¿Estás seguro de que deseas eliminar <span className='font-semibold'>{eliPalabra}</span>?</p>
-                  <div className="flex justify-end mt-6">
-                    <button
-                      className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
-                      onClick={() => setShowWarningModal(false)}
-                    >
-                      Cancelar
-                    </button>
-                    <button
-                      className="bg-green-500 text-white px-4 py-2 rounded-md"
-                      onClick={handleDeleteConfirm}
-                    >
-                      Confirmar
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-            {/* ...otras celdas */}
+      {/*muestra mensaje de advertencias para eliminar datos*/}
+      {showWarningModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-modal">
+          <div className="bg-white sm:mx-5 sm:w-96 p-5 rounded-xl shadow-mfBoxShadow border mx-2">
+            <p>¿Estás seguro de que deseas eliminar <span className='font-semibold'>{eliPalabra}</span>?</p>
+            <div className="flex justify-end mt-6">
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
+                onClick={() => setShowWarningModal(false)}
+              >
+                Cancelar
+              </button>
+              <button
+                className="bg-green-500 text-white px-4 py-2 rounded-md"
+                onClick={handleDeleteConfirm}
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* ...otras celdas */}
     </div>
 
 

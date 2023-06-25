@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TablaAdmin from './tablapalabras';
+import TablaAdmin from '../admin/tablapalabras';
 import NavBar from '../navbars/navbar';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
@@ -42,31 +42,40 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
     );
 
     const Formulario = () => {
-
-        const [rol, setRol] = useState([""])
+        const [resp, setResp] = useState({  })
         const navigate = useNavigate();
 
         useEffect(() => {
-            //const expectedToken = 'admin23mf'; // Reemplaza 'token_esperado' con tu token esperado
-            const storedToken = localStorage.getItem('admin');
-
-            //const expectedToken2 = 'cola23mf23'; // Reemplaza 'token_esperado' con tu token esperado
-            const storedToken2 = localStorage.getItem('colaborador');
-    
-            if (storedToken) {
-                setRol("Admin")
-                // Si el token almacenado no coincide con el token esperado, redirige a la página de inicio de sesión
-               
-            } else if (storedToken2) {
-                setRol("Colaborador")
-                // Si el token almacenado no coincide con el token esperado, redirige a la página de inicio de sesión
-                
-            } else {
-                navigate('/loginDicc');
-            }
-        }, [navigate]);
+            const fetchProtectedData = async () => {
+                console.log(localStorage.getItem('token'))
+                try {
+                  // Hacer la solicitud GET a la ruta protegida
+                  const response = await fetch('http://localhost:3000/api/auth/user', {
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                  });
+          
+                  if (response.ok) {
+                    // Obtener los datos del usuario desde la respuesta
+                    const data = await response.json();
+                    setResp(data.user);
+              
+                  } else {
+                    // Error en la solicitud, redirigir a la página de inicio de sesión
+                    navigate('/loginDicc');
+                  }
+                } catch (error) {
+                  console.error('Error al realizar la solicitud:', error);
+                  navigate('/loginDicc');
+                }
+              };
+          
+              fetchProtectedData();
+            }, [navigate]);
 
         // const [formularioenviado, cambiarformularioenviado] = useState(false);
+        console.log(resp)
         const [dataCategoria, setDataCategoria] = useState([]);
         const [arrTama, setArrTama] = useState([]);
         const [dataNeutro, setDataNeutro] = useState([]);
@@ -380,7 +389,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
         return (
             <div className='w-full min-h-screen'>
-                <NavBar rol={rol} verDicc={"Ver Diccionario"} verDiccLink={'/'} tar={'_blank'} mfLogoAd={"MercadoFácil.mx"} mfLinkAd={"https://mercadofacil.mx/"}
+                <NavBar rol={resp.rol} verDicc={"Ver Diccionario"} verDiccLink={'/'} tar={'_blank'} mfLogoAd={"MercadoFácil.mx"} mfLinkAd={"https://mercadofacil.mx/"}
                 CS={"Cerrar Sesión"}/>
 
                <div className='w-full px-4 md:px-6'>
@@ -390,7 +399,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 <TablaAdmin newFilter={newFilter} setFiltro={setFiltro} setModalUpdate={setModalUpdate} data={data} setData={setData}
     setValoresForm={setValoresForm} setArrTama={setArrTama} setDataNeutro={setDataNeutro}
     setDataChoco={setDataChoco} setDataNeutroIng={setDataNeutroIng} setDataChocoIng={setDataChocoIng} fetchData={fetchData} setModalAdd={setModalAdd}
-    rol={rol} />
+    addmf={resp.agregar_mf} editmf={resp.editar_mf} elimf={resp.eliminar_mf} apropu={resp.aprobar_pu} elipu={resp.eliminar_pu}/>
 <>
     <Formik
         //almacena los valores de cada campo

@@ -22,6 +22,7 @@ async function main() {
 
 import router from './routes/diccChoco/login.routes.js';
 import router2 from './routes/diccChoco/protected.js';
+//import router3 from './routes/diccChoco/palabras.routes.js';
 
 // Rutas de autenticación
 app.use('/api/auth', router);

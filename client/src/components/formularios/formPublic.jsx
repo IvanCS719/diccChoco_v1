@@ -309,8 +309,8 @@ const Formulario = () => {
                                     </div>
 
 
-                                    <div className='w-auto flex flex-col md:flex-row gap-1 md:gap-5'>
-                                        <div className='max-w-min'>
+                                    <div className='w-auto flex flex-col md:flex-row gap-1  md:gap-5'>
+                                        <div className='w-64'>
                                             <FormField
                                                 label="Nombre:"
                                                 name="colaborador"
@@ -323,7 +323,7 @@ const Formulario = () => {
 
 
 
-                                        <div className='max-w-min'>
+                                        <div className='w-64'>
                                             <FormField
                                                 label="Correo electrónico:"
                                                 name="correo_electronico"
