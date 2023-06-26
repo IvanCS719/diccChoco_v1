@@ -22,6 +22,7 @@ const FormField = ({ label, name, placeholder, errors, type = 'text' }) => (
 const Formulario = () => {
     // const [formularioenviado, cambiarformularioenviado] = useState(false);
     const [dataCategoria, setDataCategoria] = useState([]);
+    const [dataRegion, setDataRegion] = useState([]);
     const [arrTama, setArrTama] = useState([]);
     const [dataChoco, setDataChoco] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
@@ -37,6 +38,13 @@ const Formulario = () => {
                 .then((res) => { setDataCategoria(res) })
         }
     }, [dataCategoria])
+    useEffect(() => {
+        if (!dataRegion.length) {
+            fetch('http://localhost:3000/regiones')
+                .then(res => res.json())
+                .then((res) => { setDataRegion(res) })
+        }
+    }, [dataRegion])
 
     const handleSubmit = (values, { resetForm }) => {
         try {
@@ -149,6 +157,7 @@ const Formulario = () => {
                             EjemploChoco: '',
                             id_categoria: 57,
                             id_tipo: 1,
+                            id_region: 1,
                             colaborador: '',
                             correo_electronico: ''
 
@@ -308,6 +317,24 @@ const Formulario = () => {
 
                                     </div>
 
+                                    <div className='w-auto flex flex-col md:flex-row gap-1 md:gap-5 mb-4'>
+
+                                        <div className='flex flex-col items-center'>
+                                            <label htmlFor="selectedOption" className='font-bold text-gray-800'>¿En que región de Tabasco la has escuchado más?:</label>
+                                            <Field as="select" name="id_region" id="id_region"
+                                                className="block w-64 rounded-md border-0 px-2 py-2 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor sm:max-w-xs sm:leading-6">
+                                                
+                                                {dataRegion.map((e) => (
+                                                    <option key={e.id} value={e.id}>
+                                                        {e.region}
+                                                    </option>
+                                                ))}
+                                            </Field>
+                                           
+                                        </div>
+
+
+                                    </div>
 
                                     <div className='w-auto flex flex-col md:flex-row gap-1  md:gap-5'>
                                         <div className='w-64'>

@@ -4,7 +4,7 @@ import { EjemplosIng } from "../../models/diccChoco/EjemplosIngle.js";
 import { Colaborador } from "../../models/diccChoco/Colaborador.js";
 import { Palabras } from "../../models/diccChoco/Palabras.js";
 import { Ingle } from "../../models/diccChoco/Ingle.js";
-//import { Region } from "../../models/diccChoco/Region.js";
+import { Region } from "../../models/diccChoco/Region.js";
 import { Tipo } from "../../models/diccChoco/Tipo.js";
 //import { Multimedia } from "../../models/diccChoco/Multimedia.js";
 import { Ejemplos } from "../../models/diccChoco/Ejemplos.js";
@@ -55,6 +55,10 @@ export const getPalabras = async (req, res) => {
                   {
                     model: EjemplosIng,
                     required: false,
+                  },
+                  {
+                    model: Region,
+                    required: true,
                   },
               ],
               order: [
@@ -116,6 +120,9 @@ export const getPalabra = async (req, res) => {
                   {
                     model: EjemplosIng,
                     required: false,
+                  },{
+                    model: Region,
+                    required: true,
                   },
               ], 
         });
@@ -146,7 +153,8 @@ export const createPalabra = async (req, res) => {
         colaborador,
         correo_electronico,
         id_categoria,
-        id_tipo
+        id_tipo,
+        id_region
         } = req.body;
 
     const newPalabra = await Palabras.create({
@@ -157,7 +165,8 @@ export const createPalabra = async (req, res) => {
         como_se_usa,
         autorizado,
         id_categoria,
-        id_tipo
+        id_tipo,
+        id_region
     });
 
   /*  const newMultimedia = await Multimedia.create({
@@ -228,6 +237,7 @@ export const updatePalabra = async (req, res) => {
             correo_electronico,
             id_categoria,
             id_tipo,
+            id_region,
             ejemplo_neutro_ingles,
             ejemplo_choco_ingles,} = req.body;
 
@@ -239,7 +249,8 @@ export const updatePalabra = async (req, res) => {
                 como_se_usa: como_se_usa,
                 autorizado: autorizado,
                 id_categoria: id_categoria,
-                id_tipo: id_tipo
+                id_tipo: id_tipo,
+                id_region: id_region
             }, {
                 where: {
                   id: id
@@ -378,6 +389,16 @@ export const getCategoriagra = async (req, res) => {
     }
 }
 
+export const getRegiones = async (req, res) => {
+    
+  try {
+      const arrRegion = await Region.findAll();
+      res.json(arrRegion);
+  } catch (error) {
+      return res.status(500).json({message: error.message});
+  }
+}
+
 export const getAllPalabras = async (req, res) => {
     
     try {
@@ -420,6 +441,11 @@ export const getAllPalabras = async (req, res) => {
                     model: EjemplosIng,
                     required: false,
                   },
+                  {
+                    model: Region,
+                    required: true,
+                  },
+                  
               ],
               order: [['id', 'DESC']],
         });

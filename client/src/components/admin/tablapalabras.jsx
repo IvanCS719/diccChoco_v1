@@ -67,6 +67,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                     <th className="px-4 py-2">Acepciones</th>
                     <th className="px-4 py-2">Sinónimos</th>
                     <th className="px-4 py-2">Cómo se usa</th>
+                    <th className="px-4 py-2">Región</th>
                     <th className="px-4 py-2">Ejemplo(s) Neutro</th>
                     <th className="px-4 py-2">Ejemplo(s) Choco</th>
                     <th className="px-4 py-2">Opciones</th>
@@ -87,6 +88,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         <td className="py-3">{e.acepciones}</td>
                         <td className="py-3">{e.sinonimos}</td>
                         <td className="py-3">{e.como_se_usa}</td>
+                        <td className="py-3">{e.Region.region}</td>
                         <td className="py-3">{e.Ejemplo.ejemplo_neutro.split("|").map((segment, index) => (
                           <React.Fragment key={index}>
                             {`${index + 1}. ${segment}`}
@@ -132,7 +134,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                     ))
 
                     :
-                    <tr><td colSpan={10} className='py-3 font-bold text-gray-600 text-3xl'>Sin Resultados</td></tr>
+                    <tr><td colSpan={11} className='py-3 font-bold text-gray-600 text-3xl'>Sin Resultados</td></tr>
                   }
                 </tbody>
               </table>
@@ -184,6 +186,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                     <th className="px-4 py-2">Acepciones</th>
                     <th className="px-4 py-2">Sinónimos</th>
                     <th className="px-4 py-2">Cómo se usa</th>
+                    <th className="px-4 py-2">Región</th>
                     <th className="px-4 py-2">Ejemplo(s) Neutro</th>
                     <th className="px-4 py-2">Ejemplo(s) Choco</th>
                     <th className="px-4 py-2">Opciones</th>
@@ -204,6 +207,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         <td className="py-3">{e.acepciones}</td>
                         <td className="py-3">{e.sinonimos}</td>
                         <td className="py-3">{e.como_se_usa}</td>
+                        <td className="py-3">{e.Region.region}</td>
                         <td className="py-3">{e.Ejemplo.ejemplo_neutro.split("|").map((segment, index) => (
                           <React.Fragment key={index}>
                             {`${index + 1}. ${segment}`}
@@ -234,7 +238,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                     ))
 
                     :
-                    <tr><td colSpan={10} className='py-3 font-bold text-gray-600 text-3xl'>Sin Resultados</td></tr>
+                    <tr><td colSpan={11} className='py-3 font-bold text-gray-600 text-3xl'>Sin Resultados</td></tr>
                   }
                 </tbody>
               </table>
@@ -296,6 +300,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                     <th className="px-4 py-2">Acepciones</th>
                     <th className="px-4 py-2">Sinónimos</th>
                     <th className="px-4 py-2">Cómo se usa</th>
+                    <th className="px-4 py-2">Región</th>
                     <th className="px-4 py-2">Ejemplo(s) Neutro</th>
                     <th className="px-4 py-2">Ejemplo(s) Choco</th>
                     <th className="px-4 py-2">Opciones</th>
@@ -316,6 +321,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         <td className="py-3">{e.Ingle.acepcionesIng}</td>
                         <td className="py-3">{e.Ingle.sinonimosIng}</td>
                         <td className="py-3">{e.Ingle.como_se_usa_Ing}</td>
+                        <td className="py-3">{e.Region.region}</td>
                         <td className="py-3">{e.EjemplosIng ? e.EjemplosIng.ejemplo_neutro_ingles.split("|").map((segment, index) => (
                           <React.Fragment key={index}>
                             {`${index + 1}. ${segment}`}
@@ -359,7 +365,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                     ))
 
                     :
-                    <tr><td colSpan={10} className='py-3 font-bold text-gray-600 text-3xl'>Sin Resultados</td></tr>
+                    <tr><td colSpan={11} className='py-3 font-bold text-gray-600 text-3xl'>Sin Resultados</td></tr>
                   }
                 </tbody>
               </table>
@@ -411,6 +417,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                     <th className="px-4 py-2">Acepciones</th>
                     <th className="px-4 py-2">Sinónimos</th>
                     <th className="px-4 py-2">Cómo se usa</th>
+                    <th className="px-4 py-2">Región</th>
                     <th className="px-4 py-2">Ejemplo(s) Neutro</th>
                     <th className="px-4 py-2">Ejemplo(s) Choco</th>
                     <th className="px-4 py-2">Opciones</th>
@@ -431,6 +438,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                         <td className="py-3">{e.Ingle.acepcionesIng}</td>
                         <td className="py-3">{e.Ingle.sinonimosIng}</td>
                         <td className="py-3">{e.Ingle.como_se_usa_Ing}</td>
+                        <td className="py-3">{e.Region.region}</td>
                         <td className="py-3">{e.EjemplosIng ? e.EjemplosIng.ejemplo_neutro_ingles.split("|").map((segment, index) => (
                           <React.Fragment key={index}>
                             {`${index + 1}. ${segment}`}
@@ -461,7 +469,7 @@ const TablaDatos = ({ setValoresForm, newFilter, setFiltro, setModalUpdate,
                     ))
 
                     :
-                    <tr><td colSpan={10} className='py-3 font-bold text-gray-600 text-3xl'>Sin Resultados</td></tr>
+                    <tr><td colSpan={11} className='py-3 font-bold text-gray-600 text-3xl'>Sin Resultados</td></tr>
                   }
                 </tbody>
               </table>

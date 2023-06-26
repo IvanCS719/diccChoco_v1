@@ -48,6 +48,7 @@ CategoriaIng.belongsTo(Categoria, {
       { categoria: 'Verbo regular', categoriaIng: 'Regular verb' },
       { categoria: 'Verbo irregular', categoriaIng: 'Irregular verb' },
       { categoria: 'Verbo auxiliar', categoriaIng: 'Auxiliary verb' },
+      { categoria: 'verbo pronominal', categoriaIng: 'pronominal verb'},
   
       { categoria: 'Adverbio', categoriaIng: 'Adverb' },
       { categoria: 'Adverbio de tiempo', categoriaIng: 'Adverb of time' },
@@ -94,8 +95,7 @@ CategoriaIng.belongsTo(Categoria, {
       { categoria: 'Numeral fraccionario', categoriaIng: 'Fractional numeral' },
   
       { categoria: 'Infinitivo', categoriaIng: 'Infinitive' },
-      { categoria: 'Sin categoría', categoriaIng: 'no category' },
-      { categoria: 'verbo pronominal', categoriaIng: 'pronominal verb'}
+      { categoria: 'Sin categoría', categoriaIng: 'no category' }
     ];
   
   // Sincroniza los modelos con la base de datos y crea las tablas

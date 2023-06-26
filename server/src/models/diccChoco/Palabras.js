@@ -6,7 +6,7 @@ import { Ingle } from '../../models/diccChoco/Ingle.js';
 
 import { EjemplosIng } from '../../models/diccChoco/EjemplosIngle.js';
 
-//import { Region } from '../../models/diccChoco/Region.js';
+import { Region } from '../../models/diccChoco/Region.js';
 import { Tipo } from '../../models/diccChoco/Tipo.js';
 
 import { Categoria } from '../../models/diccChoco/Categoria.js';
@@ -60,7 +60,7 @@ Ejemplos.belongsTo(Palabras, {
 //Relación con Ingles
 
 
-/*
+
 //Relación con Region
 Region.hasMany(Palabras,{
     foreignKey: 'id_region',
@@ -70,7 +70,7 @@ Region.hasMany(Palabras,{
 Palabras.belongsTo(Region,{
     foreignKey: 'id_region',
     targetId: 'id'
-});*/
+});
 
 
 //Relación con Categoria

@@ -77,6 +77,7 @@ const Formulario = () => {
     // const [formularioenviado, cambiarformularioenviado] = useState(false);
     console.log(resp)
     const [dataCategoria, setDataCategoria] = useState([]);
+    const [dataRegion, setDataRegion] = useState([]);
     const [arrTama, setArrTama] = useState([]);
     const [dataNeutro, setDataNeutro] = useState([]);
     const [dataNeutroIng, setDataNeutroIng] = useState([]);
@@ -101,6 +102,10 @@ const Formulario = () => {
         autorizado: true,
         id_categoria: 1,
         Categorium: {
+            id: 0
+        },
+        id_region: 1,
+        Region: {
             id: 0
         },
         Ingle: {
@@ -141,6 +146,14 @@ const Formulario = () => {
                 .then((res) => { setDataCategoria(res) })
         }
     }, [dataCategoria])
+
+    useEffect(() => {
+        if (!dataRegion.length) {
+            fetch('http://localhost:3000/regiones')
+                .then(res => res.json())
+                .then((res) => { setDataRegion(res) })
+        }
+    }, [dataRegion])
 
     const handleSubmitAdd = (values, { resetForm }) => {
         try {
@@ -215,8 +228,9 @@ const Formulario = () => {
                 ejemplo_choco: "",
                 correo_electronico: "",
                 autorizado: true,
-                id_categoria: 1,
+                id_categoria: valoresForm.Categorium.id,
                 id_tipo: 1,
+                id_region: valoresForm.Region.id,
                 significadoIng: "",
                 acepcionesIng: "",
                 sinonimosIng: "",
@@ -387,6 +401,16 @@ const Formulario = () => {
         }));
     };
 
+    const handleSelectChange2 = (e) => {
+        const { name, value } = e.target;
+        setValoresForm((prevState) => ({
+            ...prevState,
+            Region: {
+                ...prevState.Region,
+                id: value
+            }
+        }));
+    };
     return (
         <div className='w-full min-h-screen'>
             <NavBar rol={resp.rol} verDicc={"Ver Diccionario"} verDiccLink={'/'} tar={'_blank'} mfLogoAd={"MercadoFácil.mx"} mfLinkAd={"https://mercadofacil.mx/"}
@@ -417,6 +441,7 @@ const Formulario = () => {
                             EjemploChoco: '',
                             id_categoria: 0,
                             id_tipo: 1,
+                            id_region: 1,
                             autorizado: true,
                             colaborador: 'Mercado Fácil',
                             correo_electronico: ''
@@ -438,6 +463,10 @@ const Formulario = () => {
 
                             if (valores.id_categoria == 0) {
                                 errores.id_categoria = 'Debe seleccionar una categoría*'
+                            }
+
+                            if (valores.id_region == 0) {
+                                errores.id_region = 'Debe seleccionar una región*'
                             }
 
                             //valores de como se usa
@@ -482,13 +511,41 @@ const Formulario = () => {
                                             <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Agregar Nueva Palabra</h2>
                                             <div className='w-full flex flex-col xl:flex-row gap-4'>
                                                 <div className='w-full'>
-                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5 mb-4 xl:mb-0'>
+                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5 '>
                                                         <FormField2
                                                             label="Palabra:"
                                                             name="palabra"
                                                             placeholder="Ingrese la palabra"
                                                             errors={errors}
                                                         />
+                                                        <FormField2
+                                                            label="Significado:"
+                                                            name="significado"
+                                                            placeholder="Significado de la palabra"
+                                                            errors={errors}
+                                                        />
+
+                                                    </div>
+                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
+
+
+                                                        <FormField2
+                                                            label="Sinónimos (separados por coma):"
+                                                            name="sinonimos"
+                                                            placeholder="Sinónimos de la palabra"
+                                                        // errors={errors}
+                                                        />
+                                                        <FormField2
+                                                            label="Acepciones:"
+                                                            name="acepciones"
+                                                            placeholder="Acepciones de la palabra"
+                                                        // errors={errors}
+                                                        />
+
+                                                    </div>
+
+
+                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 mb-4 md:gap-5'>
 
                                                         <div className='text-left'>
                                                             <label htmlFor="selectedOption">Categoría Gramatical:</label>
@@ -505,33 +562,25 @@ const Formulario = () => {
                                                                 <div className='error text-red-600 font-medium'>{errors.id_categoria}</div>
                                                             )} />
                                                         </div>
+                                                        <div className='text-left'>
+                                                            <label htmlFor="selectedOption">Región:</label>
+                                                            <Field as="select" name="id_region" id="id_region"
+                                                                className="block w-64 rounded-md border-0 px-2 py-2 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor sm:max-w-xs sm:leading-6">
+                                                                <option value="">Selecciona una región</option>
+                                                                {dataRegion.map((e) => (
+                                                                    <option key={e.id} value={e.id}>
+                                                                        {e.region}
+                                                                    </option>
+                                                                ))}
+                                                            </Field>
+                                                            <ErrorMessage name='id_region' component={() => (
+                                                                <div className='error text-red-600 font-medium'>{errors.id_region}</div>
+                                                            )} />
+                                                        </div>
+
                                                     </div>
-                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
-                                                        <FormField2
-                                                            label="Significado:"
-                                                            name="significado"
-                                                            placeholder="Significado de la palabra"
-                                                            errors={errors}
-                                                        />
-
-                                                        <FormField2
-                                                            label="Sinónimos (separados por coma):"
-                                                            name="sinonimos"
-                                                            placeholder="Sinónimos de la palabra"
-                                                        // errors={errors}
-                                                        />
-
-
-                                                    </div>
-
 
                                                     <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
-                                                        <FormField2
-                                                            label="Acepciones:"
-                                                            name="acepciones"
-                                                            placeholder="Acepciones de la palabra"
-                                                        // errors={errors}
-                                                        />
 
                                                         <FormField2
                                                             label="¿Cómo se usa?:"
@@ -774,6 +823,11 @@ const Formulario = () => {
                                 errores.id_categoria = 'Debe seleccionar una categoría*'
                             }
 
+                            if (valoresForm.Region.id == 0) {
+                                errores.id_region = 'Debe seleccionar una región*'
+                            }
+
+
                             //valores de como se usa
                             if (!valoresForm.como_se_usa) {
                                 errores.como_se_usa = 'Campo obligatorio*'
@@ -823,7 +877,7 @@ const Formulario = () => {
                                             <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Actualizar Palabra</h2>
                                             <div className='w-full flex flex-col xl:flex-row gap-4'>
                                                 <div className='w-full'>
-                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5 mb-4 xl:mb-0'>
+                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5 '>
                                                         <FormField
                                                             label="Palabra:"
                                                             name="palabra"
@@ -832,6 +886,43 @@ const Formulario = () => {
                                                             onChange={handleInputChange}
                                                             errors={errors}
                                                         />
+
+
+                                                        <FormField
+                                                            label="Significado:"
+                                                            name="significado"
+                                                            placeholder="Significado de la palabra"
+                                                            value={valoresForm.significado == 'No Aplica' ? '' : valoresForm.significado}
+                                                            onChange={handleInputChange}
+                                                            errors={errors}
+                                                        />
+
+                                                    </div>
+                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
+
+
+                                                        <FormField
+                                                            label="Sinónimos (separados por coma):"
+                                                            name="sinonimos"
+                                                            placeholder="Sinónimos de la palabra"
+                                                            value={valoresForm.sinonimos == 'No Aplica' ? '' : valoresForm.sinonimos}
+                                                            onChange={handleInputChange}
+                                                        // errors={errors}
+                                                        />
+                                                        <FormField
+                                                            label="Acepciones:"
+                                                            name="acepciones"
+                                                            placeholder="Acepciones de la palabra"
+                                                            value={valoresForm.acepciones == 'No Aplica' ? '' : valoresForm.acepciones}
+                                                            onChange={handleInputChange}
+                                                        // errors={errors}
+                                                        />
+
+
+                                                    </div>
+
+
+                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5 mb-4'>
 
 
                                                         <div className='text-left'>
@@ -851,40 +942,26 @@ const Formulario = () => {
                                                                 <div className='error text-red-600 font-medium'>{errors.id_categoria}</div>
                                                             )} />
                                                         </div>
-
+                                                        <div className='text-left'>
+                                                            <label htmlFor="selectedOption">Región:</label>
+                                                            <Field as="select" name="id_region" id="id_region"
+                                                                value={valoresForm.Region.id}
+                                                                onChange={handleSelectChange2}
+                                                                className="block w-64 rounded-md border-0 px-2 py-2 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor sm:max-w-xs sm:leading-6">
+                                                                <option value="">Selecciona una región</option>
+                                                                {dataRegion.map((e) => (
+                                                                    <option key={e.id} value={e.id}>
+                                                                        {e.region}
+                                                                    </option>
+                                                                ))}
+                                                            </Field>
+                                                            <ErrorMessage name='id_region' component={() => (
+                                                                <div className='error text-red-600 font-medium'>{errors.id_region}</div>
+                                                            )} />
+                                                        </div>
                                                     </div>
                                                     <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
-                                                        <FormField
-                                                            label="Significado:"
-                                                            name="significado"
-                                                            placeholder="Significado de la palabra"
-                                                            value={valoresForm.significado == 'No Aplica' ? '' : valoresForm.significado}
-                                                            onChange={handleInputChange}
-                                                            errors={errors}
-                                                        />
 
-                                                        <FormField
-                                                            label="Sinónimos (separados por coma):"
-                                                            name="sinonimos"
-                                                            placeholder="Sinónimos de la palabra"
-                                                            value={valoresForm.sinonimos == 'No Aplica' ? '' : valoresForm.sinonimos}
-                                                            onChange={handleInputChange}
-                                                        // errors={errors}
-                                                        />
-
-
-                                                    </div>
-
-
-                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
-                                                        <FormField
-                                                            label="Acepciones:"
-                                                            name="acepciones"
-                                                            placeholder="Acepciones de la palabra"
-                                                            value={valoresForm.acepciones == 'No Aplica' ? '' : valoresForm.acepciones}
-                                                            onChange={handleInputChange}
-                                                        // errors={errors}
-                                                        />
 
                                                         <FormField
                                                             label="¿Cómo se usa?:"
