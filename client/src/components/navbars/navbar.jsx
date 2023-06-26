@@ -14,8 +14,7 @@ const Navbar = ({ rol, mfLogo, mfLink, verDicc, verDiccLink, tar, CS, mfLogoAd, 
   const navigate = useNavigate();
   const cerrarSesion = () => {
     try {
-      localStorage.getItem('admin') ? localStorage.removeItem('admin') : null
-      localStorage.getItem('colaborador') ? localStorage.removeItem('colaborador') : null
+      localStorage.getItem('token') ? localStorage.removeItem('token') : null
       navigate('/loginDicc');
     } catch (error) {
       console.log("Error SC", error)

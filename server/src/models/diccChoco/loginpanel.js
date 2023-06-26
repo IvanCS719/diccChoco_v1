@@ -35,7 +35,9 @@ export const LoginPanel = sequelize.define('LoginPanel', {
   eliminar_pu: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
-  }
+  },
+  tokenCode: {
+    type: DataTypes.STRING}
 }, { timestamps: false });
 
 // Array con los datos a insertar
@@ -47,7 +49,8 @@ const usersData = [
     editar_mf: true,
     eliminar_mf: true,
     aprobar_pu: true,
-    eliminar_pu: true
+    eliminar_pu: true,
+    tokenCode: '12345678'
   }
 ];
 

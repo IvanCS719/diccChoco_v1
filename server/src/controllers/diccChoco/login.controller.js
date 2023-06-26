@@ -2,6 +2,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { LoginPanel } from "../../models/diccChoco/loginpanel.js";
+import { Op } from "sequelize";
 
 const secretKey = process.env.JWT_SECRET || 'mfSecret_mf';
 const saltRounds = 10;
@@ -35,7 +36,7 @@ export const iniciarSesion = async (req, res) => {
 
 
     // Enviar el token y el usuario sin la contraseña como respuesta
-    res.json({ token});
+    res.json({ token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error de servidor' });
@@ -53,12 +54,14 @@ export const getRolData = async (req, res) => {
     const userId = decodedToken.userId;
 
     // Buscar al usuario en la base de datos por su ID
-    const user = await LoginPanel.findOne({ where: { id: userId}, attributes: ['rol',
-    'agregar_mf',
-    'editar_mf',
-    'eliminar_mf',
-    'aprobar_pu',
-    'eliminar_pu'] });
+    const user = await LoginPanel.findOne({
+      where: { id: userId }, attributes: ['rol',
+        'agregar_mf',
+        'editar_mf',
+        'eliminar_mf',
+        'aprobar_pu',
+        'eliminar_pu']
+    });
 
     if (!user) {
       // Usuario no encontrado, enviar respuesta de error
@@ -75,7 +78,11 @@ export const getRolData = async (req, res) => {
 
 export const registro = async (req, res) => {
   try {
-    const { rol, contrasena } = req.body;
+    const { rol, contrasena, agregar_mf,
+      editar_mf,
+      eliminar_mf,
+      aprobar_pu,
+      eliminar_pu } = req.body;
 
     // Verificar si el usuario ya existe en la base de datos
     const existingUser = await LoginPanel.findOne({
@@ -93,7 +100,14 @@ export const registro = async (req, res) => {
     const hashedPassword = await bcrypt.hash(contrasena, saltRounds);
 
     // Crear el nuevo usuario en la base de datos
-    const newUser = new LoginPanel({ rol, contrasena: hashedPassword });
+    const newUser = new LoginPanel({
+      rol, contrasena: hashedPassword, agregar_mf,
+      editar_mf,
+      eliminar_mf,
+      aprobar_pu,
+      eliminar_pu,
+      tokenCode: contrasena
+    });
     await newUser.save();
 
     // Enviar respuesta de éxito
@@ -101,5 +115,41 @@ export const registro = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error de servidor' });
+  }
+}
+
+export const getAllCola = async (req, res) => {
+  try {
+    const arrLoginPanel = await LoginPanel.findAll({
+      where: {
+        id: {
+          [Op.not]: 1,
+        }
+      },
+      attributes: { exclude: ['contrasena'] },
+      order: [['id', 'ASC']],
+    });
+
+    res.json(arrLoginPanel);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
+export const deleteCola = async (req, res) =>{
+  try {
+      //Se obtiene el parametro id de la palabra a eliminar
+      const {id} = req.params;
+
+
+  await LoginPanel.destroy({
+      where:{
+          id: id
+      }
+  });
+
+  res.sendStatus(204);
+  } catch (error) {
+      return res.status(500).json({message: error.message});
   }
 }
