@@ -282,6 +282,7 @@ const Formulario = () => {
                     resetForm();
                     fetchData();
                     setFiltro(data);
+                    setModalConfirUpdate(true);
 
                 })
                 .catch((error) => {
@@ -289,7 +290,7 @@ const Formulario = () => {
                     console.error(error);
                 });
 
-            setModalConfirUpdate(true);
+            
         } catch (error) {
             console.log("mensaje", error)
         }

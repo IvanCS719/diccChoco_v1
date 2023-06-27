@@ -127,7 +127,7 @@ export const getAllCola = async (req, res) => {
         }
       },
       attributes: { exclude: ['contrasena'] },
-      order: [['id', 'ASC']],
+      order: [['id', 'DESC']],
     });
 
     res.json(arrLoginPanel);
@@ -152,4 +152,44 @@ export const deleteCola = async (req, res) =>{
   } catch (error) {
       return res.status(500).json({message: error.message});
   }
+}
+
+
+export const updateCola = async (req, res) => {
+    
+  try {
+      const {id} = req.params;
+      const { rol, contrasena, agregar_mf,
+        editar_mf,
+        eliminar_mf,
+        aprobar_pu,
+        eliminar_pu,} = req.body;
+
+        // Generar el hash de la contraseña
+        const hashedPassword = await bcrypt.hash(contrasena, saltRounds);
+
+
+
+          const updateColaborador = await LoginPanel.update({ 
+            rol: rol,
+            contrasena: hashedPassword,
+            agregar_mf: agregar_mf,
+            editar_mf: editar_mf,
+            eliminar_mf: eliminar_mf,
+            aprobar_pu: aprobar_pu,
+            eliminar_pu: eliminar_pu,
+            tokenCode: contrasena
+          }, {
+              where: {
+                id: id
+              }
+            });
+
+
+        
+      res.json(updateColaborador);
+  } catch (error) {
+      return res.status(500).json({message: error.message});
+  }
+
 }
