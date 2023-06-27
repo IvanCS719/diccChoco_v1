@@ -1,13 +1,15 @@
 import { Categoria } from "../../models/diccChoco/Categoria.js";
+import { CategoriaIng } from "../../models/diccChoco/CategoriaIngle.js";
+import { EjemplosIng } from "../../models/diccChoco/EjemplosIngle.js";
 import { Colaborador } from "../../models/diccChoco/Colaborador.js";
 import { Palabras } from "../../models/diccChoco/Palabras.js";
 import { Ingle } from "../../models/diccChoco/Ingle.js";
-//import { Region } from "../../models/diccChoco/Region.js";
+import { Region } from "../../models/diccChoco/Region.js";
 import { Tipo } from "../../models/diccChoco/Tipo.js";
 //import { Multimedia } from "../../models/diccChoco/Multimedia.js";
 import { Ejemplos } from "../../models/diccChoco/Ejemplos.js";
 import { Op } from "sequelize";
-
+import {sequelize} from '../../database/database.js';
 
 export const getPalabras = async (req, res) => {
     
@@ -24,23 +26,47 @@ export const getPalabras = async (req, res) => {
             include: [
                   {
                     model: Ejemplos,
-                    required: true, // Utilizar INNER JOIN
+                    required: true, 
+                    
+                     // Utilizar INNER JOIN
                   },
-                  {
-                    model: Ingle,
-                    required: true, // Utilizar INNER JOIN
-                  },
+                  
                   {
                     model: Colaborador,
                     required: true, // Utilizar INNER JOIN
                   },
                   {
                     model: Categoria,
-                    required: true, // Utilizar INNER JOIN
+                    required: true,
+                    include:[
+                      {
+                        model: CategoriaIng,
+                        required: true,
+                      }
+                    ] // Utilizar INNER JOIN
                   }, {
                     model: Tipo,
                     required: true, // Utilizar INNER JOIN
                   },
+                  {
+                    model: Ingle,
+                    required: false, // Utilizar INNER JOIN
+                  },
+                  {
+                    model: EjemplosIng,
+                    required: false,
+                  },
+                  {
+                    model: Region,
+                    required: true,
+                  },
+              ],
+              order: [
+                // Expresión SQL personalizada para ordenar las palabras
+                sequelize.literal(`CASE
+                  WHEN SUBSTRING(palabra, 1, 1) IN ('¡', '¿', '"') THEN SUBSTRING(palabra, 2)
+                  ELSE palabra
+                END`),
               ],
         });
         res.json(arrPalabras);
@@ -69,20 +95,34 @@ export const getPalabra = async (req, res) => {
                     model: Ejemplos,
                     required: true, // Utilizar INNER JOIN
                   },
-                  {
-                    model: Ingle,
-                    required: true, // Utilizar INNER JOIN
-                  },
+                  
                   {
                     model: Colaborador,
                     required: true, // Utilizar INNER JOIN
                   },
                   {
                     model: Categoria,
-                    required: true, // Utilizar INNER JOIN
+                    required: true,
+                    include:[
+                      {
+                        model: CategoriaIng,
+                        required: true,
+                      }
+                    ] // Utilizar INNER JOIN
                   }, {
                     model: Tipo,
                     required: true, // Utilizar INNER JOIN
+                  },
+                  {
+                    model: Ingle,
+                    required: false, // Utilizar INNER JOIN
+                  },
+                  {
+                    model: EjemplosIng,
+                    required: false,
+                  },{
+                    model: Region,
+                    required: true,
                   },
               ], 
         });
@@ -113,7 +153,8 @@ export const createPalabra = async (req, res) => {
         colaborador,
         correo_electronico,
         id_categoria,
-        id_tipo
+        id_tipo,
+        id_region
         } = req.body;
 
     const newPalabra = await Palabras.create({
@@ -124,7 +165,8 @@ export const createPalabra = async (req, res) => {
         como_se_usa,
         autorizado,
         id_categoria,
-        id_tipo
+        id_tipo,
+        id_region
     });
 
   /*  const newMultimedia = await Multimedia.create({
@@ -136,14 +178,19 @@ export const createPalabra = async (req, res) => {
     const newEjemplos = await Ejemplos.create({
             id_palabras: newPalabra.id,
             ejemplo_neutro: ejemplo_neutro,
-            ejemplo_choco: ejemplo_choco,    
-            ejemplo_neutro_ingles:ejemplo_neutro_ingles,
-            ejemplo_choco_ingles:ejemplo_choco_ingles,  
+            ejemplo_choco: ejemplo_choco
+
+});
+
+const newEjemplosIng = await EjemplosIng.create({
+  id_palabras: newPalabra.id,    
+  ejemplo_neutro_ingles:ejemplo_neutro_ingles,
+  ejemplo_choco_ingles:ejemplo_choco_ingles,  
 
 });
 
 const newIngles = await Ingle.create({
-    id_palabrasIng: newPalabra.id,
+    id_palabras: newPalabra.id,
     significadoIng:significadoIng,
     acepcionesIng:acepcionesIng,
     sinonimosIng:sinonimosIng,
@@ -157,7 +204,7 @@ const newIngles = await Ingle.create({
         correo_electronico,
     });
 
-    const response = [newPalabra, newEjemplos, newIngles, newColaborador];
+    const response = [newPalabra, newEjemplos, newIngles,newEjemplosIng, newColaborador];
 
     res.json(response);
    } catch (error) {
@@ -189,7 +236,10 @@ export const updatePalabra = async (req, res) => {
             colaborador,
             correo_electronico,
             id_categoria,
-            id_tipo} = req.body;
+            id_tipo,
+            id_region,
+            ejemplo_neutro_ingles,
+            ejemplo_choco_ingles,} = req.body;
 
             const updatePalabra = await Palabras.update({ 
                 palabra: palabra,
@@ -199,7 +249,8 @@ export const updatePalabra = async (req, res) => {
                 como_se_usa: como_se_usa,
                 autorizado: autorizado,
                 id_categoria: id_categoria,
-                id_tipo: id_tipo
+                id_tipo: id_tipo,
+                id_region: id_region
             }, {
                 where: {
                   id: id
@@ -217,7 +268,15 @@ export const updatePalabra = async (req, res) => {
 
             const updateEjemplo = await Ejemplos.update({ 
                 ejemplo_neutro: ejemplo_neutro,
-                ejemplo_choco: ejemplo_choco,
+                ejemplo_choco: ejemplo_choco
+            }, {
+                where: {
+                  id_palabras: id
+                }
+              });
+
+              const updateEjemploIng = await EjemplosIng.update({ 
+               
                 ejemplo_choco_ingles: ejemplo_choco_ingles,
                 ejemplo_neutro_ingles: ejemplo_neutro_ingles
             }, {
@@ -233,7 +292,7 @@ export const updatePalabra = async (req, res) => {
                 como_se_usa_Ing: como_se_usa_Ing,
             }, {
                 where: {
-                  id_palabrasIng: id
+                  id_palabras: id
                 }
               });
 
@@ -262,7 +321,7 @@ export const updatePalabra = async (req, res) => {
             updatePalabra.id_region = id_region;
             
             await updatePalabra.save();*/
-        const response = [updatePalabra, updateEjemplo, updateIngles, updateColaborador];
+        const response = [updatePalabra, updateEjemplo, updateIngles, updateEjemploIng,updateColaborador];
         res.json(response);
     } catch (error) {
         return res.status(500).json({message: error.message});
@@ -292,9 +351,15 @@ export const deletePalabra = async (req, res) =>{
 
     await Ingle.destroy({
         where:{
-            id_palabrasIng: id
+            id_palabras: id
         }
     });
+
+    await EjemplosIng.destroy({
+      where:{
+          id_palabras: id
+      }
+  });
 
     await Colaborador.destroy({
         where:{
@@ -324,6 +389,16 @@ export const getCategoriagra = async (req, res) => {
     }
 }
 
+export const getRegiones = async (req, res) => {
+    
+  try {
+      const arrRegion = await Region.findAll();
+      res.json(arrRegion);
+  } catch (error) {
+      return res.status(500).json({message: error.message});
+  }
+}
+
 export const getAllPalabras = async (req, res) => {
     
     try {
@@ -337,6 +412,25 @@ export const getAllPalabras = async (req, res) => {
             include: [
                   {
                     model: Ejemplos,
+                    required: true,
+                    // Utilizar INNER JOIN
+                  },
+                  
+                  {
+                    model: Colaborador,
+                    required: true, // Utilizar INNER JOIN
+                  },
+                  {
+                    model: Categoria,
+                    required: true,
+                    include:[
+                      {
+                        model: CategoriaIng,
+                        required: true,
+                      }
+                    ] // Utilizar INNER JOIN
+                  }, {
+                    model: Tipo,
                     required: true, // Utilizar INNER JOIN
                   },
                   {
@@ -344,16 +438,14 @@ export const getAllPalabras = async (req, res) => {
                     required: true, // Utilizar INNER JOIN
                   },
                   {
-                    model: Colaborador,
-                    required: true, // Utilizar INNER JOIN
+                    model: EjemplosIng,
+                    required: false,
                   },
                   {
-                    model: Categoria,
-                    required: true, // Utilizar INNER JOIN
-                  }, {
-                    model: Tipo,
-                    required: true, // Utilizar INNER JOIN
+                    model: Region,
+                    required: true,
                   },
+                  
               ],
               order: [['id', 'DESC']],
         });

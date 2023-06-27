@@ -1,5 +1,6 @@
 import { Router } from "express";
-import {getPalabras, getAllPalabras,createPalabra, updatePalabra, deletePalabra, getPalabra, getCategoriagra} from "../../controllers/diccChoco/palabras.controller.js";
+import {getPalabras, getAllPalabras,createPalabra, updatePalabra, deletePalabra, getPalabra, getCategoriagra,
+    getRegiones} from "../../controllers/diccChoco/palabras.controller.js";
 
 const router = Router();
 
@@ -11,6 +12,7 @@ router.get('/palabra/:id', getPalabra);
 
 router.get('/palabrasall', getAllPalabras);
 router.get('/categoriagra', getCategoriagra);
+router.get('/regiones', getRegiones)
 
 
 export default router;

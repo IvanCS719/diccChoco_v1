@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom';
-export default function Cards({ /*imagen, categoria*/ palabra, significado, sinonimos, categoria, acepciones, comoSeUsa,
+export default function Cards({ /*imagen, categoria*/ palabra, region,significado, sinonimos, categoria, acepciones, comoSeUsa,
     ejemploNeutro, ejemploChoco, ejemploneutroingles, ejemplochocoingles, significadoIng, acepcionesIng, categoriaIng,sinonimosIng, como_se_usa_Ing }) {
     let [activeDiv, setActiveDiv] = useState(false)
 
@@ -59,14 +59,18 @@ export default function Cards({ /*imagen, categoria*/ palabra, significado, sino
                     <p className="text-2xl font-bold text-white">{palabra}</p>
                     <p className='font-bold text-white'>How is it used?</p>
                     <p className="">{como_se_usa_Ing}</p>
+                    <div className='mt-3 mb-1'>
+                        <p className='font-bold text-white'>Tabasco region where it is heard more</p>
+                        <p className="overflow-auto h-8 w-full">{region}</p>
+                    </div>
                 </div>;
             case 4:
                 return <div>
                     <div>
-                        <p className="text-3xl font-bold" style={{ color: "#ffffff" }}>{palabra}</p>
+                        <p className="text-3xl font-bold text-white">{palabra}</p>
                         <p className="cardPalabras-lugar"><span>(</span>{categoria}<span>)</span></p>
                     </div>
-                    <p className='font-bold text-mfColor' style={{ color: "#ffffff" }}>Significados</p>
+                    <p className='font-bold text-white mt-2'>Significados</p>
                     <div className='overflow-auto h-14 w-full'>
                         <p className="">{significado}</p>
 
@@ -84,7 +88,7 @@ export default function Cards({ /*imagen, categoria*/ palabra, significado, sino
             case 5:
                 return <div>
                     <p className="text-2xl font-bold text-white">{palabra}</p>
-                    <div className='my-3'>
+                    <div className='my-2'>
                         <p className='font-bold text-white'>Acepciones</p>
                         <p className="">{acepciones}</p>
                     </div>
@@ -94,7 +98,7 @@ export default function Cards({ /*imagen, categoria*/ palabra, significado, sino
                 return <div>
                     <p className="text-2xl font-bold text-white">{palabra}</p>
                     <p className='font-bold text-white mb-1'>Ejemplo neutral / Ejemplo choco</p>
-                    <div className='my-3'>
+                    <div className='my-2'>
                         {renderEjemplos()}
                     </div>
                     <button className="rounded-md w-auto shadow-sm px-3 py-2 text-white font-semibold" title='Return to the word in Spanish' onClick={() => handleButtonClick(4)}>Regresar <i className="fa-solid fa-rotate-left"></i></button>
@@ -103,9 +107,13 @@ export default function Cards({ /*imagen, categoria*/ palabra, significado, sino
             case 7:
                 return <div>
                     <p className="text-2xl font-bold text-white">{palabra}</p>
-                    <div className='my-3'>
+                    <div className='my-2'>
                         <p className='font-bold text-white'>¿Comó se usa?</p>
                         <p className="">{comoSeUsa}</p>
+                    </div>
+                    <div className='mt-2 mb-1'>
+                        <p className='font-bold text-white'>Región de Tabasco donde más se escucha</p>
+                        <p className="overflow-auto h-8 w-full">{region}</p>
                     </div>
                     <button className="rounded-md w-auto shadow-sm px-3 py-2 text-white font-semibold" title='Return to the word in Spanish' onClick={() => handleButtonClick(4)}>Go Back <i className="fa-solid fa-rotate-left"></i></button>
                 </div>;
@@ -145,7 +153,7 @@ export default function Cards({ /*imagen, categoria*/ palabra, significado, sino
                         <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='Senses' onClick={() => handleButtonClick(1)}><i className="fa-solid fa-book-open"></i></button>
                         <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='Example' onClick={() => handleButtonClick(2)}><i className="fa-solid fa-lightbulb"></i></button>
                         <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='How is it used?' onClick={() => handleButtonClick(3)}><i className="fa-solid fa-circle-question"></i></button>
-                        <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='Spanish' onClick={() => handleButtonClick(4)}><i className="fa-solid fa-flag-usa"></i></button>
+                        <button className="rounded-md bg-mfColor px-3 py-2 text-white shadow-sm" title='Spanish' onClick={() => handleButtonClick(4)}><i className="fa-solid fa-globe"></i></button>
 
                     </div>
                 </div>

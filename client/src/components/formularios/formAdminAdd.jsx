@@ -1,383 +1,429 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TablaAdmin from './tablapalabras';
+import TablaAdmin from '../admin/tablapalabras';
+import NavBar from '../navbars/navbar';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 
 
 
-    const FormField = ({ label, name, placeholder, errors, value, type = 'text', onChange }) => (
-        <div className='text-left mb-3'>
-            <label htmlFor={name}>{label}</label>
-            <Field
-                type={type}
-                id={name}
-                name={name}
-                placeholder={placeholder}
-                value={value}
-                onChange={onChange}
-                className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
-            />
-            <ErrorMessage name={name} component={() => (
-                <div className='error text-red-600 font-medium'>{errors[name]}</div>
-            )} />
-        </div>
-    );
+const FormField = ({ label, name, placeholder, errors, value, type = 'text', onChange }) => (
+    <div className='text-left mb-3'>
+        <label htmlFor={name}>{label}</label>
+        <Field
+            type={type}
+            id={name}
+            name={name}
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
+        />
+        <ErrorMessage name={name} component={() => (
+            <div className='error text-red-600 font-medium'>{errors[name]}</div>
+        )} />
+    </div>
+);
 
-    const FormField2 = ({ label, name, placeholder, errors, type = 'text', }) => (
-        <div className='text-left mb-3'>
-            <label htmlFor={name}>{label}</label>
-            <Field
-                type={type}
-                id={name}
-                name={name}
-                placeholder={placeholder}
-                className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
-            />
-            <ErrorMessage name={name} component={() => (
-                <div className='error text-red-600 font-medium'>{errors[name]}</div>
-            )} />
-        </div>
-    );
+const FormField2 = ({ label, name, placeholder, errors, type = 'text', }) => (
+    <div className='text-left mb-3'>
+        <label htmlFor={name}>{label}</label>
+        <Field
+            type={type}
+            id={name}
+            name={name}
+            placeholder={placeholder}
+            className="px-2 py-1.5 bg-white border shadow-sm border-slate-500 placeholder-slate-500 focus:outline-none focus:border-mfColor focus:ring-mfColor block w-full sm:w-64 rounded-md sm:text-base focus:ring-1"
+        />
+        <ErrorMessage name={name} component={() => (
+            <div className='error text-red-600 font-medium'>{errors[name]}</div>
+        )} />
+    </div>
+);
 
-    const Formulario = () => {
+const Formulario = () => {
+    const [resp, setResp] = useState({})
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        const fetchProtectedData = async () => {
+            
+            try {
+                // Hacer la solicitud GET a la ruta protegida
+                const response = await fetch('http://localhost:3000/api/auth/user', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                });
 
-        const navigate = useNavigate();
+                if (response.ok) {
+                    // Obtener los datos del usuario desde la respuesta
+                    const data = await response.json();
+                    setResp(data.user);
 
-        useEffect(() => {
-            const expectedToken = 'tokenprueba'; // Reemplaza 'token_esperado' con tu token esperado
-            const storedToken = localStorage.getItem('tokenprueba');
-    
-            if (storedToken !== expectedToken) {
-                // Si el token almacenado no coincide con el token esperado, redirige a la página de inicio de sesión
+                } else {
+                    // Error en la solicitud, redirigir a la página de inicio de sesión
+                    navigate('/loginDicc');
+                }
+            } catch (error) {
+                console.error('Error al realizar la solicitud:', error);
                 navigate('/loginDicc');
             }
-        }, [navigate]);
+        };
 
-        // const [formularioenviado, cambiarformularioenviado] = useState(false);
-        const [dataCategoria, setDataCategoria] = useState([]);
-        const [arrTama, setArrTama] = useState([]);
-        const [dataNeutro, setDataNeutro] = useState([]);
-        const [dataNeutroIng, setDataNeutroIng] = useState([]);
-        const [dataChocoIng, setDataChocoIng] = useState([]);
-        const [dataChoco, setDataChoco] = useState([]);
-        const [isOpen, setIsOpen] = useState(false);
-        const [modalConfirUpdate, setModalConfirUpdate] = useState(false);
-        const [modalAdd, setModalAdd] = useState(false);
-        const [modalUpdate, setModalUpdate] = useState(false);
+        fetchProtectedData();
+    }, [navigate]);
 
-        const [newFilter, setFiltro] = useState([])
-        const [data, setData] = useState([]);
-        const [valoresForm, setValoresForm] = useState({
-            palabra: '',
-            significado: '',
-            acepciones: '',
-            sinonimos: '',
-            como_se_usa: '',
-            ejemplo_neutro: '',
-            ejemplo_choco: '',
-            colaborador: 'Mercado Fácil',
-            correo_electronico: '',
-            autorizado: true,
-            id_categoria: 0,
-            Categorium: {
-                id: 0
-            },
+    // const [formularioenviado, cambiarformularioenviado] = useState(false);
+    const [dataCategoria, setDataCategoria] = useState([]);
+    const [dataRegion, setDataRegion] = useState([]);
+    const [arrTama, setArrTama] = useState([]);
+    const [dataNeutro, setDataNeutro] = useState([]);
+    const [dataNeutroIng, setDataNeutroIng] = useState([]);
+    const [dataChocoIng, setDataChocoIng] = useState([]);
+    const [dataChoco, setDataChoco] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
+    const [modalConfirUpdate, setModalConfirUpdate] = useState(false);
+    const [modalAdd, setModalAdd] = useState(false);
+    const [modalUpdate, setModalUpdate] = useState(false);
+
+    const [newFilter, setFiltro] = useState([])
+    const [data, setData] = useState([]);
+    const [valoresForm, setValoresForm] = useState({
+        palabra: '',
+        significado: '',
+        acepciones: '',
+        sinonimos: '',
+        como_se_usa: '',
+        ejemplo_neutro: '',
+        ejemplo_choco: '',
+        correo_electronico: '',
+        autorizado: true,
+        id_categoria: 1,
+        Categorium: {
+            id: 0
+        },
+        id_region: 1,
+        Region: {
+            id: 0
+        },
+        Ingle: {
+            significadoIng: '',
+            sinonimosIng: '',
+            acepcionesIng: '',
+            como_se_usa_Ing: ''
+        },
+        id_tipo: 1,
+
+
+        ejemplo_neutro_ingles: '',
+        ejemplo_choco_ingles: '',
+        EjemploChoco: '',
+        titleEjemploAc: ''
+
+    });
+
+    const fetchData = async () => {
+
+        try {
+            const response = await fetch('http://localhost:3000/palabrasall');
+            const jsonData = await response.json();
+            setData(jsonData);
+            setFiltro(data)
+            //console.log(jsonData)
+
+        } catch (error) {
+            console.error(error);
+        }
+
+    };
+
+    useEffect(() => {
+        if (!dataCategoria.length) {
+            fetch('http://localhost:3000/categoriagra')
+                .then(res => res.json())
+                .then((res) => { setDataCategoria(res) })
+        }
+    }, [dataCategoria])
+
+    useEffect(() => {
+        if (!dataRegion.length) {
+            fetch('http://localhost:3000/regiones')
+                .then(res => res.json())
+                .then((res) => { setDataRegion(res) })
+        }
+    }, [dataRegion])
+
+    const handleSubmitAdd = (values, { resetForm }) => {
+        try {
+
+            //Convertir los arreglos de ejemplos a una string
+
+            const dataNeutroString = dataNeutro.join('|');
+            const dataChocoString = dataChoco.join('|');
+
+            const dataNeutroIngString = dataNeutroIng.length ? dataNeutroIng.join('|') : 'No translation yet';
+            const dataChocoIngString = dataChocoIng.length ? dataChocoIng.join('|') : 'No translation yet';
+
+            // Agregar las cadenas de texto al objeto values
+            values.ejemplo_neutro = dataNeutroString;
+            values.ejemplo_choco = dataChocoString;
+            values.ejemplo_neutro_ingles = dataNeutroIngString;
+            values.ejemplo_choco_ingles = dataChocoIngString;
+            //values.significado = values.significado ? values.significado : 'No Aplica';
+            values.acepciones = values.acepciones ? values.acepciones : 'No Aplica';
+            values.sinonimos = values.sinonimos ? values.sinonimos : 'No Aplica';
+            values.significadoIng = values.significadoIng ? values.significadoIng : 'No translation yet';
+            values.acepcionesIng = values.acepcionesIng ? values.acepcionesIng : 'No translation yet';
+            values.sinonimosIng = values.sinonimosIng ? values.sinonimosIng : 'No translation yet';
+            values.como_se_usa_Ing = values.como_se_usa_Ing ? values.como_se_usa_Ing : 'No translation yet';
+
+            // Enviar los datos a la ruta del servidor
+            fetch('http://localhost:3000/palabras', {
+                method: 'POST',
+                body: JSON.stringify(values),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then((response) => response.json())
+                .then((response) => {
+                    // Hacer algo con la respuesta del servidor
+
+                    setArrTama([]);
+                    setDataNeutro([]);
+                    setDataChoco([]);
+                    setDataNeutroIng([]);
+                    setDataChocoIng([]);
+                    resetForm();
+                    fetchData();
+                    setFiltro(data);
+
+                })
+                .catch((error) => {
+                    // Manejar el error
+                    console.error(error);
+                });
+
+            setIsOpen(true);
+        } catch (error) {
+            console.log("mensaje", error)
+        }
+
+
+    };
+
+
+    const handleSubmitUpdate = (values, { resetForm }) => {
+        try {
+
+            const newValoresForm = {
+                palabra: valoresForm.palabra,
+                significado: valoresForm.significado,
+                acepciones: '',
+                sinonimos: '',
+                como_se_usa: valoresForm.como_se_usa,
+                ejemplo_neutro: "",
+                ejemplo_choco: "",
+                correo_electronico: "",
+                autorizado: true,
+                id_categoria: valoresForm.Categorium.id,
+                id_tipo: 1,
+                id_region: valoresForm.Region.id,
+                significadoIng: "",
+                acepcionesIng: "",
+                sinonimosIng: "",
+                como_se_usa_Ing: "",
+                ejemplo_neutro_ingles: "",
+                ejemplo_choco_ingles: ""
+
+            }
+
+            //Convertir los arreglos de ejemplos a una string
+
+            const dataNeutroString = dataNeutro.join('|');
+            const dataChocoString = dataChoco.join('|');
+
+            const dataNeutroIngString = dataNeutroIng.length && !(dataNeutroIng.every((elemento) => elemento === "")) ? dataNeutroIng.join('|') : 'No translation yet';
+            const dataChocoIngString = dataChocoIng.length && !(dataChocoIng.every((elemento) => elemento === "")) ? dataChocoIng.join('|') : 'No translation yet';
+
+            // Agregar las cadenas de texto al objeto values
+            newValoresForm.ejemplo_neutro = dataNeutroString;
+            newValoresForm.ejemplo_choco = dataChocoString;
+            newValoresForm.ejemplo_neutro_ingles = dataNeutroIngString;
+            newValoresForm.ejemplo_choco_ingles = dataChocoIngString;
+            //values.significado = values.significado ? values.significado : 'No Aplica';
+            newValoresForm.acepciones = valoresForm.acepciones ? valoresForm.acepciones : 'No Aplica';
+            newValoresForm.sinonimos = valoresForm.sinonimos ? valoresForm.sinonimos : 'No Aplica';
+            newValoresForm.significadoIng = valoresForm.Ingle.significadoIng ? valoresForm.Ingle.significadoIng : 'No translation yet';
+            newValoresForm.acepcionesIng = valoresForm.Ingle.acepcionesIng ? valoresForm.Ingle.acepcionesIng : 'No translation yet';
+            newValoresForm.sinonimosIng = valoresForm.Ingle.sinonimosIng ? valoresForm.Ingle.sinonimosIng : 'No translation yet';
+            newValoresForm.como_se_usa_Ing = valoresForm.Ingle.como_se_usa_Ing ? valoresForm.Ingle.como_se_usa_Ing : 'No translation yet';
+
+            newValoresForm.id_categoria = valoresForm.Categorium.id;
+            // Enviar los datos a la ruta del servidor
+            fetch(`http://localhost:3000/palabras/${valoresForm.id}`, {
+                method: 'PUT',
+                body: JSON.stringify(newValoresForm),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then((response) => response.json())
+                .then((data2) => {
+                    // Hacer algo con la respuesta del servidor
+                    //console.log(data2);
+                    setArrTama([]);
+                    setDataNeutro([]);
+                    setDataChoco([]);
+                    setDataNeutroIng([]);
+                    setDataChocoIng([]);
+                    resetForm();
+                    fetchData();
+                    setFiltro(data);
+                    setModalConfirUpdate(true);
+
+                })
+                .catch((error) => {
+                    // Manejar el error
+                    console.error(error);
+                });
+
+            
+        } catch (error) {
+            console.log("mensaje", error)
+        }
+
+
+    };
+
+    function newEjemplos() {
+
+        const newDataEjemplo = [...arrTama, 1];
+        setArrTama(newDataEjemplo)
+    };
+
+    function arrEjemNeutro(v, i) {
+        const newDataNeutro = [...dataNeutro]
+
+        newDataNeutro[i] = v
+
+        setDataNeutro(newDataNeutro)
+
+
+    }
+
+    function arrEjemNeutroIng(v, i) {
+        const newDataNeutroIng = [...dataNeutroIng]
+
+        newDataNeutroIng[i] = v
+
+        setDataNeutroIng(newDataNeutroIng)
+
+
+    }
+
+    function arrEjemChoco(v, i) {
+        const newDataChoco = [...dataChoco]
+        newDataChoco[i] = v
+        setDataChoco(newDataChoco)
+
+    }
+
+    function arrEjemChocoIng(v, i) {
+        const newDataChocoIng = [...dataChocoIng]
+
+        newDataChocoIng[i] = v
+
+        setDataChocoIng(newDataChocoIng)
+
+
+    }
+
+    const closeModal = () => {
+        setIsOpen(false);
+        setModalAdd(false);
+        //onClose();
+    };
+
+    const closeModalUp = () => {
+        setModalConfirUpdate(false);
+        setModalUpdate(false);
+        //onClose();
+    };
+
+    const closeModalAdd = () => {
+        setModalAdd(false);
+        setArrTama([]);
+        setDataNeutro([]);
+        setDataChoco([]);
+        setDataNeutroIng([]);
+        setDataChocoIng([]);
+        //onClose();
+    };
+
+    const closeModalUpdate = () => {
+        setModalUpdate(false);
+        setArrTama([]);
+        setDataNeutro([]);
+        setDataChoco([]);
+        setDataNeutroIng([]);
+        setDataChocoIng([]);
+        //onClose();
+    };
+
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setValoresForm((prevState) => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+    const handleInputChange2 = (e) => {
+        const { name, value } = e.target;
+        setValoresForm((prevState) => ({
+            ...prevState,
             Ingle: {
-                significadoIng: '',
-                sinonimosIng: '',
-                acepcionesIng: '',
-                como_se_usa_Ing: ''
-            },
-            id_tipo: 1,
-
-
-            ejemplo_neutro_ingles: '',
-            ejemplo_choco_ingles: '',
-            EjemploChoco: '',
-            titleEjemploAc: ''
-
-        });
-
-        const fetchData = async () => {
-
-            try {
-                const response = await fetch('http://localhost:3000/palabrasall');
-                const jsonData = await response.json();
-                setData(jsonData);
-                setFiltro(data)
-                console.log(jsonData)
-
-            } catch (error) {
-                console.error(error);
-            }
-
-        };
-
-        useEffect(() => {
-            if (!dataCategoria.length) {
-                fetch('http://localhost:3000/categoriagra')
-                    .then(res => res.json())
-                    .then((res) => { setDataCategoria(res) })
-            }
-        }, [dataCategoria])
-
-        const handleSubmitAdd = (values, { resetForm }) => {
-            try {
-
-                //Convertir los arreglos de ejemplos a una string
-
-                const dataNeutroString = dataNeutro.join('|');
-                const dataChocoString = dataChoco.join('|');
-
-                const dataNeutroIngString = dataNeutroIng.length ? dataNeutroIng.join('|') : 'No translation yet';
-                const dataChocoIngString = dataChocoIng.length ? dataChocoIng.join('|') : 'No translation yet';
-
-                // Agregar las cadenas de texto al objeto values
-                values.ejemplo_neutro = dataNeutroString;
-                values.ejemplo_choco = dataChocoString;
-                values.ejemplo_neutro_ingles = dataNeutroIngString;
-                values.ejemplo_choco_ingles = dataChocoIngString;
-                //values.significado = values.significado ? values.significado : 'No Aplica';
-                values.acepciones = values.acepciones ? values.acepciones : 'No Aplica';
-                values.sinonimos = values.sinonimos ? values.sinonimos : 'No Aplica';
-                values.significadoIng = values.significadoIng ? values.significadoIng : 'No translation yet';
-                values.acepcionesIng = values.acepcionesIng ? values.acepcionesIng : 'No translation yet';
-                values.sinonimosIng = values.sinonimosIng ? values.sinonimosIng : 'No translation yet';
-                values.como_se_usa_Ing = values.como_se_usa_Ing ? values.como_se_usa_Ing : 'No translation yet';
-
-                // Enviar los datos a la ruta del servidor
-                fetch('http://localhost:3000/palabras', {
-                    method: 'POST',
-                    body: JSON.stringify(values),
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                })
-                    .then((response) => response.json())
-                    .then((response) => {
-                        // Hacer algo con la respuesta del servidor
-
-                        setArrTama([]);
-                        setDataNeutro([]);
-                        setDataChoco([]);
-                        setDataNeutroIng([]);
-                        setDataChocoIng([]);
-                        resetForm();
-                        fetchData();
-                        setFiltro(data);
-
-                    })
-                    .catch((error) => {
-                        // Manejar el error
-                        console.error(error);
-                    });
-
-                setIsOpen(true);
-            } catch (error) {
-                console.log("mensaje", error)
-            }
-
-
-        };
-
-
-        const handleSubmitUpdate = (values, { resetForm }) => {
-            try {
-
-                const newValoresForm = {
-                    palabra: valoresForm.palabra,
-                    significado: valoresForm.significado,
-                    acepciones: '',
-                    sinonimos: '',
-                    como_se_usa: valoresForm.como_se_usa,
-                    ejemplo_neutro: "",
-                    ejemplo_choco: "",
-                    colaborador: "Mercado Fácil",
-                    correo_electronico: "",
-                    autorizado: true,
-                    id_categoria: 1,
-                    id_tipo: 1,
-                    significadoIng: "",
-                    acepcionesIng: "",
-                    sinonimosIng: "",
-                    como_se_usa_Ing: "",
-                    ejemplo_neutro_ingles: "",
-                    ejemplo_choco_ingles: ""
-
-                }
-
-                //Convertir los arreglos de ejemplos a una string
-
-                const dataNeutroString = dataNeutro.join('|');
-                const dataChocoString = dataChoco.join('|');
-
-                const dataNeutroIngString = dataNeutroIng.length && !(dataNeutroIng.every((elemento) => elemento === "")) ? dataNeutroIng.join('|') : 'No translation yet';
-                const dataChocoIngString = dataChocoIng.length && !(dataChocoIng.every((elemento) => elemento === "")) ? dataChocoIng.join('|') : 'No translation yet';
-
-                // Agregar las cadenas de texto al objeto values
-                newValoresForm.ejemplo_neutro = dataNeutroString;
-                newValoresForm.ejemplo_choco = dataChocoString;
-                newValoresForm.ejemplo_neutro_ingles = dataNeutroIngString;
-                newValoresForm.ejemplo_choco_ingles = dataChocoIngString;
-                //values.significado = values.significado ? values.significado : 'No Aplica';
-                newValoresForm.acepciones = valoresForm.acepciones ? valoresForm.acepciones : 'No Aplica';
-                newValoresForm.sinonimos = valoresForm.sinonimos ? valoresForm.sinonimos : 'No Aplica';
-                newValoresForm.significadoIng = valoresForm.Ingle.significadoIng ? valoresForm.Ingle.significadoIng : 'No translation yet';
-                newValoresForm.acepcionesIng = valoresForm.Ingle.acepcionesIng ? valoresForm.Ingle.acepcionesIng : 'No translation yet';
-                newValoresForm.sinonimosIng = valoresForm.Ingle.sinonimosIng ? valoresForm.Ingle.sinonimosIng : 'No translation yet';
-                newValoresForm.como_se_usa_Ing = valoresForm.Ingle.como_se_usa_Ing ? valoresForm.Ingle.como_se_usa_Ing : 'No translation yet';
-
-                newValoresForm.id_categoria = valoresForm.Categorium.id;
-                // Enviar los datos a la ruta del servidor
-                fetch(`http://localhost:3000/palabras/${valoresForm.id}`, {
-                    method: 'PUT',
-                    body: JSON.stringify(newValoresForm),
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                })
-                    .then((response) => response.json())
-                    .then((data2) => {
-                        // Hacer algo con la respuesta del servidor
-                        console.log(data2);
-                        setArrTama([]);
-                        setDataNeutro([]);
-                        setDataChoco([]);
-                        setDataNeutroIng([]);
-                        setDataChocoIng([]);
-                        resetForm();
-                        fetchData();
-                        setFiltro(data);
-
-                    })
-                    .catch((error) => {
-                        // Manejar el error
-                        console.error(error);
-                    });
-
-                setModalConfirUpdate(true);
-            } catch (error) {
-                console.log("mensaje", error)
-            }
-
-
-        };
-
-        function newEjemplos() {
-
-            const newDataEjemplo = [...arrTama, 1];
-            setArrTama(newDataEjemplo)
-        };
-
-        function arrEjemNeutro(v, i) {
-            const newDataNeutro = [...dataNeutro]
-
-            newDataNeutro[i] = v
-
-            setDataNeutro(newDataNeutro)
-
-
-        }
-
-        function arrEjemNeutroIng(v, i) {
-            const newDataNeutroIng = [...dataNeutroIng]
-
-            newDataNeutroIng[i] = v
-
-            setDataNeutroIng(newDataNeutroIng)
-
-
-        }
-
-        function arrEjemChoco(v, i) {
-            const newDataChoco = [...dataChoco]
-            newDataChoco[i] = v
-            setDataChoco(newDataChoco)
-
-        }
-
-        function arrEjemChocoIng(v, i) {
-            const newDataChocoIng = [...dataChocoIng]
-
-            newDataChocoIng[i] = v
-
-            setDataChocoIng(newDataChocoIng)
-
-
-        }
-
-        const closeModal = () => {
-            setIsOpen(false);
-            setModalAdd(false);
-            //onClose();
-        };
-
-        const closeModalUp = () => {
-            setModalConfirUpdate(false);
-            setModalUpdate(false);
-            //onClose();
-        };
-
-        const closeModalAdd = () => {
-            setModalAdd(false);
-            setArrTama([]);
-            setDataNeutro([]);
-            setDataChoco([]);
-            setDataNeutroIng([]);
-            setDataChocoIng([]);
-            //onClose();
-        };
-
-        const closeModalUpdate = () => {
-            setModalUpdate(false);
-            setArrTama([]);
-            setDataNeutro([]);
-            setDataChoco([]);
-            setDataNeutroIng([]);
-            setDataChocoIng([]);
-            //onClose();
-        };
-
-
-        const handleInputChange = (e) => {
-            const { name, value } = e.target;
-            setValoresForm((prevState) => ({
-                ...prevState,
+                ...prevState.Ingle,
                 [name]: value
-            }));
-        };
-        const handleInputChange2 = (e) => {
-            const { name, value } = e.target;
-            setValoresForm((prevState) => ({
-                ...prevState,
-                Ingle: {
-                    ...prevState.Ingle,
-                    [name]: value
-                }
-            }));
-        };
-        const handleSelectChange = (e) => {
-            const { name, value } = e.target;
-            setValoresForm((prevState) => ({
-                ...prevState,
-                Categorium: {
-                    ...prevState.Categorium,
-                    id: value
-                }
-            }));
-        };
+            }
+        }));
+    };
+    const handleSelectChange = (e) => {
+        const { name, value } = e.target;
+        setValoresForm((prevState) => ({
+            ...prevState,
+            Categorium: {
+                ...prevState.Categorium,
+                id: value
+            }
+        }));
+    };
 
-        return (
-            <div className='container px-4 lg:px-0 min-h-screen'>
+    const handleSelectChange2 = (e) => {
+        const { name, value } = e.target;
+        setValoresForm((prevState) => ({
+            ...prevState,
+            Region: {
+                ...prevState.Region,
+                id: value
+            }
+        }));
+    };
+    return (
+        <div className='w-full min-h-screen'>
+            <NavBar rol={resp.rol} verDicc={"Ver Diccionario"} verDiccLink={'/'} tar={'_blank'} mfLogoAd={"MercadoFácil.mx"} mfLinkAd={"https://mercadofacil.mx/"}
+                CS={"Cerrar Sesión"} VC={resp.id} />
 
-                <p className='mb-5 mt-3 font-semibold text-mfColor text-4xl'>Administrador del Diccionario Choco</p>
+            <div className='w-full px-4 md:px-6'>
+                <p className='my-5 font-semibold text-mfColor text-4xl'>Administrador del Diccionario Choco</p>
 
 
                 <TablaAdmin newFilter={newFilter} setFiltro={setFiltro} setModalUpdate={setModalUpdate} data={data} setData={setData}
                     setValoresForm={setValoresForm} setArrTama={setArrTama} setDataNeutro={setDataNeutro}
-                    setDataChoco={setDataChoco} setDataNeutroIng={setDataNeutroIng} setDataChocoIng={setDataChocoIng} fetchData={fetchData} setModalAdd={setModalAdd} />
+                    setDataChoco={setDataChoco} setDataNeutroIng={setDataNeutroIng} setDataChocoIng={setDataChocoIng} fetchData={fetchData} setModalAdd={setModalAdd}
+                    addmf={resp.agregar_mf} editmf={resp.editar_mf} elimf={resp.eliminar_mf} apropu={resp.aprobar_pu} elipu={resp.eliminar_pu} />
                 <>
                     <Formik
                         //almacena los valores de cada campo
@@ -395,6 +441,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                             EjemploChoco: '',
                             id_categoria: 0,
                             id_tipo: 1,
+                            id_region: 1,
                             autorizado: true,
                             colaborador: 'Mercado Fácil',
                             correo_electronico: ''
@@ -416,6 +463,10 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
                             if (valores.id_categoria == 0) {
                                 errores.id_categoria = 'Debe seleccionar una categoría*'
+                            }
+
+                            if (valores.id_region == 0) {
+                                errores.id_region = 'Debe seleccionar una región*'
                             }
 
                             //valores de como se usa
@@ -460,13 +511,41 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                                             <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Agregar Nueva Palabra</h2>
                                             <div className='w-full flex flex-col xl:flex-row gap-4'>
                                                 <div className='w-full'>
-                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5 mb-4 xl:mb-0'>
+                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5 '>
                                                         <FormField2
                                                             label="Palabra:"
                                                             name="palabra"
                                                             placeholder="Ingrese la palabra"
                                                             errors={errors}
                                                         />
+                                                        <FormField2
+                                                            label="Significado:"
+                                                            name="significado"
+                                                            placeholder="Significado de la palabra"
+                                                            errors={errors}
+                                                        />
+
+                                                    </div>
+                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
+
+
+                                                        <FormField2
+                                                            label="Sinónimos (separados por coma):"
+                                                            name="sinonimos"
+                                                            placeholder="Sinónimos de la palabra"
+                                                        // errors={errors}
+                                                        />
+                                                        <FormField2
+                                                            label="Acepciones:"
+                                                            name="acepciones"
+                                                            placeholder="Acepciones de la palabra"
+                                                        // errors={errors}
+                                                        />
+
+                                                    </div>
+
+
+                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 mb-4 md:gap-5'>
 
                                                         <div className='text-left'>
                                                             <label htmlFor="selectedOption">Categoría Gramatical:</label>
@@ -483,33 +562,25 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                                                                 <div className='error text-red-600 font-medium'>{errors.id_categoria}</div>
                                                             )} />
                                                         </div>
+                                                        <div className='text-left'>
+                                                            <label htmlFor="selectedOption">Región:</label>
+                                                            <Field as="select" name="id_region" id="id_region"
+                                                                className="block w-64 rounded-md border-0 px-2 py-2 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor sm:max-w-xs sm:leading-6">
+                                                                <option value="">Selecciona una región</option>
+                                                                {dataRegion.map((e) => (
+                                                                    <option key={e.id} value={e.id}>
+                                                                        {e.region}
+                                                                    </option>
+                                                                ))}
+                                                            </Field>
+                                                            <ErrorMessage name='id_region' component={() => (
+                                                                <div className='error text-red-600 font-medium'>{errors.id_region}</div>
+                                                            )} />
+                                                        </div>
+
                                                     </div>
-                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
-                                                        <FormField2
-                                                            label="Significado:"
-                                                            name="significado"
-                                                            placeholder="Significado de la palabra"
-                                                            errors={errors}
-                                                        />
-
-                                                        <FormField2
-                                                            label="Sinónimos (separados por coma):"
-                                                            name="sinonimos"
-                                                            placeholder="Sinónimos de la palabra"
-                                                        // errors={errors}
-                                                        />
-
-
-                                                    </div>
-
 
                                                     <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
-                                                        <FormField2
-                                                            label="Acepciones:"
-                                                            name="acepciones"
-                                                            placeholder="Acepciones de la palabra"
-                                                        // errors={errors}
-                                                        />
 
                                                         <FormField2
                                                             label="¿Cómo se usa?:"
@@ -752,6 +823,11 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                                 errores.id_categoria = 'Debe seleccionar una categoría*'
                             }
 
+                            if (valoresForm.Region.id == 0) {
+                                errores.id_region = 'Debe seleccionar una región*'
+                            }
+
+
                             //valores de como se usa
                             if (!valoresForm.como_se_usa) {
                                 errores.como_se_usa = 'Campo obligatorio*'
@@ -801,7 +877,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                                             <h2 className='mb-4 font-semibold text-mfColor text-3xl'>Actualizar Palabra</h2>
                                             <div className='w-full flex flex-col xl:flex-row gap-4'>
                                                 <div className='w-full'>
-                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5 mb-4 xl:mb-0'>
+                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5 '>
                                                         <FormField
                                                             label="Palabra:"
                                                             name="palabra"
@@ -811,7 +887,44 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                                                             errors={errors}
                                                         />
 
-                                                        {console.log("Desde el formulario", valoresForm.palabra)}
+
+                                                        <FormField
+                                                            label="Significado:"
+                                                            name="significado"
+                                                            placeholder="Significado de la palabra"
+                                                            value={valoresForm.significado == 'No Aplica' ? '' : valoresForm.significado}
+                                                            onChange={handleInputChange}
+                                                            errors={errors}
+                                                        />
+
+                                                    </div>
+                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
+
+
+                                                        <FormField
+                                                            label="Sinónimos (separados por coma):"
+                                                            name="sinonimos"
+                                                            placeholder="Sinónimos de la palabra"
+                                                            value={valoresForm.sinonimos == 'No Aplica' ? '' : valoresForm.sinonimos}
+                                                            onChange={handleInputChange}
+                                                        // errors={errors}
+                                                        />
+                                                        <FormField
+                                                            label="Acepciones:"
+                                                            name="acepciones"
+                                                            placeholder="Acepciones de la palabra"
+                                                            value={valoresForm.acepciones == 'No Aplica' ? '' : valoresForm.acepciones}
+                                                            onChange={handleInputChange}
+                                                        // errors={errors}
+                                                        />
+
+
+                                                    </div>
+
+
+                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5 mb-4'>
+
+
                                                         <div className='text-left'>
                                                             <label htmlFor="selectedOption">Categoría Gramatical:</label>
                                                             <Field as="select" name="id_categoria" id="id_categoria"
@@ -829,40 +942,26 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
                                                                 <div className='error text-red-600 font-medium'>{errors.id_categoria}</div>
                                                             )} />
                                                         </div>
-                                                        {console.log("id de categoria", valoresForm.Categorium.id)}
+                                                        <div className='text-left'>
+                                                            <label htmlFor="selectedOption">Región:</label>
+                                                            <Field as="select" name="id_region" id="id_region"
+                                                                value={valoresForm.Region.id}
+                                                                onChange={handleSelectChange2}
+                                                                className="block w-64 rounded-md border-0 px-2 py-2 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:outline-none focus:border-mfColor focus:ring-mfColor sm:max-w-xs sm:leading-6">
+                                                                <option value="">Selecciona una región</option>
+                                                                {dataRegion.map((e) => (
+                                                                    <option key={e.id} value={e.id}>
+                                                                        {e.region}
+                                                                    </option>
+                                                                ))}
+                                                            </Field>
+                                                            <ErrorMessage name='id_region' component={() => (
+                                                                <div className='error text-red-600 font-medium'>{errors.id_region}</div>
+                                                            )} />
+                                                        </div>
                                                     </div>
                                                     <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
-                                                        <FormField
-                                                            label="Significado:"
-                                                            name="significado"
-                                                            placeholder="Significado de la palabra"
-                                                            value={valoresForm.significado == 'No Aplica' ? '' : valoresForm.significado}
-                                                            onChange={handleInputChange}
-                                                            errors={errors}
-                                                        />
 
-                                                        <FormField
-                                                            label="Sinónimos (separados por coma):"
-                                                            name="sinonimos"
-                                                            placeholder="Sinónimos de la palabra"
-                                                            value={valoresForm.sinonimos == 'No Aplica' ? '' : valoresForm.sinonimos}
-                                                            onChange={handleInputChange}
-                                                        // errors={errors}
-                                                        />
-
-
-                                                    </div>
-
-
-                                                    <div className='w-auto flex flex-col md:flex-row justify-center items-center xl:items-start gap-1 md:gap-5'>
-                                                        <FormField
-                                                            label="Acepciones:"
-                                                            name="acepciones"
-                                                            placeholder="Acepciones de la palabra"
-                                                            value={valoresForm.acepciones == 'No Aplica' ? '' : valoresForm.acepciones}
-                                                            onChange={handleInputChange}
-                                                        // errors={errors}
-                                                        />
 
                                                         <FormField
                                                             label="¿Cómo se usa?:"
@@ -1082,8 +1181,9 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
                 </>
             </div>
-        );
-    }
+        </div>
+    );
+}
 
 
 export default Formulario;

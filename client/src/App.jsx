@@ -5,8 +5,10 @@ import CardIngles from './components/CardIngles/CardsIngles'
 import SeccDiccChocoIngles from './components/CardIngles/seccDiccChocoIngles'
 import { Routes, Route } from 'react-router-dom'
 import FormAdmin from './components/formularios/formAdminAdd'
+import VerCuentas from './components/admin/verCuentas'
 import LoginAdmin from './components/formularios/loginAdmin'
 import FormPublic from './components/formularios/formPublic'
+
 
 function App() {
   return (
@@ -16,12 +18,15 @@ function App() {
         </Route>
         <Route path='/loginDicc' element={<LoginAdmin></LoginAdmin>}>   
         </Route>
-        <Route path='/formulario' element={<FormAdmin></FormAdmin>}>   
+        <Route path='/admin' element={<FormAdmin></FormAdmin>}>   
+        </Route>
+        <Route path='/vercuentas' element={<VerCuentas></VerCuentas>}>       
         </Route>
         <Route path='/colaborar' element={<FormPublic></FormPublic>}>   
         </Route>
         <Route path='/Ingles' element={<SeccDiccChocoIngles></SeccDiccChocoIngles>}>       
         </Route>
+
       </Routes>
       
      
