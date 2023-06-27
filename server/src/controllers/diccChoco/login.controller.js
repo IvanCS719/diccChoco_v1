@@ -55,7 +55,7 @@ export const getRolData = async (req, res) => {
 
     // Buscar al usuario en la base de datos por su ID
     const user = await LoginPanel.findOne({
-      where: { id: userId }, attributes: ['rol',
+      where: { id: userId }, attributes: ['id','rol',
         'agregar_mf',
         'editar_mf',
         'eliminar_mf',

@@ -47,7 +47,7 @@ const Formulario = () => {
 
     useEffect(() => {
         const fetchProtectedData = async () => {
-            console.log(localStorage.getItem('token'))
+            
             try {
                 // Hacer la solicitud GET a la ruta protegida
                 const response = await fetch('http://localhost:3000/api/auth/user', {
@@ -75,7 +75,6 @@ const Formulario = () => {
     }, [navigate]);
 
     // const [formularioenviado, cambiarformularioenviado] = useState(false);
-    console.log(resp)
     const [dataCategoria, setDataCategoria] = useState([]);
     const [dataRegion, setDataRegion] = useState([]);
     const [arrTama, setArrTama] = useState([]);
@@ -415,7 +414,7 @@ const Formulario = () => {
     return (
         <div className='w-full min-h-screen'>
             <NavBar rol={resp.rol} verDicc={"Ver Diccionario"} verDiccLink={'/'} tar={'_blank'} mfLogoAd={"MercadoFácil.mx"} mfLinkAd={"https://mercadofacil.mx/"}
-                CS={"Cerrar Sesión"} />
+                CS={"Cerrar Sesión"} VC={resp.id} />
 
             <div className='w-full px-4 md:px-6'>
                 <p className='my-5 font-semibold text-mfColor text-4xl'>Administrador del Diccionario Choco</p>

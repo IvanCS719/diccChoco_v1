@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 
 const Navbar = ({ rol, mfLogo, mfLink, verDicc, verDiccLink, tar, CS, mfLogoAd, mfLinkAd, cola, colaLink,
-  masInfo, masInfoLink}) => {
+  masInfo, masInfoLink, VA, VC}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleNavbar = () => {
@@ -48,12 +48,14 @@ const Navbar = ({ rol, mfLogo, mfLink, verDicc, verDiccLink, tar, CS, mfLogoAd, 
                 {masInfo ? <a href={masInfoLink} className="text-white font-medium hover:border-b-2">
                   {masInfo}
                 </a> : null}
+                {VC == 1 ? <Link to='/vercuentas' className="text-white font-medium hover:border-b-2">Ver Colaboradores</Link> : null}
 
               </div>
               {CS ? <button onClick={cerrarSesion} className="hover:bg-white hover:text-mfColor hover:font-semibold border-solid border-2 border-white text-white font-medium py-2 px-3 rounded-lg">
                 {CS}
               </button>: null}
               {cola ? <Link to={colaLink} className="hover:bg-white hover:text-mfColor hover:font-semibold border-solid border-2 border-white text-white font-medium py-2 px-3 rounded-lg">{cola}</Link> : null}
+              {VA ? <Link to='/admin' className="hover:bg-white hover:text-mfColor hover:font-semibold border-solid border-2 border-white text-white font-medium py-2 px-3 rounded-lg">{VA}</Link> : null}
             </div>
 
           </div>
@@ -111,11 +113,16 @@ const Navbar = ({ rol, mfLogo, mfLink, verDicc, verDiccLink, tar, CS, mfLogoAd, 
           {mfLogoAd ? <a href={mfLinkAd} className="text-white font-medium hover:border-b-2">
                   {mfLogoAd}
                 </a> : null}
+                {masInfo ? <a href={masInfoLink} className="text-white font-medium hover:border-b-2">
+                  {masInfo}
+                </a> : null}
+                {VC == 1 ? <Link to='/vercuentas' className="text-white font-medium hover:border-b-2">Ver Colaboradores</Link> : null}
            
             {CS ? <button onClick={cerrarSesion} className="hover:bg-white hover:text-mfColor hover:font-semibold text-white font-medium py-2 px-3 rounded-lg">
                 {CS}
               </button>: null}
               {cola ? <Link to={colaLink} className="hover:bg-white hover:text-mfColor hover:font-semibold border-solid border-2 border-white text-white font-medium py-2 px-3 rounded-lg">{cola}</Link> : null}
+              {VA ? <Link to='/admin' className="hover:bg-white hover:text-mfColor hover:font-semibold border-solid border-2 border-white text-white font-medium py-2 px-3 rounded-lg">{VA}</Link> : null}
           </div>
         </div>
       )}

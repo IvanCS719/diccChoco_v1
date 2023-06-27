@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import NavBar from '../navbars/navbar';
+import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 const FormField = ({ label, name, placeholder, errors, value, onChange, type = 'text' }) => (
@@ -42,6 +43,7 @@ const VerCuentas = () => {
     const [showWarningModal, setShowWarningModal] = useState(false);
     const [itemToDelete, setItemToDelete] = useState(null);
     const [dataCola, setDataCola] = useState({});
+    const navigate = useNavigate();
 
     const [isOpen, setIsOpen] = useState(false);
     const [modalAdd, setModalAdd] = useState(false);
@@ -59,6 +61,39 @@ const VerCuentas = () => {
 
 
     });
+
+useEffect(() => {
+            const fetchProtectedData = async () => {
+                try {
+                    // Hacer la solicitud GET a la ruta protegida
+                    const response = await fetch('http://localhost:3000/api/auth/user', {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        },
+                    });
+    
+                    if (response.ok) {
+                        // Obtener los datos del usuario desde la respuesta
+                        const data = await response.json();
+                       
+                        if(data.user.id != 1){
+                            navigate('/admin');
+                        }
+    
+                    } else {
+                        // Error en la solicitud, redirigir a la página de inicio de sesión
+                        navigate('/admin');
+                    }
+                } catch (error) {
+                    console.error('Error al realizar la solicitud:', error);
+                    navigate('/admin');
+                }
+            };
+    
+            fetchProtectedData();
+        }, [navigate]);
+
+
     const fetchData = async () => {
 
         try {
@@ -66,7 +101,7 @@ const VerCuentas = () => {
             const jsonData = await response.json();
             setDataCola(jsonData);
             //setFiltro(data)
-            console.log(jsonData)
+           
 
         } catch (error) {
             console.error(error);
@@ -80,6 +115,7 @@ const VerCuentas = () => {
 
 
     const handleAddCola = (values, { resetForm }) => {
+
 
         try {
             const min = 10000000; // Valor mínimo (8 dígitos)
@@ -212,7 +248,7 @@ const VerCuentas = () => {
         setModalUpdate(true);
         
         setValoresForm(row);
-        console.log("resultado Row", valoresForm);
+        
     
       };
 
@@ -234,8 +270,8 @@ const VerCuentas = () => {
 
     return (
         <div className='w-full min-h-screen'>
-            <NavBar rol={'Cuentas'} verDicc={"Ver Diccionario"} verDiccLink={'/'} tar={'_blank'} mfLogoAd={"MercadoFácil.mx"} mfLinkAd={"https://mercadofacil.mx/"}
-                CS={"Cerrar Sesión"} />
+            <NavBar rol={'Colaboradores'} verDicc={"Ver Diccionario"} verDiccLink={'/'} tar={'_blank'} mfLogoAd={"MercadoFácil.mx"} mfLinkAd={"https://mercadofacil.mx/"}
+                VA={"Volver"} />
             <div className='w-full px-4 md:px-6 py-1'>
                 <div className='w-full flex gap-3 flex-col'>
                     <div>
@@ -520,7 +556,7 @@ const VerCuentas = () => {
 
                     {/**Aquí termina el formulario de actualización de colaboradores */}
                     <p className='font-semibold text-mfColor text-3xl mb-4'>Colaboradores del Diccionario Choco</p>
-                    <div className='w-full flex justify-between items-center mb-2'>
+                    <div className='w-full flex flex-col md:flex-row justify-between items-center mb-2'>
                         <p className='text-2xl font-semibold text-gray-900'>Colaboradores y Permisos</p>
                         <button type='button' className='w-auto rounded-md bg-mfColor px-3 py-2 text-white shadow-md font-medium' onClick={() => { setModalAdd(true) }}><i className="fa-solid fa-plus"></i> Nuevo Colaborador</button>
 
