@@ -100,9 +100,20 @@ export default function Card() {
             <NavBar mfLogo={"MercadoFácil.mx"} mfLink={"https://mercadofacil.mx/"} cola={"Colaborar"} colaLink={"/colaborar"}
                 verDicc={"Inicio"} verDiccLink={'/'} masInfo={"Saber más"} masInfoLink={"https://mercadofacil.mx/las-palabras-del-choco/"} />
 
+                <div className="text-center">
+                    <img src="Encabezado.png" alt="Banner"/>
+                </div>
 
-            <div className='w-full px-4 my-4 md:px-6'>
+            <div className='w-full px-4 md:px-6'>
                 <h2 id='sectionId' className='text-3xl font-bold text-mfColor my-3'>Palabras del Choco</h2>
+                
+                <p className='text-center md:text-lg font-medium text-gray-800'>
+                    Compendio basado en los libros. <strong>Diccionario General de Americanismos Tomos I, II, III</strong>/ Francisco J. Santamaría. <br />
+                   <strong> Vocabulario Tabasqueño</strong>/Comisión Estatal de Lexicografía. <strong>Así Hablan en mi Tierra</strong>/ Oscar G. Carrera. <br />
+                   <strong> Así Hablamos en Tabasco y Otros Trabajos</strong>/Rosario María Gutiérrez Eskildsen.
+                    </p>
+
+
                 <div className='xl:mx-4 mb-6 w-auto  flex flex-col gap-2'>
                     <div className='w-full flex flex-col gap-2 md:flex-row md:gap-0 md:justify-between items-center'>
 
