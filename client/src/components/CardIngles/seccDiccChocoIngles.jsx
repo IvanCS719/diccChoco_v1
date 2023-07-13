@@ -22,9 +22,9 @@ export default function Card() {
                 //const regex = /^(¡¿")?/i;
                 // console.log(element.palabra.startsWith(e.target.value.toUpperCase()) ? element.palabra.startsWith(e.target.value.toUpperCase()) : "No hay")    
                 return element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase()) ||
-                (element.palabra.startsWith('¡') && element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase(), 1)) ||
-                (element.palabra.startsWith('¿') && element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase(), 1)) ||
-                (element.palabra.startsWith('"') && element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase(), 1));
+                    (element.palabra.startsWith('¡') && element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase(), 1)) ||
+                    (element.palabra.startsWith('¿') && element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase(), 1)) ||
+                    (element.palabra.startsWith('"') && element.palabra.toUpperCase().startsWith(e.target.value.toUpperCase(), 1));
                 //regets
 
             })
@@ -96,13 +96,20 @@ export default function Card() {
 
     return (
         <div className='w-full min-h-screen'>
-            <NavBar mfLogo={"MercadoFácil.mx"} mfLink={"https://mercadofacil.mx/"} 
+            <NavBar mfLogo={"MercadoFácil.mx"} mfLink={"https://mercadofacil.mx/"}
                 verDicc={"Home"} verDiccLink={'/Ingles'} masInfo={"Learn more"} masInfoLink={"https://mercadofacil.mx/las-palabras-del-choco/"} />
+            <div className="text-center">
+                <img src="Encabezado.png" alt="Banner" />
+            </div>
 
-
-            <div className='w-full px-4 my-4 md:px-6'>
+            <div className='w-full px-4 my-4 md:px-6  mt-5'>
                 <h2 id='sectionId' className='text-3xl font-bold text-mfColor my-3'>Choco's Words</h2>
-                <div className='xl:mx-4 mb-6 w-auto flex flex-col gap-2'>
+                <p className='text-center md:text-lg font-medium text-gray-800'>
+                Compendium based on the books. <strong>Diccionario General de Americanismos Tomos I, II, III</strong>/ Francisco J. Santamaría. <br />
+                    <strong> Vocabulario Tabasqueño</strong>/State Lexicography Commission. <strong>Así Hablan en mi Tierra</strong>/ Oscar G. Carrera. <br />
+                    <strong> Así Hablamos en Tabasco y Otros Trabajos</strong>/Rosario María Gutiérrez Eskildsen.
+                </p>
+                <div className='xl:mx-4 mb-6 w-auto flex flex-col gap-2 mt-7'>
                     <div className='w-full flex flex-col gap-2 md:flex-row md:gap-0 md:justify-between items-center'>
 
                         <div className="">
@@ -170,11 +177,11 @@ export default function Card() {
                 {partirData.length > 0 ?
                     <div className='grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center md:px-8 lg:px-2 xl:px-9'>
                         {partirData.map(e =>
-                            <Cards key={e.id} /*imagen={e.Multimedium.url_imagen}*/ region={e.Region.region} significadoIng={e.Ingle ? e.Ingle.significadoIng : 'No translation yet'} sinonimosIng={e.Ingle ? e.Ingle.sinonimosIng : 'No translation yet' }
-                            acepcionesIng={e.Ingle ? e.Ingle.acepcionesIng : 'No translation yet'} como_se_usa_Ing={e.Ingle ? e.Ingle.como_se_usa_Ing : 'No translation yet'} categoriaIng={e.Ingle ? e.Categorium.CategoriaIng.categoriaIng : 'No translation yet'}  palabra={e.palabra} significado={e.significado} sinonimos={e.sinonimos}
+                            <Cards key={e.id} /*imagen={e.Multimedium.url_imagen}*/ region={e.Region.region} significadoIng={e.Ingle ? e.Ingle.significadoIng : 'No translation yet'} sinonimosIng={e.Ingle ? e.Ingle.sinonimosIng : 'No translation yet'}
+                                acepcionesIng={e.Ingle ? e.Ingle.acepcionesIng : 'No translation yet'} como_se_usa_Ing={e.Ingle ? e.Ingle.como_se_usa_Ing : 'No translation yet'} categoriaIng={e.Ingle ? e.Categorium.CategoriaIng.categoriaIng : 'No translation yet'} palabra={e.palabra} significado={e.significado} sinonimos={e.sinonimos}
                                 categoria={e.Categorium.categoria} acepciones={e.acepciones} comoSeUsa={e.como_se_usa} ejemploNeutro={e.Ejemplo.ejemplo_neutro} ejemploChoco={e.Ejemplo.ejemplo_choco}
-                                ejemploneutroingles={e.EjemplosIng ? e.EjemplosIng.ejemplo_neutro_ingles : 'No translation yet'} ejemplochocoingles={e.EjemplosIng ? e.EjemplosIng.ejemplo_choco_ingles:'No translation yet'} />
-                                
+                                ejemploneutroingles={e.EjemplosIng ? e.EjemplosIng.ejemplo_neutro_ingles : 'No translation yet'} ejemplochocoingles={e.EjemplosIng ? e.EjemplosIng.ejemplo_choco_ingles : 'No translation yet'} />
+
                         )}
                     </div> :
                     <div className='w-full h-full grid gap-1 grid-cols-1'>
