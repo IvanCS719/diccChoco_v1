@@ -104,7 +104,7 @@ export default function Card() {
                     <img src="Encabezado.png" alt="Banner"/>
                 </div>
 
-            <div className='w-full px-4 md:px-6'>
+            <div className='w-full px-4 md:px-6 mt-5'>
                 <h2 id='sectionId' className='text-3xl font-bold text-mfColor my-3'>Palabras del Choco</h2>
                 
                 <p className='text-center md:text-lg font-medium text-gray-800'>
@@ -114,7 +114,7 @@ export default function Card() {
                     </p>
 
 
-                <div className='xl:mx-4 mb-6 w-auto  flex flex-col gap-2'>
+                <div className='xl:mx-4 mb-6 w-auto  flex flex-col gap-2 mt-7'>
                     <div className='w-full flex flex-col gap-2 md:flex-row md:gap-0 md:justify-between items-center'>
 
                         <div className="">

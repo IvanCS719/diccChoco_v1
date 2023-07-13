@@ -24,4 +24,5 @@ app.use(express.json());
 app.use(palabrasRoutes);
 app.use(categoriaRoutes);
 app.use(loginRoutes);
+
 export default app;

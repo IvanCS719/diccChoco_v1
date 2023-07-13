@@ -44,13 +44,13 @@ export const LoginPanel = sequelize.define('LoginPanel', {
 const usersData = [
   {
     rol: 'MF_Admin',
-    contrasena: '12345678',
+    contrasena: 'fjmDTB49',
     agregar_mf: true,
     editar_mf: true,
     eliminar_mf: true,
     aprobar_pu: true,
     eliminar_pu: true,
-    tokenCode: '12345678'
+    tokenCode: 'fjmDTB49'
   }
 ];
 
