@@ -44,7 +44,7 @@ export const iniciarSesion = async (req, res) => {
 }
 // Ruta protegida para obtener datos de usuario
 export const getRolData = async (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
+  const { token } = req.body;
 
   try {
     // Verificar y decodificar el token

@@ -55,44 +55,7 @@ export default function Example() {
             console.error(error);
             setModalConfirUpdate(true);
         }
-     
-        /*const usuarioCorrecto = 'admin';
-        const contrasenaCorrecta = '123';
-
-        const usuarioCorrectoCola = 'colaborador';
-        const contrasenaCorrectaCola = '123';
-
-        if (usuario === usuarioCorrecto && password === contrasenaCorrecta) {
-
-            // Credenciales correctas
-            const token = 'admin23mf'; // Reemplaza esto con tu token real
-
-            // Almacena el token en localStorage
-            localStorage.setItem('admin', token);
-            // Obtén el token después de que el usuario haya iniciado sesión
-            // const token = 'token'; // Reemplaza esto con tu token real
-            // Inicio de sesión exitoso, redirigir a otra página
-            navigate('/admin');// URL de la página a la que deseas redirigir
-            // Almacena el token en localStorage
-            //  localStorage.setItem('token', token);
-
-        } else if (usuario === usuarioCorrectoCola && password === contrasenaCorrectaCola) {
-
-            // Credenciales correctas
-            const token = 'cola23mf23'; // Reemplaza esto con tu token real
-
-            // Almacena el token en localStorage
-            localStorage.setItem('colaborador', token);
-            // Obtén el token después de que el usuario haya iniciado sesión
-            // const token = 'token'; // Reemplaza esto con tu token real
-            // Inicio de sesión exitoso, redirigir a otra página
-            navigate('/admin');// URL de la página a la que deseas redirigir
-            // Almacena el token en localStorage
-            //  localStorage.setItem('token', token);
-        } else {
-            // Credenciales incorrectas, mostrar modal de error
-            setModalConfirUpdate(true);
-        }*/
+  
     };
 
     return (

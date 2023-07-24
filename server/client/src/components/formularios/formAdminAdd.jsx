@@ -47,18 +47,22 @@ const Formulario = () => {
 
     useEffect(() => {
         const fetchProtectedData = async () => {
-            
+
+            const { token } = {token : localStorage.getItem('token')};
             try {
                 // Hacer la solicitud GET a la ruta protegida
                 const response = await fetch('http://localhost:3000/api/auth/user', {
+                    method: 'POST',
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json',
                     },
+                    body: JSON.stringify({ token }),
                 });
 
                 if (response.ok) {
                     // Obtener los datos del usuario desde la respuesta
                     const data = await response.json();
+                    //console.log(data);
                     setResp(data.user);
 
                 } else {
@@ -67,12 +71,15 @@ const Formulario = () => {
                 }
             } catch (error) {
                 console.error('Error al realizar la solicitud:', error);
+                console.log(response)
                 navigate('/loginDicc');
             }
         };
 
         fetchProtectedData();
     }, [navigate]);
+
+    console.log(resp.id);
 
     // const [formularioenviado, cambiarformularioenviado] = useState(false);
     const [dataCategoria, setDataCategoria] = useState([]);

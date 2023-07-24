@@ -51,57 +51,60 @@ const VerCuentas = () => {
     const [modalConfirUpdate, setModalConfirUpdate] = useState(false);
     const [valoresForm, setValoresForm] = useState({
         rol: '',
-                                newContra: '',
-                                agregar_mf: '',
-                                editar_mf: '',
-                                eliminar_mf: '',
-                                aprobar_pu: '',
-                                eliminar_pu: '',
-                                tokenCode:'' 
+        newContra: '',
+        agregar_mf: '',
+        editar_mf: '',
+        eliminar_mf: '',
+        aprobar_pu: '',
+        eliminar_pu: '',
+        tokenCode: ''
 
 
     });
 
-useEffect(() => {
-            const fetchProtectedData = async () => {
-                try {
-                    // Hacer la solicitud GET a la ruta protegida
-                    const response = await fetch('http://localhost:3000/api/auth/user', {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem('token')}`,
-                        },
-                    });
-    
-                    if (response.ok) {
-                        // Obtener los datos del usuario desde la respuesta
-                        const data = await response.json();
-                       
-                        if(data.user.id != 1){
-                            navigate('/admin');
-                        }
-    
-                    } else {
-                        // Error en la solicitud, redirigir a la página de inicio de sesión
+    useEffect(() => {
+        const fetchProtectedData = async () => {
+            const { token } = { token: localStorage.getItem('token') };
+            try {
+                // Hacer la solicitud GET a la ruta protegida
+                const response = await fetch('http://localhost:3000/api/auth/user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token }),
+                });
+
+                if (response.ok) {
+                    // Obtener los datos del usuario desde la respuesta
+                    const data = await response.json();
+
+                    if (data.user.id != 1) {
                         navigate('/admin');
                     }
-                } catch (error) {
-                    console.error('Error al realizar la solicitud:', error);
+
+                } else {
+                    // Error en la solicitud, redirigir a la página de inicio de sesión
                     navigate('/admin');
                 }
-            };
-    
-            fetchProtectedData();
-        }, [navigate]);
+            } catch (error) {
+                console.error('Error al realizar la solicitud:', error);
+                navigate('/admin');
+            }
+        };
+
+        fetchProtectedData();
+    }, [navigate]);
 
 
     const fetchData = async () => {
 
         try {
-            const response = await fetch('http://localhost:3000/api/auth/allcola');
+            const response = await fetch('http://localhost:3000/allcola');
             const jsonData = await response.json();
             setDataCola(jsonData);
             //setFiltro(data)
-           
+
 
         } catch (error) {
             console.error(error);
@@ -157,12 +160,12 @@ useEffect(() => {
     const handleUpdateCola = (values, { resetForm }) => {
 
         try {
-            if(values.newContra){
+            if (values.newContra) {
                 const min = 10000000; // Valor mínimo (8 dígitos)
                 const max = 99999999; // Valor máximo (8 dígitos)
                 const resultR = Math.floor(Math.random() * (max - min + 1)) + min;
                 valoresForm.contrasena = resultR.toString();
-            }else{
+            } else {
                 valoresForm.contrasena = valoresForm.tokenCode;
             }
             valoresForm.agregar_mf = valoresForm.agregar_mf ? valoresForm.agregar_mf : false
@@ -233,7 +236,7 @@ useEffect(() => {
     };
     const closeModalUpdate = () => {
         setModalUpdate(false);
-       
+
         //onClose();
     };
     const closeModal = () => {
@@ -243,16 +246,16 @@ useEffect(() => {
     };
 
     const actualizarDato = (row) => {
-    
+
         //setIdUpdate(row.id);
         setModalUpdate(true);
-        
-        setValoresForm(row);
-        
-    
-      };
 
-      const handleInputChange = (e) => {
+        setValoresForm(row);
+
+
+    };
+
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
         setValoresForm((prevState) => ({
             ...prevState,
@@ -263,10 +266,10 @@ useEffect(() => {
     const handleCheckboxChange = (e) => {
         const { name, checked } = e.target;
         setValoresForm((prevState) => ({
-          ...prevState,
-          [name]: checked
+            ...prevState,
+            [name]: checked
         }));
-      };
+    };
 
     return (
         <div className='w-full min-h-screen'>
@@ -406,14 +409,15 @@ useEffect(() => {
                         </Formik>
                     </div>
 
-                    
+
                     {/**Formulario de actualización de colaboradores */}
 
                     <div>
                         <Formik
                             //almacena los valores de cada campo
                             initialValues={{
-                                valoresForm}}
+                                valoresForm
+                            }}
                             //validar que los valores escritos dentro del campo, correspondan a lo solicitado en cada tabla
                             validate={(valores) => {
                                 let errores = {};
@@ -598,10 +602,10 @@ useEffect(() => {
                                             <td className="py-2 border border-x-2 border-gray-300">{e.eliminar_pu ? <p className='text-xl  text-green-600'><i className="fa-solid fa-circle-check"></i></p> : <p className='text-xl text-red-600'><i className="fa-solid fa-circle-xmark"></i></p>}</td>
 
                                             <td className="py-2 border border-x-2 border-gray-300">
-                                            <button className="max-w-max my-auto h-min rounded-md bg-blue-600 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
+                                                <button className="max-w-max my-auto h-min rounded-md bg-blue-600 px-3 py-2 mr-1 text-lg text-white shadow-md font-medium" onClick={() => actualizarDato(e)}><i className="fa-solid fa-pen-to-square"></i></button>
                                                 <button className="max-w-max my-auto h-min rounded-md bg-red-600 px-3 py-2 text-lg text-white shadow-md font-medium" onClick={() => eliminarDato(e.id, e.rol)}>
-                                                <i className="fa-solid fa-trash"></i>
-                                            </button></td>
+                                                    <i className="fa-solid fa-trash"></i>
+                                                </button></td>
                                         </tr>
                                     ))
                                     :
